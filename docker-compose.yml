@@ -1,0 +1,51 @@
+version: '3'
+volumes:
+  db_data:
+  redisdata:
+  app_data:
+
+services:
+  app:
+    build: .
+    volumes:
+      - app_data:/app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    environment:
+      - NODE_ENV=production
+      - RAILS_ENV=production
+      - RACK_ENV=production
+  db:
+    image: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+  nginx:
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - app_data:/app
+    ports:
+      - 80:80
+      - 443:443
+  redis:
+    image: redis:4.0
+    volumes:
+      - redisdata:/data
+    ports:
+      - "6380:6379"
+  sidekiq:
+    build: .
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    env_file:
+      - .env
+    environment:
+      - RAILS_ENV=production
+      - RACK_ENV=production
+      - REDIS_URL=redis://redis:6379
+    links:
+      - db
+      - redis

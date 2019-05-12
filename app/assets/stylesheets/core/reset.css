@@ -1,0 +1,72 @@
+h1, h2, h3, h4, h5, p {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: normal;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  position: relative;
+  border-radius: 0;
+  appearance: none;
+  cursor: pointer;
+  transform: translate(0,0);
+  user-select: none;
+  border: none;
+  padding: 0;
+  background: none;
+}
+button:focus {
+  outline: none;
+}
+
+input {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  box-sizing: border-box;
+  appearance: none;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: checkbox;
+  -moz-appearance: checkbox;
+  appearance: checkbox;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 5000s ease-in-out 0s
+}

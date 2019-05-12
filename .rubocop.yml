@@ -1,0 +1,72 @@
+AllCops:
+  Exclude:
+    - 'db/**/*'
+    - 'vendor/**/*'
+    - config/**/*
+    - Gemfile
+    - 'spec/**/*'
+    - 'app/views/**/*'
+    - 'app/admin/*'
+    - 'bin/**/*'
+    - 'node_modules/**/*'
+
+  DisplayCopNames: true
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Temporary disabled
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Metrics/CyclomaticComplexity:
+  Max: 10
+
+Style/SymbolArray:
+  Enabled: true
+  EnforcedStyle: brackets
+
+Documentation:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/ModuleLength:
+  Max: 150
+
+Layout/EmptyLinesAroundBlockBody:
+  EnforcedStyle: no_empty_lines
+
+Style/GlobalVars:
+  Enabled: false
+
+Naming/VariableNumber:
+  EnforcedStyle: normalcase
+
+Style/WordArray:
+  Enabled: false
+
+Style/NumericPredicate:
+  EnforcedStyle: comparison
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/ZeroLengthPredicate:
+  Enabled: false
+
+Style/NumericLiterals:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Lint/NestedMethodDefinition:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 20

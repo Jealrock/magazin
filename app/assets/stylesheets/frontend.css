@@ -1,0 +1,7 @@
+/*
+*= require normalize-rails
+*= require ./frontend/font-face.css
+*= require ./core/reset.css
+*= require ./frontend/main.css
+*= require_self
+*/

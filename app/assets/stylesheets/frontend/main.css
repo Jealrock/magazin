@@ -1,0 +1,29 @@
+html {
+  height: 100%;
+  min-height: 100%;
+  height: auto !important;
+  overflow-y: scroll;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+  -webkit-text-size-adjust: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+body {
+  height: 100%;
+  font-size: 16px;
+  line-height: 1.2;
+  background: #EBF0F3;
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wrapper {
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
