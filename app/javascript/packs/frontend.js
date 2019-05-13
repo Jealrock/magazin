@@ -1,5 +1,7 @@
 import '@babel/polyfill'
 import Vue from 'vue'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 import App from '@frontend/App.vue'
 import router from '@frontend/router'
 import axios from 'axios'
