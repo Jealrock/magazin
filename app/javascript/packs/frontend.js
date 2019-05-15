@@ -1,7 +1,5 @@
 import '@babel/polyfill'
 import Vue from 'vue'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
 import App from '@frontend/App.vue'
 import router from '@frontend/router'
 import axios from 'axios'
@@ -12,9 +10,13 @@ import store from '../frontend/store'
 import VueMoment from 'vue-moment'
 import VueLodash from 'vue-lodash';
 
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('app'));
 
+  Vue.use(Vuetify)
   Vue.use(VueAxios, axios)
   Vue.use(Loading)
   Vue.use(VueMoment)
