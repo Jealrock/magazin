@@ -8,10 +8,13 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import store from '../frontend/store'
 import VueMoment from 'vue-moment'
-import VueLodash from 'vue-lodash';
+import VueLodash from 'vue-lodash'
 
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+
+import AppLayout from '@frontend/core/components/AppLayout'
+Vue.component('app-layout', AppLayout)
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('app'));
