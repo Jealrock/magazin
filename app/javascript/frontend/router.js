@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { DASHBOARD_ROUTER } from '@frontend/modules/dashboard/router';
+import {
+  SIGN_IN_ROUTER, SIGN_UP_ROUTER, RESET_PASSWORD_ROUTER, EDIT_PASSWORD_ROUTER,
+} from '@frontend/modules/auth/router';
 
 Vue.use(Router);
 
@@ -9,9 +12,12 @@ export default new Router({
   routes: [
     {
       path: '*',
-      redirect: '/'
+      redirect: '/',
     },
-    DASHBOARD_ROUTER
-  ]
-
+    DASHBOARD_ROUTER,
+    SIGN_IN_ROUTER,
+    SIGN_UP_ROUTER,
+    RESET_PASSWORD_ROUTER,
+    EDIT_PASSWORD_ROUTER,
+  ],
 });

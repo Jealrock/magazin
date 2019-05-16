@@ -6,7 +6,8 @@ const webpackConfig = environment.toWebpackConfig();
 
 webpackConfig.resolve.modules.push('@frontend');
 webpackConfig.resolve.alias = {
-  '@frontend': path.resolve(__dirname, '../../app/javascript/frontend')
+  '@frontend': path.resolve(__dirname, '../../app/javascript/frontend'),
+  '@': path.resolve(__dirname, '../../app/javascript')
 };
 
 module.exports = webpackConfig;

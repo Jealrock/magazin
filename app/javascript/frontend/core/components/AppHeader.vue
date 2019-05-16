@@ -13,7 +13,10 @@
         <v-flex lg6>
           <v-layout justify-end>
             <v-icon class="grey--text text--lighten-1">favorite</v-icon>
-            <v-btn flat small class="ma-0">Вход и регистрация</v-btn>
+            <v-btn flat small 
+              class="ma-0"
+              @click="$router.push('/sign_in')"
+            >Вход и регистрация</v-btn>
             <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>
           </v-layout>
         </v-flex>
