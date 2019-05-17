@@ -2,7 +2,7 @@
   <header class="header">
     <v-container class="pa-0 px-3">
       <v-layout row wrap align-center>
-        <v-flex lg6>
+        <v-flex xs6 hidden-sm-and-down>
           <nav class="nav">
             <a href="#" class="header__link pl-0">Объявления</a>
             <a href="#" class="header__link">Магазины</a>
@@ -10,12 +10,15 @@
             <a href="#" class="header__link">Помощь</a>
           </nav>
         </v-flex>
-        <v-flex lg6>
+        <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end>
             <v-icon class="grey--text text--lighten-1">favorite</v-icon>
             <v-btn flat small class="ma-0">Вход и регистрация</v-btn>
             <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>
           </v-layout>
+        </v-flex>
+        <v-flex xs12 hidden-md-and-up>
+          <v-toolbar-side-icon></v-toolbar-side-icon>
         </v-flex>
       </v-layout>
     </v-container>

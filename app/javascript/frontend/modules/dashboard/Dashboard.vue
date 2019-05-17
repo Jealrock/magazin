@@ -17,7 +17,7 @@
           <Search/>
         </v-flex>
       </v-layout>
-      <v-layout>
+      <v-layout class="mt-3">
         <v-flex xs12>
           <p class="body-2 font-weight-regular black--text mb-1">
             Все объявления в 
@@ -34,12 +34,14 @@
       <v-layout>
         <v-flex sm12>
           <Gallery title="VIP-объявления"
+                   :items="allItems"
                    :itemsInRow="3" />
         </v-flex>
       </v-layout>
       <v-layout>
         <v-flex sm12>
-          <Gallery title="Новые объявления" />
+          <Gallery title="Новые объявления" 
+                   :items="allItems" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -47,6 +49,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 import CategoriesList from './categories-list/CategoriesList';
 import Search from './search/Search';
 import Gallery from './gallery/Gallery';
@@ -54,6 +58,11 @@ import Gallery from './gallery/Gallery';
 export default {
   components: {
     CategoriesList, Search, Gallery
+  },
+  computed: {
+    ...mapGetters([
+      'allItems'
+    ])
   }
 }
 </script>
