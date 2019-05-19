@@ -16,7 +16,11 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(config => {
   config.headers = {
     ...config.headers,
-    'Authorization': store.state.users.access_token
+    'token-type': 'Bearer',
+    'access-token': store.state.users.authData.accessToken,
+    'client': store.state.users.authData.client,
+    'expiry': store.state.users.authData.expiry,
+    'uid': store.state.users.authData.uid
   }
   return config
 })
@@ -24,7 +28,7 @@ axiosInstance.interceptors.request.use(config => {
 axiosInstance.interceptors.response.use(null, error => {
   if (isAuthError(error)) {
     if (!isRefreshable(error)) {
-      store.commit('clearCurrentUser')
+      store.commit('clearUsersState')
       router.push('/sign')
       return Promise.reject(error)
     }
@@ -42,22 +46,24 @@ axiosInstance.interceptors.response.use(null, error => {
             return axiosInstance.request(retryConfig)
           })
       }).catch(error => {
-        store.commit('clearCurrentUser')
-        router.push('/sign')
-        return Promise.reject(error)
+        store.commit('clearUsersState');
+        router.push('/sign');
+        return Promise.reject(error);
       })
   } else {
-    return Promise.reject(error)
+    return Promise.reject(error);
   }
 })
 
 function isAuthError(error) {
+  const current_path = url.parse(error.request.responseURL).pathname
   return error.response && error.response.config && error.response.status === 401 &&
-         url.parse(error.request.responseURL).pathname != '/api/v1/password_resets'
+          current_path != '/api/v1/password_resets' &&
+          current_path != '/api/v1/auth/sign_in'
 }
 
 function isRefreshable(error) {
-  return store.state.users.access_token &&
+  return store.state.users.authData.accessToken &&
          url.parse(error.request.responseURL).pathname != '/api/v1/refresh'
 }
 

@@ -13,10 +13,26 @@
         <v-flex lg6>
           <v-layout justify-end>
             <v-icon class="grey--text text--lighten-1">favorite</v-icon>
-            <v-btn flat small 
+
+            <v-btn 
+              v-if="!currentUser.uid"
+              flat 
+              small 
               class="ma-0"
               @click="$router.push('/sign_in')"
             >Вход и регистрация</v-btn>
+
+            <v-btn
+              v-else
+              flat
+              style="float: right;" 
+              color="grey darken-2"
+              class="ma-0"
+              @click="logout"
+            >
+             log out 
+            </v-btn>
+
             <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>
           </v-layout>
         </v-flex>
@@ -24,6 +40,36 @@
     </v-container>
   </header>
 </template>
+
+<script>
+  import { mapGetters, mapMutations } from 'vuex'
+  import { authService } from '@frontend/core/services/authService';
+
+  export default {
+    data: () => ({
+      dialog: false,
+      error: null,
+      hover: false
+    }),
+    
+    computed: {
+      ...mapGetters(['currentUser'])
+    },
+
+    methods: {
+      ...mapMutations(['clearUsersState']),
+
+      logout() {
+        authService.signout()
+          .then(response => {
+            this.clearUsersState();
+            this.$router.push('/dashboard')
+          })
+          .catch(error => this.error = error);
+      }
+    }
+  }
+</script>
 
 <style>
 .header {

@@ -1,7 +1,7 @@
 <template>
   <div id="sign-form-container">
     <v-toolbar color="white" class="v-toolbar--padded">
-      <v-toolbar-title><h1>Sign in</h1></v-toolbar-title>
+      <v-toolbar-title><h1>Sign up</h1></v-toolbar-title>
       </v-toolbar-items>
     </v-toolbar>
     <v-card>
@@ -27,26 +27,42 @@
                 :error-messages="errors.collect('password')"
                 :append-icon="isPasswordVisible ? 'visibility_off' : 'visibility'"
                 :type="isPasswordVisible ? 'text' : 'password'"
+                ref="password"
                 class="password-field"
                 required
                 @click:append="() => (isPasswordVisible = !isPasswordVisible)"
                 @keyup.enter="submit"
               ></v-text-field>
+              <v-text-field
+                label="Repeat password"
+                v-model="password_confirmation"
+                data-vv-name="password_confirmation"
+                data-vv-as="password"
+                v-validate="'required|confirmed:password'"
+                :error-messages="errors.collect('password_confirmation')"
+                :append-icon="isPasswordVisible ? 'visibility_off' : 'visibility'"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                class="password-field"
+                required
+                @click:append="() => (isPasswordVisible = !isPasswordVisible)"
+                @keyup.enter="submit"
+              ></v-text-field>
+
               <v-layout
                 align-content-end
                 align-end
                 justify-space-between>
                   <router-link
-                    to="/reset_password"
+                    to="/sign_in"
                     class="custom-black--text"
-                  >Forgot password?</router-link>
+                  >Sign in</router-link>
                   <v-btn 
                     @click="submit"
                     :class=" { 'blue darken-4 white--text' : valid, disabled: !valid }"
                     style="margin-bottom: 0px;"
                     depressed
                     round
-                    >sign in</v-btn>
+                    >sign up</v-btn>
               </v-layout>
             </v-form>
         </div>
@@ -56,17 +72,19 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
+import { authService } from '@frontend/core/services/authService';
 
 export default {
   $_veeValidate: {
-      validator: 'new'
+    validator: 'new'
   },
 
   data: () => ({
     valid: true,
     email: '',
     password: '',
+    password_confirmation: '',
     isPasswordVisible: false,
     error: null 
   }),
@@ -78,24 +96,27 @@ export default {
   },
 
   methods: {
-    ...mapActions(['signin']),
-    ...mapMutations(['setBeforeAuthRoute']),
+    ...mapMutations(['setBeforeAuthRoute', 'setCurrentUser', 'setAuthData']),
 
     async submit () {
       await this.$validator.validateAll();
-      if (this.valid) {
-        try {
-          await this.signin({ email: this.email, password: this.password }); 
-          if (this.beforeAuthRoute) {
-            this.$router.push(this.beforeAuthRoute)
-            this.setBeforeAuthRoute(null)
-          } else {
-            this.$router.push('/orders')
+      if (!this.valid) return;
+
+      authService.signup({ email: this.email, password: this.password, password_confirmation: this.password_confirmation })
+        .then(response => {
+          this.setAuthData(response.headers);
+          this.setCurrentUser(response.data.data);
+
+          if (!this.beforeAuthRoute) {
+            this.$router.push('/');
+            return;
           }
-        } catch(error) {
+          this.$router.push(this.beforeAuthRoute)
+          this.setBeforeAuthRoute(null)
+        })
+        .catch(error => {
           this.error = error
-        }
-      }
+        });
     }
   }
 }
