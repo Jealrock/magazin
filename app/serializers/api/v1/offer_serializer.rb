@@ -1,3 +1,3 @@
-class Api::V1::Offer
-  attr_accessor :id, :name, :created_at, :updated_at
+class Api::V1::OfferSerializer < Api::V1::ApplicationSerializer
+  attributes :id, :name, :created_at, :updated_at
 end

@@ -15,8 +15,7 @@ class Api::V1::ApiController < ApplicationController
     render_error(result) && return unless result.success?
 
     collection = apply_scopes(result['model']).page(page).per(per_page)
-    render json: {
-      data: serialize_resource(collection, serializer_options),
+    render json: serialize_resource(collection, serializer_options).merge(
       meta: {
         pagination: {
           page: collection.current_page,
@@ -26,28 +25,19 @@ class Api::V1::ApiController < ApplicationController
           total_count: collection.total_count
         }
       }
-    }, status: 200
+    ), status: 200
   end
 
   def result_show_create(result, serializer_options)
     render_error(result) && return unless result.success?
 
-    render json: {
-      data: serialize_resource(result['model'], serializer_options)
-    }, status: 200
+    render json: serialize_resource(result['model'], serializer_options), status: 200
   end
 
   def result_delete(result, *)
     render_error(result) && return unless result.success?
 
     render json: {}, status: 204
-  end
-
-  def render_error(failed_result)
-    response = Response.new
-    response.add_error_message failed_result['error']
-    response.details = failed_result['contract.default']&.errors&.messages || {}
-    render json: response, status: failed_result['error.status']
   end
 
   def per_page
@@ -62,11 +52,14 @@ class Api::V1::ApiController < ApplicationController
   end
 
   def serialize_resource(resource, serializer_options)
-    if serializer_options
-      ActiveModelSerializers::SerializableResource.new(resource, serializer_options).serializable_hash
-    else
-      result['model']
-    end
+    serializer_options[:serializer].new(resource, serializer_options).serializable_hash
+  end
+
+  def render_error(failed_result)
+    render json: {
+      error_message: failed_result['error'],
+      errors: failed_result['contract.default']&.errors&.messages || {}
+    }, status: failed_result['error.status']
   end
 
   def bad_request(message = 'Bad request')
@@ -88,5 +81,9 @@ class Api::V1::ApiController < ApplicationController
   def unprocessable_entity(exception)
     render json: { errors: exception.record.errors.full_messages },
            status: :unprocessable_entity
+  end
+
+  def _run_options(options)
+    options.merge('current_user' => current_user)
   end
 end
