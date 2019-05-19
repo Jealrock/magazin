@@ -3,8 +3,8 @@
     <v-container grid-list-lg pa-0>
       <h2 class="gallery__title">{{ title }}</h2>
       <v-layout row wrap>
-        <v-flex v-for="j in 4" :class="'sm' + (12 / itemsInRow)">
-          <Item class="gallery__item" />
+        <v-flex :class="'xs12 sm' + (12 / itemsInRow)" v-for="item in items">
+          <GalleryItem :item="item" />
         </v-flex>
       </v-layout>
     </v-container>
@@ -12,14 +12,15 @@
 </template>
 
 <script>
-import Item from './GalleryItem'
+import GalleryItem from './GalleryItem'
 
 export default {
   components: {
-    Item
+    GalleryItem
   },
   props: {
     title: String,
+    items: Array,
     itemsInRow: {
       type: Number,
       default: 4

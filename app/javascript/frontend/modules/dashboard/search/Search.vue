@@ -1,25 +1,29 @@
 <template>
   <div class="search-group">
     <v-layout row wrap>
-      <v-flex lg3>
+      <v-flex xs12 md3>
         <v-select label="Любая категория" />
       </v-flex>
-      <v-flex lg4>
+      <v-flex xs12 md4>
         <v-text-field label="Поиск по объявлениям" />
       </v-flex>
-      <v-flex lg3>
+      <v-flex xs12 md3>
         <v-select label="Москва" />
       </v-flex>
-      <v-flex lg2>
-        <v-btn flat>Найти</v-btn>
+      <v-flex xs12 md2>
+        <v-btn block depressed>Найти</v-btn>
       </v-flex>
     </v-layout>
     <v-layout row wrap>
-      <v-flex lg2>
-        <v-checkbox label="только в названиях"/>
+      <v-flex xs12 sm4 md3>
+        <v-checkbox label="только в названиях" 
+          :hideDetails="true"
+          class="ma-0 pa-0" />
       </v-flex>
-      <v-flex lg2>
-        <v-checkbox label="только с фото"/>
+      <v-flex xs12 sm4 md3>
+        <v-checkbox label="только с фото" 
+          :hideDetails="true" 
+          class="ma-0 pa-0" />
       </v-flex>
     </v-layout>
   </div>
