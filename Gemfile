@@ -15,6 +15,10 @@ gem 'uglifier', '>= 1.3.0'
 gem 'turbolinks', '~> 5'
 gem 'fast_jsonapi'
 gem 'trailblazer'
+gem 'trailblazer-rails'
+gem 'reform-rails'
+gem 'dry-types', '0.12.2'
+gem 'dry-validation', '0.11.1'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
@@ -41,6 +45,10 @@ gem 'kaminari'
 
 # Auth
 gem 'devise_token_auth'
+gem 'pundit'
+
+# automatic scopes
+gem 'has_scope'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
