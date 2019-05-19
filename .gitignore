@@ -27,7 +27,6 @@
 /config/master.key
 /public/packs
 /public/packs-test
-/yarn.lock
 /package-lock.json
 yarn-debug.log*
 .yarn-integrity

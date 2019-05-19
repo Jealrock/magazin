@@ -7,12 +7,12 @@
 </template>
 
 <script>
-const defaultLayout = 'app'
+const defaultLayout = 'app';
 
 export default {
   computed: {
     layout() {
-      return `${(this.$route.meta.layout || defaultLayout)}-layout`
+      return `${(this.$route.meta.layout || defaultLayout)}-layout`;
     },
   },
 };
