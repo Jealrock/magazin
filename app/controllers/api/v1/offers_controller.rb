@@ -5,7 +5,7 @@ module Api::V1
 
     def index
       run Offer::Index
-      result_index(result, each_serializer: ::Api::V1::OfferSerializer)
+      result_index(result, serializer: ::Api::V1::OfferSerializer)
     end
 
     def show
