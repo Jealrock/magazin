@@ -16,13 +16,19 @@ import 'vuetify/dist/vuetify.min.css'
 import AppLayout from '@frontend/core/components/AppLayout'
 Vue.component('app-layout', AppLayout)
 
+const moment = require('moment')
+require('moment/locale/ru')
+
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('app'));
 
   Vue.use(Vuetify)
   Vue.use(VueAxios, axios)
   Vue.use(Loading)
-  Vue.use(VueMoment)
+  // Vue.use(VueMoment)
+  Vue.use(VueMoment, {
+    moment
+  })
   Vue.use(VueLodash)
   Vue.axios.defaults.baseURL = '/api/v1';
 
