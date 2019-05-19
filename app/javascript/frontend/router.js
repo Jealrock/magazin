@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Dashboard from '@frontend/modules/dashboard/Dashboard'
 import { DASHBOARD_ROUTER } from '@frontend/modules/dashboard/router';
-import { ITEM_VIEW_ROUTER } from '@frontend/modules/item-view/router';
+import { OFFER_VIEW_ROUTER } from '@frontend/modules/offer-view/router';
 
 Vue.use(Router);
 
@@ -14,7 +14,7 @@ export default new Router({
       redirect: '/'
     },
     DASHBOARD_ROUTER,
-    ITEM_VIEW_ROUTER
+    OFFER_VIEW_ROUTER
   ]
 
 });

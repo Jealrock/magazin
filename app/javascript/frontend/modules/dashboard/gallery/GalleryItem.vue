@@ -1,6 +1,6 @@
 <template>
   <div class="item">
-    <a :href="`/item/${item.id}`">
+    <a :href="`/offer/${item.id}`">
     <v-card class="elevation-0">
       <v-img :src="item.coverImageUrl"
         aspect-ratio="1.5"></v-img>
