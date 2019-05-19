@@ -18,6 +18,9 @@ import store from '../store/store';
 
 Vue.component('app-layout', AppLayout);
 
+const moment = require('moment')
+require('moment/locale/ru')
+
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('app'));
 
@@ -27,6 +30,9 @@ document.addEventListener('DOMContentLoaded', () => {
   Vue.use(VueLodash);
   Vue.use(Vuetify);
   Vue.use(VeeValidate);
+  Vue.use(VueMoment, {
+    moment
+  })
 
   new Vue({ // eslint-disable-line no-new
     el,
