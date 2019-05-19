@@ -1,12 +1,13 @@
 <template>
   <div id="sign-form-container">
     <v-toolbar color="white" class="v-toolbar--padded">
-      <v-toolbar-title><h1>Sign in</h1></v-toolbar-title>
+      <v-toolbar-title><h1>Reset password</h1></v-toolbar-title>
       </v-toolbar-items>
     </v-toolbar>
     <v-card>
       <v-card-text>
         <v-alert :value="error" type="error" class="mx-0 mb-3" outline><div v-html="error"/></v-alert>
+        <v-alert :value="notice" type="success" class="mx-0 mb-3" outline><div v-html="notice"/></v-alert>
         <div>
             <v-form v-model="valid" ref="form">
               <v-text-field
@@ -19,34 +20,21 @@
                 required
                 @keyup.enter="submit"
               ></v-text-field>
-              <v-text-field
-                label="Enter your password"
-                v-model="password"
-                data-vv-name="password"
-                v-validate="'required|min:8'"
-                :error-messages="errors.collect('password')"
-                :append-icon="isPasswordVisible ? 'visibility_off' : 'visibility'"
-                :type="isPasswordVisible ? 'text' : 'password'"
-                class="password-field"
-                required
-                @click:append="() => (isPasswordVisible = !isPasswordVisible)"
-                @keyup.enter="submit"
-              ></v-text-field>
               <v-layout
                 align-content-end
                 align-end
                 justify-space-between>
                   <router-link
-                    to="/reset_password"
+                    to="/sign"
                     class="custom-black--text"
-                  >Forgot password?</router-link>
+                  >Sign in</router-link>
                   <v-btn 
                     @click="submit"
                     :class=" { 'blue darken-4 white--text' : valid, disabled: !valid }"
                     style="margin-bottom: 0px;"
                     depressed
                     round
-                    >sign in</v-btn>
+                    >Send instructions</v-btn>
               </v-layout>
             </v-form>
         </div>
@@ -56,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   $_veeValidate: {
@@ -64,37 +52,27 @@ export default {
   },
 
   data: () => ({
-    valid: true,
+    valid: true, 
     email: '',
-    password: '',
-    isPasswordVisible: false,
-    error: null 
+    error: null,
+    notice: null
   }),
 
-  computed: {
-    ...mapState({
-      beforeAuthRoute: state => state.routes.beforeAuthRoute
-    })
-  },
-
   methods: {
-    ...mapActions(['signin']),
-    ...mapMutations(['setBeforeAuthRoute']),
+    ...mapActions(['resetPassword']),
 
     async submit () {
-      await this.$validator.validateAll();
+      await this.$validator.validateAll()
       if (this.valid) {
-        try {
-          await this.signin({ email: this.email, password: this.password }); 
-          if (this.beforeAuthRoute) {
-            this.$router.push(this.beforeAuthRoute)
-            this.setBeforeAuthRoute(null)
-          } else {
-            this.$router.push('/orders')
-          }
-        } catch(error) {
-          this.error = error
-        }
+        this.resetPassword({ email: this.email })
+          .then(response => {
+            this.notice = "Email with password reset instructions had been sent"
+            this.error = null
+          })
+          .catch(error => {
+            this.notice = null
+            this.error = error
+          });
       }
     }
   }
@@ -102,7 +80,7 @@ export default {
 </script>
 
 <style scoped>
-  .v-text-field.password-field {
+  .v-text-field.theme--light {
     margin-bottom: 74px;
   }
 </style>

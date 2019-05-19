@@ -11,7 +11,7 @@ import VueLodash from 'vue-lodash';
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 import VeeValidate from 'vee-validate';
-import { axiosInstance } from '@frontend/core/services/axios'
+import { axiosInstance } from '@frontend/core/services/axios';
 
 import AppLayout from '@frontend/core/components/AppLayout';
 import store from '../store/store';
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   Vue.use(VueMoment);
   Vue.use(VueLodash);
   Vue.use(Vuetify);
-  Vue.use(VeeValidate)
+  Vue.use(VeeValidate);
 
   new Vue({ // eslint-disable-line no-new
     el,

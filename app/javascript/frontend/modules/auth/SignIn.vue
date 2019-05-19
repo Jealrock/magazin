@@ -40,6 +40,10 @@
                     to="/reset_password"
                     class="custom-black--text"
                   >Forgot password?</router-link>
+                  <router-link
+                    to="/sign_up"
+                    class="custom-black--text"
+                  >Sign up</router-link>
                   <v-btn 
                     @click="submit"
                     :class=" { 'blue darken-4 white--text' : valid, disabled: !valid }"
@@ -56,7 +60,8 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex'
+import { mapMutations, mapState } from 'vuex'
+import { authService } from '@frontend/core/services/authService';
 
 export default {
   $_veeValidate: {
@@ -78,24 +83,27 @@ export default {
   },
 
   methods: {
-    ...mapActions(['signin']),
-    ...mapMutations(['setBeforeAuthRoute']),
+    ...mapMutations(['setBeforeAuthRoute', 'setCurrentUser', 'setAuthData']),
 
     async submit () {
       await this.$validator.validateAll();
-      if (this.valid) {
-        try {
-          await this.signin({ email: this.email, password: this.password }); 
-          if (this.beforeAuthRoute) {
-            this.$router.push(this.beforeAuthRoute)
-            this.setBeforeAuthRoute(null)
-          } else {
-            this.$router.push('/orders')
+      if (!this.valid) return;
+
+      authService.signin({ email: this.email, password: this.password })
+        .then(response => {
+          this.setAuthData(response.headers);
+          this.setCurrentUser(response.data.data);
+
+          if (!this.beforeAuthRoute) {
+            this.$router.push('/');
+            return;
           }
-        } catch(error) {
+          this.$router.push(this.beforeAuthRoute)
+          this.setBeforeAuthRoute(null)
+        })
+        .catch(error => {
           this.error = error
-        }
-      }
+        });
     }
   }
 }
