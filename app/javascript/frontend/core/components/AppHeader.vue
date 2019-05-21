@@ -25,12 +25,11 @@
             <v-btn
               v-else
               flat
-              style="float: right;" 
-              color="grey darken-2"
+              small
               class="ma-0"
               @click="logout"
             >
-             log out 
+             Выйти 
             </v-btn>
 
             <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>

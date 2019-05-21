@@ -26,13 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   Vue.use(VueAxios, axiosInstance);
   Vue.use(Loading);
-  Vue.use(VueMoment);
+  Vue.use(VueMoment, { moment });
   Vue.use(VueLodash);
   Vue.use(Vuetify);
   Vue.use(VeeValidate);
-  Vue.use(VueMoment, {
-    moment
-  })
 
   new Vue({ // eslint-disable-line no-new
     el,
