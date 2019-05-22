@@ -50,7 +50,7 @@
         <v-flex sm12>
           <Gallery
             title="VIP-объявления"
-            :items="allItems"
+            :items="this.allOffers"
             :items-in-row="3"
           />
         </v-flex>
@@ -79,9 +79,6 @@ export default {
     ...mapGetters([
       'allOffers',
     ]),
-    allItems() {
-      return this.allOffers;
-    },
   },
 };
 </script>
