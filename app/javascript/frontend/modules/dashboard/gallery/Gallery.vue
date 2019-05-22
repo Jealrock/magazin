@@ -23,6 +23,8 @@
 </template>
 
 <script>
+const VUETIFY_GRID_COLUMNS = 12;
+
 import GalleryItem from './GalleryItem';
 
 export default {
@@ -39,7 +41,8 @@ export default {
   },
   computed: {
     columnPart() {
-      return 12 / this.itemsInRow;
+      console.log(this);
+      return VUETIFY_GRID_COLUMNS / this.itemsInRow;
     },
   },
 };
