@@ -104,7 +104,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapMutations, mapState } from 'vuex';
+import { authService } from '@frontend/core/services/authService';
 
 export default {
   $_veeValidate: {
@@ -120,20 +121,40 @@ export default {
     error: null,
   }),
 
+  computed: {
+    ...mapState({
+      beforeAuthRoute: state => state.routes.beforeAuthRoute,
+    }),
+  },
+
+  created: function () {
+    this.setAuthData(this.$route.query);
+  },
+
   methods: {
-    ...mapActions(['editPassword']),
+    ...mapMutations(['setBeforeAuthRoute', 'setCurrentUser', 'setAuthData']),
 
     async submit() {
       await this.$validator.validateAll();
-      if (this.valid) {
-        this.editPassword({
-          token: this.$route.params.token,
-          password: this.password,
-          password_confirmation: this.password_confirmation,
-        })
-          .then(response => this.$router.push('/'))
-          .catch(error => this.error = error);
-      }
+      if (!this.valid) return;
+    
+      console.log(this.$route);
+      authService.updatePassword({
+        password: this.password,
+        password_confirmation: this.password_confirmation
+      })
+      .then(response => {
+        this.setAuthData(response.headers);
+        this.setCurrentUser(response.data.data);
+
+        if (!this.beforeAuthRoute) {
+          this.$router.push('/');
+          return;
+        }
+        this.$router.push(this.beforeAuthRoute);
+        this.setBeforeAuthRoute(null);
+      })
+      .catch(error => this.error = error);
     },
   },
 };

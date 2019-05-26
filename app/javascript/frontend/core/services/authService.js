@@ -1,4 +1,5 @@
 import { axiosInstance } from '@frontend/core/services/axios';
+import { EDIT_PASSWORD_ROUTER } from '@frontend/modules/auth/router';
 
 class AuthService {
   async signin({ email, password }) {
@@ -21,13 +22,13 @@ class AuthService {
 
   async resetPassword({ email }) {
     return axiosInstance
-      .post('/auth/passwords/new', { email })
+      .post('/auth/password', { email, redirect_url: window.origin + EDIT_PASSWORD_ROUTER.path })
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  async editPassword({ token, password, password_confirmation }) {
+  async updatePassword({ password, password_confirmation }) {
     return axiosInstance
-      .patch('/password_resets/' + token, { password, password_confirmation })
+      .patch('/auth/password', { password, password_confirmation })
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
@@ -36,7 +37,7 @@ class AuthService {
     if (!errors_array) return 'Unknown error';
 
     return (errors_array.full_messages && errors_array.full_messages.join("\n")) ||
-           errors_array.join("\n");
+            errors_array.join("\n");
   }
 }
 
