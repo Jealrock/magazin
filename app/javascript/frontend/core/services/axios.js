@@ -27,29 +27,9 @@ axiosInstance.interceptors.request.use(config => {
 
 axiosInstance.interceptors.response.use(null, error => {
   if (isAuthError(error)) {
-    if (!isRefreshable(error)) {
-      store.commit('clearUsersState')
-      router.push('/sign')
-      return Promise.reject(error)
-    }
-
-    // In case 401 is caused by expired access header - we'll do refresh request
-    return axiosInstance.post('/refresh')
-      .then(response => {
-        store.commit('setAccessToken', response.data.access);
-        return axiosInstance.get('/me')
-          .then(meResponse => {
-            store.commit('setCurrentUser', { currentUser: meResponse.data })
-            // And after successful refresh - repeat the original request
-            let retryConfig = error.response.config
-            retryConfig.url = retryConfig.url.replace(API_URL, '')
-            return axiosInstance.request(retryConfig)
-          })
-      }).catch(error => {
-        store.commit('clearUsersState');
-        router.push('/sign');
-        return Promise.reject(error);
-      })
+    store.commit('clearUsersState')
+    router.push('/sign')
+    return Promise.reject(error)
   } else {
     return Promise.reject(error);
   }
@@ -62,10 +42,4 @@ function isAuthError(error) {
           current_path != '/api/v1/auth/sign_in'
 }
 
-function isRefreshable(error) {
-  return store.state.users.authData.accessToken &&
-         url.parse(error.request.responseURL).pathname != '/api/v1/refresh'
-}
-
 export { axiosInstance }
-
