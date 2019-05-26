@@ -41,7 +41,6 @@ export default {
   },
   computed: {
     columnPart() {
-      console.log(this);
       return VUETIFY_GRID_COLUMNS / this.itemsInRow;
     },
   },
