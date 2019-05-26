@@ -1,3 +1,5 @@
+import axiosInstance from '@frontend/core/services/authService';
+
 const state = {
   offers: [{
     id: 0,
@@ -28,7 +30,20 @@ const getters = {
   },
 };
 
+const mutations = {
+  addOffer(state, offer) {
+    state.offers = state.offers.concat([offer]);
+  }
+}
+
+const actions = {
+  createOffer({commit, dispatch}, { order }) {
+  }
+}
+
 export default {
   state,
   getters,
+  mutations,
+  actions,
 };

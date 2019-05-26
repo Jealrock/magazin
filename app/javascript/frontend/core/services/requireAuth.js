@@ -1,3 +1,4 @@
+/*
 import userAuthService from './userAuthService';
 
 const requireAuth = async function(to, from, next) {
@@ -24,6 +25,20 @@ const requireAuth = async function(to, from, next) {
     console.log(error);
     return next("/sign");
   }
+};
+
+export default requireAuth;
+*/
+
+import store from '@/store/store';
+
+const requireAuth = async function(to, from, next) {
+    if (!store.state.users.signedIn) {
+      store.commit('setBeforeAuthRoute', to.fullPath)
+      return next('/sign_in');
+    } else {
+      return next();
+    }
 };
 
 export default requireAuth;

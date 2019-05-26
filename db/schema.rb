@@ -16,7 +16,16 @@ ActiveRecord::Schema.define(version: 2019_05_19_190415) do
   enable_extension "plpgsql"
 
   create_table "offers", force: :cascade do |t|
-    t.string "name"
+    t.string "title"
+    t.text "description"
+    t.text "acquireMethod"
+    t.float "price"
+    t.string "youtube_video_url"
+    t.string "address"
+    t.string "email"
+    t.string "phone_number"
+    t.boolean "is_comments_enable"
+    t.boolean "is_phone_number_visible"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
