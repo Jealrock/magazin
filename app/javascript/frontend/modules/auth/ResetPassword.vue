@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { authService } from '@frontend/core/services/authService';
 
 export default {
   $_veeValidate: {
@@ -113,21 +113,19 @@ export default {
   }),
 
   methods: {
-    ...mapActions(['resetPassword']),
-
     async submit() {
       await this.$validator.validateAll();
-      if (this.valid) {
-        this.resetPassword({ email: this.email })
-          .then((response) => {
-            this.notice = 'Email with password reset instructions had been sent';
-            this.error = null;
-          })
-          .catch((error) => {
-            this.notice = null;
-            this.error = error;
-          });
-      }
+      if (!this.valid) return;
+
+      authService.resetPassword({ email: this.email })
+        .then((response) => {
+          this.notice = 'Email с инструкциями для смены пароля был отправлен';
+          this.error = null;
+        })
+        .catch((error) => {
+          this.notice = null;
+          this.error = error;
+        });
     },
   },
 };

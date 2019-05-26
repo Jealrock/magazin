@@ -66,6 +66,8 @@ group :development do
   # Codestyle
   gem 'rubocop', require: false
   gem 'overcommit'
+  # Mailer
+  gem 'letter_opener'
 end
 
 group :test do

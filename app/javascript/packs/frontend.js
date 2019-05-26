@@ -18,8 +18,8 @@ import store from '../store/store';
 
 Vue.component('app-layout', AppLayout);
 
-const moment = require('moment')
-require('moment/locale/ru')
+const moment = require('moment');
+require('moment/locale/ru');
 
 document.addEventListener('DOMContentLoaded', () => {
   const el = document.body.appendChild(document.createElement('app'));
