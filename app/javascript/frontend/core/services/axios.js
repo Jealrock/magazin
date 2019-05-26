@@ -58,7 +58,7 @@ axiosInstance.interceptors.response.use(null, error => {
 function isAuthError(error) {
   const current_path = url.parse(error.request.responseURL).pathname
   return error.response && error.response.config && error.response.status === 401 &&
-          current_path != '/api/v1/password_resets' &&
+          current_path != '/api/v1/auth/password' &&
           current_path != '/api/v1/auth/sign_in'
 }
 
