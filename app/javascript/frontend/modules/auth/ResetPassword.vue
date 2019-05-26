@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { authService } from '@frontend/core/services/authService';
+import { authService } from './services/authService';
 
 export default {
   $_veeValidate: {
