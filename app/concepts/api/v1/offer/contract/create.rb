@@ -6,20 +6,20 @@ module Offer::Contract
   class Create < Reform::Form
     include Dry
 
+    property :type
     property :title
     property :description
-    property :acquireMethod
-    property :price
-    property :youtube_video_url
-    property :address
+    property :location
     property :email
     property :phone_number
-    property :is_comments_enable
-    property :is_phone_number_visible
 
     validation do
+      required(:type).filled
       required(:title).filled
-      required(:description).filled
+      required(:description).maybe(min_size?: 10)
+      required(:location).filled
+      required(:email).filled
+      required(:phone_number).filled
     end
   end
 end

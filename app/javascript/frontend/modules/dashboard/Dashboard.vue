@@ -6,7 +6,7 @@
           <nav class="nav">
             <a
               href="#"
-              class="header__link pl-0"
+              class="header__link"
             >Авто</a>
             <a
               href="#"
@@ -37,7 +37,7 @@
           <p class="body-2 font-weight-regular black--text mb-1">
             Все объявления в
             <span class="dashboard__location">Москве</span>:
-            <span class="dashboard__items-count grey--text">1 178 011</span>
+            <span class="dashboard__items-count grey--text">0</span>
           </p>
         </v-flex>
       </v-layout>
