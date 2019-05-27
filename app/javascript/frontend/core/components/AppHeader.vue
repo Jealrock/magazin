@@ -3,12 +3,12 @@
     <v-container class="pa-0 px-3">
       <v-layout row wrap align-center>
         <v-flex xs6 hidden-sm-and-down>
-          <nav class="nav">
-            <router-link to="/" class="header__link pl-0">Объявления</router-link>
-            <a href="#" class="header__link">Магазины</a>
-            <a href="#" class="header__link">Бизнес</a>
-            <a href="#" class="header__link">Помощь</a>
-          </nav>
+          <router-link
+            to="/"
+            class="header__link"
+          >
+            Объявления
+          </router-link>
         </v-flex>
         <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end>
@@ -39,7 +39,7 @@
               small
               color="info"
               class="ma-0"
-              @click="$router.push('/offer/new')"
+              @click="$router.push('/offer')"
             >
               Подать объявление
             </v-btn>

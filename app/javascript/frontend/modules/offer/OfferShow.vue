@@ -23,28 +23,29 @@
             {{ offer.price }}
           </p>
         </v-flex>
-        <v-flex xs12>
-          <p>Размещено {{ offer.publicationDate | moment('calendar').toLowerCase() }}</p>
-        </v-flex>
       </v-layout>
       <v-layout
         row
         wrap
+        class="mt-3"
       >
+        <v-flex xs12>
+          {{ offer.updated_at }}
+        </v-flex>
         <v-flex xs9>
-          <img
-            :src="offer.coverImageUrl"
-            alt=""
-            aspect-ratio="1"
-          >
+          <div class="offer-view__image-placeholder"></div>
         </v-flex>
         <v-flex xs3>
-          <v-btn
-            depressed
-            color="info"
-          >
-            Показать телефон
-          </v-btn>
+          {{ offer.phone_number }}
+          {{ offer.email }}
+        </v-flex>
+      </v-layout>
+      <v-layout row wrap>
+        <v-flex xs12>
+          {{ offer.location }}
+        </v-flex>
+        <v-flex xs12>
+          {{ offer.description }}
         </v-flex>
       </v-layout>
     </v-container>
@@ -52,23 +53,19 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
-
 import Search from '@frontend/modules/dashboard/search/Search';
 
-export default {
-  computed: {
-    ...mapGetters([
-      'offerByID',
-    ]),
-    offer() {
-      const offerID = Number(this.$route.params.id);
+import { mapGetters } from 'vuex';
 
-      return this.offerByID(offerID);
-    },
-  },
+export default {
   components: {
     Search,
+  },
+
+  computed: {
+    ...mapGetters({
+      offer: 'getOffer',
+    }),
   },
 };
 </script>
@@ -78,5 +75,10 @@ export default {
   .container {
       max-width: 1000px;
   }
+}
+
+.offer-view__image-placeholder {
+  height: 300px;
+  background: #f0f0f0;
 }
 </style>
