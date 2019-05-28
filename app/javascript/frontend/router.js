@@ -5,7 +5,7 @@ import {
   SIGN_IN_ROUTER, SIGN_UP_ROUTER, RESET_PASSWORD_ROUTER, EDIT_PASSWORD_ROUTER,
 } from '@frontend/modules/auth/router';
 import { PROFILE_ROUTER, PROFILE_SETTINGS_ROUTER } from '@frontend/modules/users/router';
-import { OFFER_SHOW_ROUTER } from '@frontend/modules/offer-show/router';
+import { OFFER_SHOW_ROUTER, OFFER_NEW_ROUTER } from '@frontend/modules/offer/router';
 
 Vue.use(Router);
 
@@ -17,12 +17,14 @@ export default new Router({
       redirect: '/',
     },
     DASHBOARD_ROUTER,
+
     SIGN_IN_ROUTER,
     SIGN_UP_ROUTER,
     RESET_PASSWORD_ROUTER,
     EDIT_PASSWORD_ROUTER,
+    OFFER_NEW_ROUTER,
     OFFER_SHOW_ROUTER,
     PROFILE_ROUTER,
-    PROFILE_SETTINGS_ROUTER,
-  ],
+    PROFILE_SETTINGS_ROUTER
+  ]
 });

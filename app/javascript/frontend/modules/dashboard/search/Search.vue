@@ -3,24 +3,37 @@
     <v-layout
       row
       wrap
+      class="grey pa-1 round"
     >
       <v-flex
         xs12
         md3
       >
-        <v-select label="Любая категория" />
+        <v-select
+          placeholder="Любая категория"
+          class="white mt-0 pt-0 px-2"
+          :hide-details="true"
+        />
       </v-flex>
       <v-flex
         xs12
         md4
       >
-        <v-text-field label="Поиск по объявлениям" />
+        <v-text-field
+          placeholder="Поиск по объявлениям"
+          class="white mt-0 pt-0 px-2"
+          :hide-details="true"
+        />
       </v-flex>
       <v-flex
         xs12
         md3
       >
-        <v-select label="Москва" />
+        <v-select
+          placeholder="Москва"
+          class="white mt-0 pt-0 px-2"
+          :hide-details="true"
+        />
       </v-flex>
       <v-flex
         xs12
@@ -28,7 +41,10 @@
       >
         <v-btn
           block
+          small
+          flat
           depressed
+          class="ma-0 white search__find-button"
         >
           Найти
         </v-btn>
@@ -63,3 +79,10 @@
     </v-layout>
   </div>
 </template>
+
+<style scoped>
+.search__find-button {
+  height: 100%;
+  border-radius: 0;
+}
+</style>
