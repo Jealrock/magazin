@@ -9,6 +9,14 @@
       </v-layout>
       <v-layout row wrap mt-4>
         <v-flex xs12>
+          <v-alert
+            :value="error"
+            type="error"
+            class="mx-0 mb-3"
+            outline
+          >
+            <div v-html="error" />
+          </v-alert>
           <div>
             <v-form
               ref="form"
@@ -140,6 +148,7 @@ export default {
     location: '',
     email: '',
     phoneNumber: '',
+    error: null,
   }),
 
   computed: {
@@ -154,10 +163,8 @@ export default {
     ]),
 
     async submit() {
-      /*
       await this.$validator.validateAll();
       if (!this.valid) return;
-      */
 
       offersService.postOffer({
         type: this.type,
@@ -172,6 +179,9 @@ export default {
         .then((response) => {
           this.setOffer(response.data.data.attributes);
           this.$router.push(`/offer/${response.data.data.id}`);
+        })
+        .catch((error) => {
+          this.error = error;
         });
     },
   },

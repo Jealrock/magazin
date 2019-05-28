@@ -2,11 +2,12 @@ class CreateOffers < ActiveRecord::Migration[5.2]
   def change
     create_table :offers do |t|
       t.string :type, null: false
-      t.integer :user_id
+      t.belongs_to :user
 
       t.float :price
       t.string :exchange_item
 
+      t.boolean :closed, default: false
       t.string :title
       t.text :description
       t.string :location
@@ -15,6 +16,6 @@ class CreateOffers < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
-    add_index :offers, [:user_id, :type]
+    add_index :offers, [:type]
   end
 end

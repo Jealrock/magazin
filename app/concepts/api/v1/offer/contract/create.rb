@@ -8,6 +8,8 @@ module Offer::Contract
 
     property :type
     property :title
+    property :price
+    property :exchange_item
     property :description
     property :location
     property :email
@@ -16,7 +18,7 @@ module Offer::Contract
     validation do
       required(:type).filled
       required(:title).filled
-      required(:description).maybe(min_size?: 10)
+      required(:description).filled(min_size?: 10)
       required(:location).filled
       required(:email).filled
       required(:phone_number).filled
