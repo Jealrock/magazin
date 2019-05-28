@@ -1,10 +1,7 @@
 <template>
   <div class="offer-view">
     <v-container class="pa-0 px-3">
-      <v-layout
-        row
-        wrap
-      >
+      <v-layout row wrap>
         <v-flex xs12>
           <Search />
         </v-flex>
@@ -24,19 +21,13 @@
           :width="10"
         />
       </v-layout>
-      <div
-        v-else
-      >
-        <v-layout
-          row
-          wrap
-          class="mt-5"
-        >
+      <div v-else>
+        <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
-            <p class="mb-0 text-xs-right display-1">{{ this.buildOfferPrice }}</p>
+            <p class="mb-0 text-xs-right display-1">{{ this.offerPrice }}</p>
           </v-flex>
           <v-flex xs12>
             <p>{{ offer.updated_at | moment('calendar') }}</p>
@@ -57,23 +48,13 @@
               class="offer-view__show-phone-button button_blue white--text title text-none font-weight-regular ma-0"
             >
               Показать телефон<br>
-              {{ hidePhoneNumber }}
+              {{ hiddenPhoneNumber }}
             </v-btn>
-            <v-btn
-              v-if="this.user.id === this.offer.user_id"
-              block
-              flat
-              depressed
-              class="ma-0 mt-2"
-            >
+            <v-btn v-if="this.user.id === this.offer.user_id" block flat depressed class="ma-0 mt-2">
               Закрыть объявление
             </v-btn>
           </v-flex>
-          <v-layout
-            row
-            wrap
-            class="mt-3"
-          >
+          <v-layout row wrap class="mt-3">
             <v-flex xs12>
               <p class="mb-0 py-3">
                 <span class="grey--text">Адрес:</span>
@@ -84,6 +65,13 @@
             <v-flex xs12>
               <p class="mb-0 py-3">{{ offer.description }}</p>
               <v-divider />
+            </v-flex>
+            <v-flex xs12>
+              <p class="mb-0 py-3">{{ offer.user.name }}</p>
+              <v-img v-if="offer.user.photo.url" :src="offer.user.photo.url" contain :height="100" alt="photo"/>
+              <!--- TODO: Стас поправь плиз) --->
+              <p v-else>Без фото</p>
+              <p class="mb-0 py-3">Зарегестрирован {{ offer.user.created_at | moment('calendar') }}</p>
             </v-flex>
           </v-layout>
         </v-layout>
@@ -115,7 +103,7 @@ export default {
       user: 'currentUser',
     }),
 
-    buildOfferPrice() {
+    offerPrice() {
       if (this.offer.type === 'CashOffer') return this.offer.price;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
@@ -125,7 +113,7 @@ export default {
       return 'Уточнить';
     },
 
-    hidePhoneNumber() {
+    hiddenPhoneNumber() {
       let replaceCount = this.offer.phone_number.length - 6;
       if (replaceCount < 0) replaceCount = 0;
 
