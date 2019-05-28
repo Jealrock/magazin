@@ -50,6 +50,12 @@ gem 'pundit'
 # automatic scopes
 gem 'has_scope'
 
+# Geolocation solution
+gem 'geocoder'
+
+# File upload
+gem 'carrierwave'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
