@@ -1,43 +1,21 @@
 <template>
   <div id="sign-form-container">
     <v-container>
-      <v-layout
-        row
-        wrap
-        justify-center
-      >
-        <v-flex
-          xs12
-          sm6
-          md5
-          class="elevation-2"
-        >
+      <v-layout row wrap justify-center>
+        <v-flex xs12 sm6 md5 class="elevation-2">
           <h1 class="text-xs-center mt-3">
             Новый пароль
           </h1>
           <v-card class="elevation-0">
             <v-card-text>
-              <v-alert
-                :value="error"
-                type="error"
-                class="mx-0 mb-3"
-                outline
-              >
-                <div v-html="error" />
+              <v-alert :value="error" type="error" class="mx-0 mb-3" outline>
+                <div v-html="error"/>
               </v-alert>
-              <v-alert
-                :value="notice"
-                type="success"
-                class="mx-0 mb-3"
-                outline
-              >
-                <div v-html="notice" />
+              <v-alert :value="notice" type="success" class="mx-0 mb-3" outline>
+                <div v-html="notice"/>
               </v-alert>
               <div>
-                <v-form
-                  ref="form"
-                  v-model="valid"
-                >
+                <v-form ref="form" v-model="valid">
                   <v-text-field
                     v-model="email"
                     v-validate="'required|email'"
@@ -75,14 +53,8 @@
                         Отправить
                       </v-btn>
                     </v-flex>
-                    <v-flex
-                      xs12
-                      mt-4
-                    >
-                      <router-link
-                        to="/sign_in"
-                        class="custom-black--text d-block text-xs-center"
-                      >
+                    <v-flex xs12 mt-4>
+                      <router-link to="/sign_in" class="custom-black--text d-block text-xs-center">
                         Войти
                       </router-link>
                     </v-flex>
