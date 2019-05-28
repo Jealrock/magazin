@@ -6,4 +6,6 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   mount_uploader :photo, PhotoUploader
+
+  has_many :offers
 end
