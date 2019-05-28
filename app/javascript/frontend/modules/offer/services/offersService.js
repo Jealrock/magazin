@@ -22,6 +22,13 @@ class OffersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
+  async close(offer_id) {
+    return axiosInstance
+      .post(`/offers/${offer_id}/close`)
+      .then(resp => resp.data.data.attributes)
+      .catch(error => { throw this.buildErrorMessage(error) });
+  }
+
   buildOffer(params) {
     let builtOffer = params;
     if(params.type === "FreeOffer") {
@@ -36,6 +43,8 @@ class OffersService {
   }
 
   buildErrorMessage(error) {
+    if (error.response.data && error.response.data.error_messsage) return errors.message;
+
     const errors_array = error.response.data && error.response.data.errors;
     if (!errors_array) return 'Unknown error';
 
