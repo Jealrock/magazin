@@ -1,5 +1,8 @@
 const environment = require('./environment');
+const eslint = require('./loaders/eslint');
 const path = require('path');
+
+environment.loaders.append('eslint', eslint);
 const webpackConfig = environment.toWebpackConfig();
 
 webpackConfig.resolve.modules.push('@frontend');

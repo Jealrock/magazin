@@ -21,16 +21,15 @@
               class="ma-0"
               @click="$router.push('/sign_in')"
             >Вход и регистрация</v-btn>
-
-            <v-btn
-              v-else
-              flat
-              small
-              class="ma-0"
-              @click="logout"
-            >
-             Выйти 
-            </v-btn>
+            
+            <div v-else>
+              <v-btn flat small to="/profile" class="ma-0">
+                Профиль  
+              </v-btn>
+              <v-btn flat small class="ma-0" @click="logout">
+               Выйти 
+              </v-btn>
+            </div>
 
             <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>
           </v-layout>
@@ -45,7 +44,7 @@
 
 <script>
   import { mapGetters, mapMutations } from 'vuex'
-  import { authService } from '@frontend/core/services/authService';
+  import { authService } from '@frontend/modules/auth/services/authService';
 
   export default {
     data: () => ({
