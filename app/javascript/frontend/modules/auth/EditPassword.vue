@@ -1,35 +1,18 @@
 <template>
   <div id="sign-form-container">
     <v-container>
-      <v-layout
-        row
-        wrap
-        justify-center
-      >
-        <v-flex
-          xs12
-          sm6
-          md5
-          class="elevation-2"
-        >
+      <v-layout row wrap justify-center>
+        <v-flex xs12 sm6 md5 class="elevation-2">
           <h1 class="text-xs-center mt-3">
             Новый пароль
           </h1>
           <v-card class="elevation-0">
             <v-card-text>
-              <v-alert
-                :value="error"
-                type="error"
-                class="mx-0 mb-3"
-                outline
-              >
+              <v-alert :value="error" type="error" class="mx-0 mb-3" outline>
                 <div v-html="error"/>
               </v-alert>
               <div>
-                <v-form
-                  ref="form"
-                  v-model="valid"
-                >
+                <v-form ref="form" v-model="valid">
                   <v-text-field
                     ref="password"
                     v-model="password"
@@ -57,10 +40,7 @@
                     @click:append="() => (isPasswordConfirmationVisible = !isPasswordConfirmationVisible)"
                     @keyup.enter="submit"
                   />
-                  <v-layout
-                    row
-                    wrap
-                  >
+                  <v-layout row wrap>
                     <v-flex
                       :class=" {
                         'xs6 offset-xs3' : $vuetify.breakpoint.smAndUp,
