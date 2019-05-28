@@ -166,7 +166,7 @@ export default {
       await this.$validator.validateAll();
       if (!this.valid) return;
 
-      offersService.postOffer({
+      offersService.create({
         type: this.type,
         price: this.price,
         exchange_item: this.exchangeItem,

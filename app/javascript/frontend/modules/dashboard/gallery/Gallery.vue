@@ -3,16 +3,8 @@
     <h2 class="gallery__title">
       {{ title }}
     </h2>
-    <v-layout
-      row
-      wrap
-      v-if="items.length"
-    >
-      <v-flex
-        v-for="item in items"
-        :key="item.id"
-        :class="`xs12 sm${columnPart}`"
-      >
+    <v-layout row wrap v-if="items.length">
+      <v-flex v-for="item in items" :key="item.id" :class="`xs12 mx-1 sm${columnPart}`">
         <GalleryItem :item="item" />
       </v-flex>
     </v-layout>

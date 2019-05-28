@@ -126,7 +126,9 @@ export default {
     },
 
     hidePhoneNumber() {
-      const replaceCount = this.offer.phone_number.length - 6;
+      let replaceCount = this.offer.phone_number.length - 6;
+      if (replaceCount < 0) replaceCount = 0;
+
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
