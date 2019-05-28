@@ -1,6 +1,9 @@
 const state = {
   offers: [],
-  offer: {}
+  offer: {
+    id: null,
+  },
+  isOfferLoaded: false,
 };
 
 const getters = {
@@ -16,12 +19,17 @@ const getters = {
 
   getOffer(state) {
     return state.offer;
+  },
+
+  isOfferLoaded(state) {
+    return state.isOfferLoaded;
   }
 };
 
 const mutations = {
   setOffer(state, offer) {
     state.offer = offer;
+    state.isOfferLoaded = true;
   }
 }
 

@@ -10,16 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_27_134320) do
+ActiveRecord::Schema.define(version: 2019_05_19_190415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "offers", force: :cascade do |t|
     t.string "type", null: false
-    t.integer "user_id"
+    t.bigint "user_id"
     t.float "price"
     t.string "exchange_item"
+    t.boolean "closed", default: false
     t.string "title"
     t.text "description"
     t.string "location"
@@ -27,8 +28,8 @@ ActiveRecord::Schema.define(version: 2019_05_27_134320) do
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "closed", default: false
-    t.index ["user_id", "type"], name: "index_offers_on_user_id_and_type"
+    t.index ["type"], name: "index_offers_on_type"
+    t.index ["user_id"], name: "index_offers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|

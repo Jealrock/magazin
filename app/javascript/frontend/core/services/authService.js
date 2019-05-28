@@ -35,8 +35,8 @@ class AuthService {
     const errors_array = error.response.data && error.response.data.errors;
     if (!errors_array) return 'Unknown error';
 
-    return (errors_array.full_messages && errors_array.full_messages.join("\n")) ||
-           errors_array.join("\n");
+    return (errors_array.full_messages && errors_array.full_messages.join("<br>")) ||
+           errors_array.join("<br>");
   }
 }
 
