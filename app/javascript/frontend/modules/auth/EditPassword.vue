@@ -23,7 +23,7 @@
                 class="mx-0 mb-3"
                 outline
               >
-                <div v-html="error" />
+                <div v-html="error"/>
               </v-alert>
               <div>
                 <v-form
