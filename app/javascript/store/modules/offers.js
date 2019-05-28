@@ -1,9 +1,8 @@
 const state = {
   offers: [],
-  offer: {
-    id: null,
-  },
-  isOfferLoaded: false,
+  offer: {},
+  paginationData: {},
+  isOfferLoaded: false
 };
 
 const getters = {
@@ -11,14 +10,12 @@ const getters = {
     return state.offers;
   },
 
-  offerByID(state) {
-    return function (id) {
-      return state.offers.find(offer => offer.id === id);
-    };
-  },
-
   getOffer(state) {
     return state.offer;
+  },
+
+  offersPaginationData(state) {
+    return state.paginationData;
   },
 
   isOfferLoaded(state) {
@@ -30,6 +27,11 @@ const mutations = {
   setOffer(state, offer) {
     state.offer = offer;
     state.isOfferLoaded = true;
+  },
+
+  setAllOffers(state, data) {
+    state.offers = data.data.map(offer => offer.attributes);
+    state.paginationData = data.meta.pagination;
   }
 }
 

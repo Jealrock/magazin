@@ -1,13 +1,22 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
+const DEFAULT_PER_PAGE = 25;
+
 class OffersService {
-  async postOffer(params) {
+  async all(params) {
+    return axiosInstance
+      .get('/offers', { params: { ...params, per_page: DEFAULT_PER_PAGE } })
+      .then(resp => resp.data)
+      .catch(error => { throw this.buildErrorMessage(error) });
+  }
+
+  async create(params) {
     return axiosInstance
       .post('/offers', this.buildOffer(params))
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  async getOffer(offer_id) {
+  async get(offer_id) {
     return axiosInstance
       .get(`/offers/${offer_id}`)
       .catch(error => { throw this.buildErrorMessage(error) });
@@ -37,4 +46,4 @@ class OffersService {
 }
 
 const offersService = new OffersService();
-export { offersService };
+export { offersService, DEFAULT_PER_PAGE };
