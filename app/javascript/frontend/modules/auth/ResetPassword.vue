@@ -25,10 +25,10 @@
                     :error-messages="errors.collect('email')"
                     required
                     @keyup.enter="submit"
+                    hint="Мы отправим вам дальнейшие инструкции"
+                    persistent-hint
+                    class="mb-5"
                   />
-                  <p class="grey--text body-2 font-weight-regular mb-5">
-                    Мы отправим вам дальнейшие инструкции
-                  </p>
                   <v-layout
                     row
                     wrap

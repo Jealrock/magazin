@@ -3,24 +3,20 @@
     <v-container class="pa-0 px-3">
       <v-layout row wrap align-center>
         <v-flex xs6 hidden-sm-and-down>
-          <nav class="nav">
-            <a href="#" class="header__link pl-0">Объявления</a>
-            <a href="#" class="header__link">Магазины</a>
-            <a href="#" class="header__link">Бизнес</a>
-            <a href="#" class="header__link">Помощь</a>
-          </nav>
+          <router-link
+            to="/"
+            class="header__link"
+          >
+            Объявления
+          </router-link>
         </v-flex>
         <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end>
             <v-icon class="grey--text text--lighten-1">favorite</v-icon>
 
-            <v-btn 
-              v-if="!currentUser.uid"
-              flat 
-              small 
-              class="ma-0"
-              @click="$router.push('/sign_in')"
-            >Вход и регистрация</v-btn>
+            <v-btn v-if="!currentUser.uid" flat small class="ma-0" @click="$router.push('/sign_in')">
+              Вход и регистрация
+            </v-btn>
             
             <div v-else>
               <v-btn flat small to="/profile" class="ma-0">
@@ -31,7 +27,9 @@
               </v-btn>
             </div>
 
-            <v-btn depressed small color="info" class="ma-0">Подать объявление</v-btn>
+            <v-btn depressed small color="info" class="ma-0" @click="$router.push('/offer')">
+              Подать объявление
+            </v-btn>
           </v-layout>
         </v-flex>
         <v-flex xs12 hidden-md-and-up>
