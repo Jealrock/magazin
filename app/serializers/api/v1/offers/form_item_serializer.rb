@@ -4,7 +4,14 @@ module Api::V1
       attributes :id, :user_id, :closed, :type, :price, :exchange_item, :title, :description, :location,
                  :email, :phone_number, :created_at, :updated_at
 
-      belongs_to :user, serializer: ::Api::V1::Users::RelationSerializer
+      attribute :user do |object|
+        {
+          city: object.user.city,
+          name: object.user.name,
+          photo: object.user.photo,
+          created_at: object.user.created_at
+        }
+      end
     end
   end
 end
