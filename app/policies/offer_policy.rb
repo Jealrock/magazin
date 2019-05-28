@@ -10,4 +10,8 @@ class OfferPolicy < ApplicationPolicy
   def create?
     @user
   end
+
+  def close?
+    @user && @user.id == @record.user_id
+  end
 end

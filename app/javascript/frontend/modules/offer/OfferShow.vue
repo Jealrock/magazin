@@ -50,9 +50,11 @@
               Показать телефон<br>
               {{ hiddenPhoneNumber }}
             </v-btn>
-            <v-btn v-if="this.user.id === this.offer.user_id" block flat depressed class="ma-0 mt-2">
+            <v-btn v-if="closable" block flat depressed class="ma-0 mt-2" @click="close">
               Закрыть объявление
             </v-btn>
+            <!--- TODO: Stilno nujno --->
+            <h3 v-if="offer.closed">Закрытое обьявление</h3>
           </v-flex>
           <v-layout row wrap class="mt-3">
             <v-flex xs12>
@@ -83,7 +85,9 @@
 <script>
 import Search from '@frontend/modules/dashboard/search/Search';
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+
+import { offersService } from './services/offersService';
 
 export default {
   components: {
@@ -120,7 +124,21 @@ export default {
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
+    
+    closable() {
+      return this.user.id === this.offer.user_id &&
+             !this.offer.closed;
+    }
   },
+
+  methods: {
+    ...mapMutations(['setOffer']),
+
+    close() {
+      offersService.close(this.offer.id)
+        .then(resp => this.setOffer(resp));
+    }
+  }
 };
 </script>
 
