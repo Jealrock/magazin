@@ -36,7 +36,6 @@
               <v-text-field
                 v-if="type === 'CashOffer'"
                 v-model="price"
-                v-validate="'required'"
                 label="Цена"
                 type="text"
                 data-vv-name="price"

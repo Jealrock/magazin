@@ -43,7 +43,7 @@ class OffersService {
   }
 
   buildErrorMessage(error) {
-    if (error.response.data && error.response.data.error_messsage) return errors.message;
+    if (error.response.data && error.response.data.error_message) return error.response.data.error_message;
 
     const errors_array = error.response.data && error.response.data.errors;
     if (!errors_array) return 'Unknown error';
