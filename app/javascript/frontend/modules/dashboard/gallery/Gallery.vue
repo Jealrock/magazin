@@ -4,7 +4,8 @@
       {{ title }}
     </h2>
     <v-layout row wrap v-if="items.length">
-      <v-flex v-for="item in items" :key="item.id" :class="`xs12 px-1 sm${columnPart}`">
+      <v-flex v-for="item in items" :key="item.id"
+        :class="`xs12 px-1 sm${columnPart}`">
         <GalleryItem :item="item" />
       </v-flex>
     </v-layout>
