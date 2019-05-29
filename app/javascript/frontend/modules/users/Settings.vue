@@ -11,6 +11,10 @@
               <div v-html="error"/>
             </v-alert>
 
+            <v-alert :value="success" type="success" class="mx-0 mb-3" outline>
+              <div v-html="success" />
+            </v-alert>
+
             <div>
               <v-flex xs12 px-4 pb-4>
                 <input type="file" id="photo" ref="photo" v-on:change="handlePhotoUpload()"/>
@@ -20,19 +24,19 @@
                     :size="84"
                     :class="photoUrl ? 'white' : 'indigo'">
                     <v-img v-if="photoUrl" :src="photoUrl" alt="photo"/>
-                      <v-icon v-else dark>account_circle</v-icon>
-                      <v-fade-transition>
-                        <v-avatar
-                          v-if="hover"
-                          :size="84"
-                          id="photo-hover"
-                          @click="uploadPhoto()">
-                          <div>
-                            <v-icon class="mt-2"dark>photo_camera</v-icon><br>
-                            <span class="white--text">Edit</span>
-                          </div>
-                        </v-avatar>
-                      </v-fade-transition>
+                    <v-icon v-else dark>account_circle</v-icon>
+                    <v-fade-transition>
+                      <v-avatar
+                        v-if="hover"
+                        :size="84"
+                        id="photo-hover"
+                        @click="uploadPhoto()">
+                        <div>
+                          <v-icon class="mt-2"dark>photo_camera</v-icon><br>
+                          <span class="white--text">Edit</span>
+                        </div>
+                      </v-avatar>
+                    </v-fade-transition>
                   </v-avatar>
                 </v-hover>
               </v-flex>
@@ -84,11 +88,12 @@ export default {
   data: () => ({
     valid: true,
     error: null,
+    success: null,
     email: '',
     name: '',
     city: '',
     photo: null,
-    photoUrl: null
+    photoUrl: null,
   }),
 
   computed: {
@@ -96,6 +101,7 @@ export default {
   },
 
   created() {
+    console.log(this.currentUser);
     this.email = this.currentUser.email;
     this.name = this.currentUser.name;
     this.city = this.currentUser.city;
@@ -123,7 +129,11 @@ export default {
         name: this.name,
         city: this.city,
         photo: this.$refs.photo.files[0] 
-      }).then((user) => this.setCurrentUser(user))
+      })
+        .then((user) => {
+          this.setCurrentUser(user);
+          this.success = "Настройки успешно сохранены";
+        })
         .catch((error) => this.error = error);
     },
   }

@@ -2,33 +2,33 @@
   <div class="dashboard">
     <v-container class="pa-0 px-3">
       <v-layout row wrap>
-        <v-flex sm12>
+        <v-flex xs12>
           <nav class="nav">
             <a
               href="#"
-              class="header__link"
+              class="link link_blue body-1 py-2 pr-3"
             >Авто</a>
             <a
               href="#"
-              class="header__link"
+              class="link link_blue body-1 py-2 pr-3"
             >Недвижимость</a>
             <a
               href="#"
-              class="header__link"
+              class="link link_blue body-1 py-2 pr-3"
             >Работа</a>
             <a
               href="#"
-              class="header__link"
+              class="link link_blue body-1 py-2 pr-3"
             >Услуги</a>
             <a
               href="#"
-              class="header__link"
+              class="link link_blue body-1 py-2 pr-3"
             >ещё...</a>
           </nav>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-flex sm12>
+        <v-flex xs12>
           <Search />
         </v-flex>
       </v-layout>
@@ -47,7 +47,7 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-flex sm12>
+        <v-flex xs12>
           <Gallery
             title="Обьявления"
             :items="this.allOffers"
@@ -55,7 +55,7 @@
           />
         </v-flex>
 
-        <v-flex sm12>
+        <v-flex xs12>
           <v-pagination
             v-if="offersPaginationData.total_count > per_page"
             total-visible="per_page"
@@ -67,7 +67,7 @@
         </v-flex>
       </v-layout>
       <!-- <v-layout row wrap> -->
-      <!--   <v-flex sm12> -->
+      <!--   <v-flex xs12> -->
       <!--     <Gallery title="Новые объявления" /> -->
       <!--   </v-flex> -->
       <!-- </v-layout> -->
@@ -106,7 +106,7 @@ export default {
           this.setAllOffers(response);
         })
         .catch((error) => {
-          return this.$router.push('/'); 
+          return this.$router.push('/');
         });
     },
 
