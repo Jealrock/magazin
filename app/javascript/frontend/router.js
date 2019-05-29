@@ -25,6 +25,6 @@ export default new Router({
     OFFER_NEW_ROUTER,
     OFFER_SHOW_ROUTER,
     PROFILE_ROUTER,
-    PROFILE_SETTINGS_ROUTER
-  ]
+    PROFILE_SETTINGS_ROUTER,
+  ],
 });

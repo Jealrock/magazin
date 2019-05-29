@@ -8,8 +8,6 @@ module Offer::Contract
 
     property :type
     property :title
-    property :price
-    property :exchange_item
     property :description
     property :location
     property :email

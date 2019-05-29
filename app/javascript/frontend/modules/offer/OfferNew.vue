@@ -36,7 +36,6 @@
               <v-text-field
                 v-if="type === 'CashOffer'"
                 v-model="price"
-                v-validate="'required'"
                 label="Цена"
                 type="text"
                 data-vv-name="price"
@@ -166,7 +165,7 @@ export default {
       await this.$validator.validateAll();
       if (!this.valid) return;
 
-      offersService.postOffer({
+      offersService.create({
         type: this.type,
         price: this.price,
         exchange_item: this.exchangeItem,

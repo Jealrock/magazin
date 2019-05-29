@@ -1,10 +1,7 @@
 <template>
   <div class="offer-view">
     <v-container class="pa-0 px-3">
-      <v-layout
-        row
-        wrap
-      >
+      <v-layout row wrap>
         <v-flex xs12>
           <Search />
         </v-flex>
@@ -24,19 +21,13 @@
           :width="10"
         />
       </v-layout>
-      <div
-        v-else
-      >
-        <v-layout
-          row
-          wrap
-          class="mt-5"
-        >
+      <div v-else>
+        <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
-            <p class="mb-0 text-xs-right display-1">{{ this.buildOfferPrice }}</p>
+            <p class="mb-0 text-xs-right display-1">{{ this.offerPrice }}</p>
           </v-flex>
           <v-flex xs12>
             <p>{{ offer.updated_at | moment('calendar') }}</p>
@@ -49,31 +40,25 @@
             </div>
           </v-flex>
           <v-flex xs12 sm4 class="pl-4">
-            <v-btn
-              block
-              large
-              flat
-              depressed
-              class="offer-view__show-phone-button button_blue white--text title text-none font-weight-regular ma-0"
-            >
-              Показать телефон<br>
-              {{ hidePhoneNumber }}
-            </v-btn>
-            <v-btn
-              v-if="this.user.id === this.offer.user_id"
-              block
-              flat
-              depressed
-              class="ma-0 mt-2"
-            >
-              Закрыть объявление
-            </v-btn>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <p>{{ phoneNumber }}</p>
+                <v-btn block flat depressed class="blue white--text ma-0 mt-2" @click="phoneVisible = !phoneVisible">
+                  {{ phoneVisible ? 'Скрыть телефон' : 'Показать телефон' }}
+                </v-btn>
+              </v-flex>
+
+              <v-flex xs12>
+                <v-btn v-if="closable" block flat depressed class="ma-0 mt-2" @click="close">
+                  Закрыть объявление
+                </v-btn>
+                <!--- TODO: Stilno nujno --->
+                <h3 v-if="offer.closed">Закрытое обьявление</h3>
+              </v-flex>
+            </v-layout>
           </v-flex>
-          <v-layout
-            row
-            wrap
-            class="mt-3"
-          >
+          
+          <v-layout row wrap class="mt-3">
             <v-flex xs12>
               <p class="mb-0 py-3">
                 <span class="grey--text">Адрес:</span>
@@ -85,6 +70,13 @@
               <p class="mb-0 py-3">{{ offer.description }}</p>
               <v-divider />
             </v-flex>
+            <v-flex xs12>
+              <p class="mb-0 py-3">{{ offer.user.name }}</p>
+              <v-img v-if="offer.user.photo.url" :src="offer.user.photo.url" contain :height="100" alt="photo"/>
+              <!--- TODO: Стас поправь плиз) --->
+              <p v-else>Без фото</p>
+              <p class="mb-0 py-3">Зарегестрирован {{ offer.user.created_at | moment('calendar') }}</p>
+            </v-flex>
           </v-layout>
         </v-layout>
       </div>
@@ -95,7 +87,9 @@
 <script>
 import Search from '@frontend/modules/dashboard/search/Search';
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+
+import { offersService } from './services/offersService';
 
 export default {
   components: {
@@ -104,7 +98,7 @@ export default {
 
   data() {
     return {
-      userPhone: null,
+      phoneVisible: false
     };
   },
 
@@ -115,8 +109,8 @@ export default {
       user: 'currentUser',
     }),
 
-    buildOfferPrice() {
-      if (this.offer.type === 'CashOffer') return this.offer.price;
+    offerPrice() {
+      if (this.offer.type === 'CashOffer') return this.offer.price + ' руб.';
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
@@ -125,12 +119,29 @@ export default {
       return 'Уточнить';
     },
 
-    hidePhoneNumber() {
-      const replaceCount = this.offer.phone_number.length - 6;
+    phoneNumber() {
+      if (this.phoneVisible)  return this.offer.phone_number;
+
+      let replaceCount = this.offer.phone_number.length - 6;
+      if (replaceCount < 0) replaceCount = 0;
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
+    
+    closable() {
+      return this.user.id === this.offer.user_id &&
+             !this.offer.closed;
+    }
   },
+
+  methods: {
+    ...mapMutations(['setOffer']),
+
+    close() {
+      offersService.close(this.offer.id)
+        .then(resp => this.setOffer(resp));
+    }
+  }
 };
 </script>
 
@@ -147,9 +158,5 @@ export default {
 
 .offer-view__loader {
   height: 400px;
-}
-
-.offer-view__show-phone-button {
-  height: 64px;
 }
 </style>

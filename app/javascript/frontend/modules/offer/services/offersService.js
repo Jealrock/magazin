@@ -1,15 +1,31 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
+const DEFAULT_PER_PAGE = 25;
+
 class OffersService {
-  async postOffer(params) {
+  async all(params) {
+    return axiosInstance
+      .get('/offers', { params: { ...params, per_page: DEFAULT_PER_PAGE } })
+      .then(resp => resp.data)
+      .catch(error => { throw this.buildErrorMessage(error) });
+  }
+
+  async create(params) {
     return axiosInstance
       .post('/offers', this.buildOffer(params))
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  async getOffer(offer_id) {
+  async get(offer_id) {
     return axiosInstance
       .get(`/offers/${offer_id}`)
+      .catch(error => { throw this.buildErrorMessage(error) });
+  }
+
+  async close(offer_id) {
+    return axiosInstance
+      .post(`/offers/${offer_id}/close`)
+      .then(resp => resp.data.data.attributes)
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
@@ -27,6 +43,8 @@ class OffersService {
   }
 
   buildErrorMessage(error) {
+    if (error.response.data && error.response.data.error_message) return error.response.data.error_message;
+
     const errors_array = error.response.data && error.response.data.errors;
     if (!errors_array) return 'Unknown error';
 
@@ -37,4 +55,4 @@ class OffersService {
 }
 
 const offersService = new OffersService();
-export { offersService };
+export { offersService, DEFAULT_PER_PAGE };

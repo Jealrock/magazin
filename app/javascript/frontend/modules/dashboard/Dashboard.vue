@@ -49,23 +49,36 @@
       <v-layout row wrap>
         <v-flex sm12>
           <Gallery
-            title="VIP-объявления"
+            title="Обьявления"
             :items="this.allOffers"
-            :items-in-row="3"
+            :items-in-row="4"
           />
         </v-flex>
-      </v-layout>
-      <v-layout row wrap>
+
         <v-flex sm12>
-          <Gallery title="Новые объявления" />
+          <v-pagination
+            v-if="offersPaginationData.total_count > per_page"
+            total-visible="per_page"
+            circle
+            :value="offersPaginationData.page"
+            :length="offersPaginationData.pages"
+            @input="changePage"
+          ></v-pagination>
         </v-flex>
       </v-layout>
+      <!-- <v-layout row wrap> -->
+      <!--   <v-flex sm12> -->
+      <!--     <Gallery title="Новые объявления" /> -->
+      <!--   </v-flex> -->
+      <!-- </v-layout> -->
     </v-container>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+
+import { DEFAULT_PER_PAGE, offersService } from '@frontend/modules/offer/services/offersService';
 
 import CategoriesList from './categories-list/CategoriesList';
 import Search from './search/Search';
@@ -75,11 +88,43 @@ export default {
   components: {
     CategoriesList, Search, Gallery,
   },
+
+  data: () => ({
+    per_page: DEFAULT_PER_PAGE
+  }),
+
   computed: {
-    ...mapGetters([
-      'allOffers',
-    ]),
+    ...mapGetters(['allOffers', 'offersPaginationData'])
   },
+
+  methods: {
+    ...mapMutations(['setAllOffers']),
+
+    loadOffers() {
+      offersService.all(this.$route.query)
+        .then((response) => {
+          this.setAllOffers(response);
+        })
+        .catch((error) => {
+          return this.$router.push('/'); 
+        });
+    },
+
+    changePage(page) {
+      this.$router.push({
+        path: '/',
+        query: { page }
+      })
+    },
+  },
+
+  created() {
+    this.loadOffers()
+  },
+
+  watch: {
+    '$route': 'loadOffers'
+  }
 };
 </script>
 
