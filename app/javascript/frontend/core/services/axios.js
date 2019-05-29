@@ -1,6 +1,5 @@
 import axios from 'axios'
 import store from '@/store/store'
-import router from '@frontend/router'
 import url from 'url'
 
 const API_URL = '/api/v1'
@@ -28,7 +27,7 @@ axiosInstance.interceptors.request.use(config => {
 axiosInstance.interceptors.response.use(null, error => {
   if (isAuthError(error)) {
     store.commit('clearUsersState')
-    router.push('/sign')
+    window.location.pathname = '/sign_in';
     return Promise.reject(error)
   } else {
     return Promise.reject(error);
