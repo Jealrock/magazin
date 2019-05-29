@@ -51,7 +51,7 @@
           <Gallery
             title="Обьявления"
             :items="this.allOffers"
-            :items-in-row="3"
+            :items-in-row="4"
           />
         </v-flex>
 

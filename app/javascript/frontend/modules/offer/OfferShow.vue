@@ -40,19 +40,24 @@
             </div>
           </v-flex>
           <v-flex xs12 sm4 class="pl-4">
-            <v-btn
-              block large flat depressed
-              class="offer-view__show-phone-button button_blue white--text title text-none font-weight-regular ma-0"
-            >
-              Показать телефон<br>
-              {{ hiddenPhoneNumber }}
-            </v-btn>
-            <v-btn v-if="closable" block flat depressed class="ma-0 mt-2" @click="close">
-              Закрыть объявление
-            </v-btn>
-            <!--- TODO: Stilno nujno --->
-            <h3 v-if="offer.closed">Закрытое обьявление</h3>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <p>{{ phoneNumber }}</p>
+                <v-btn block flat depressed class="blue white--text ma-0 mt-2" @click="phoneVisible = !phoneVisible">
+                  {{ phoneVisible ? 'Скрыть телефон' : 'Показать телефон' }}
+                </v-btn>
+              </v-flex>
+
+              <v-flex xs12>
+                <v-btn v-if="closable" block flat depressed class="ma-0 mt-2" @click="close">
+                  Закрыть объявление
+                </v-btn>
+                <!--- TODO: Stilno nujno --->
+                <h3 v-if="offer.closed">Закрытое обьявление</h3>
+              </v-flex>
+            </v-layout>
           </v-flex>
+          
           <v-layout row wrap class="mt-3">
             <v-flex xs12>
               <p class="mb-0 py-3">
@@ -93,7 +98,7 @@ export default {
 
   data() {
     return {
-      userPhone: null,
+      phoneVisible: false
     };
   },
 
@@ -105,7 +110,7 @@ export default {
     }),
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer') return this.offer.price;
+      if (this.offer.type === 'CashOffer') return this.offer.price + ' руб.';
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
@@ -114,10 +119,11 @@ export default {
       return 'Уточнить';
     },
 
-    hiddenPhoneNumber() {
+    phoneNumber() {
+      if (this.phoneVisible)  return this.offer.phone_number;
+
       let replaceCount = this.offer.phone_number.length - 6;
       if (replaceCount < 0) replaceCount = 0;
-
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
@@ -152,9 +158,5 @@ export default {
 
 .offer-view__loader {
   height: 400px;
-}
-
-.offer-view__show-phone-button {
-  height: 64px;
 }
 </style>
