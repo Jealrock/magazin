@@ -3,7 +3,7 @@ require 'reform/form/dry'
 require 'dry-validation'
 
 module CashOffer::Contract
-  class Create < Offer::Contract::Create
+  class Create < ::Offer::Contract::Create
     property :price
 
     validation do
