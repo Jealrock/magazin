@@ -41,10 +41,7 @@
           </v-flex>
           <v-flex xs12 sm4 class="pl-4">
             <v-btn
-              block
-              large
-              flat
-              depressed
+              block large flat depressed
               class="offer-view__show-phone-button button_blue white--text title text-none font-weight-regular ma-0"
             >
               Показать телефон<br>
