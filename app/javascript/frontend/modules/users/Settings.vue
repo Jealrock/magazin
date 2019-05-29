@@ -101,7 +101,6 @@ export default {
   },
 
   created() {
-    console.log(this.currentUser);
     this.email = this.currentUser.email;
     this.name = this.currentUser.name;
     this.city = this.currentUser.city;
