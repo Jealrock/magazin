@@ -5,7 +5,7 @@ module Api::V1::Offer
     failure :authorization_error!
 
     def model!(options, *)
-      options['model'] = Offer.open
+      options['model'] = Offer.opened
     end
   end
 end
