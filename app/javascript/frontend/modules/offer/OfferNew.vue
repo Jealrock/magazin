@@ -30,7 +30,7 @@
                 label="Вид объявления"
                 data-vv-name="method"
                 :error-messages="errors.collect('method')"
-                outline
+                
                 required
               />
               <v-text-field
@@ -40,7 +40,7 @@
                 type="text"
                 data-vv-name="price"
                 :error-messages="errors.collect('price')"
-                outline
+                
                 required
               />
               <v-text-field
@@ -48,7 +48,7 @@
                 v-model="exchangeItem"
                 label="На что меняете?"
                 type="text"
-                outline
+                
                 hint="Если вы не ещё не определились - оставьте поле пустым"
                 persistent-hint
               />
@@ -59,7 +59,7 @@
                 type="text"
                 data-vv-name="title"
                 :error-messages="errors.collect('title')"
-                outline
+                
                 required
                 hint="Не пишите в названии цену и контактную информацию — для этого есть отдельные поля"
                 persistent-hint
@@ -70,7 +70,7 @@
                 label="Описание объявления"
                 data-vv-name="description"
                 :error-messages="errors.collect('description')"
-                outline
+                
                 required
                 hint="Не указывайте в описании телефон и e-mail — для этого есть отдельные поля"
                 persistent-hint
@@ -79,7 +79,7 @@
               <v-text-field
                 v-model="location"
                 label="Адрес"
-                outline
+                
               />
               <v-text-field
                 v-model="email"
@@ -88,7 +88,7 @@
                 type="email"
                 data-vv-name="email"
                 :error-messages="errors.collect('email')"
-                outline
+                
                 required
               />
               <v-text-field
@@ -99,7 +99,7 @@
                 data-vv-name="phone number"
                 :error-messages="errors.collect('phone number')"
                 @keyup.enter="submit"
-                outline
+                
                 required
               />
               <v-btn

@@ -3,6 +3,30 @@
     <v-container class="pa-0 px-3">
       <v-layout row wrap>
         <v-flex xs12>
+          <nav class="nav">
+            <a
+              href="#"
+              class="link link_blue body-1 py-2 pr-3"
+            >Авто</a>
+            <a
+              href="#"
+              class="link link_blue body-1 py-2 pr-3"
+            >Недвижимость</a>
+            <a
+              href="#"
+              class="link link_blue body-1 py-2 pr-3"
+            >Работа</a>
+            <a
+              href="#"
+              class="link link_blue body-1 py-2 pr-3"
+            >Услуги</a>
+            <a
+              href="#"
+              class="link link_blue body-1 py-2 pr-3"
+            >ещё...</a>
+          </nav>
+        </v-flex>
+        <v-flex xs12>
           <Search />
         </v-flex>
       </v-layout>
@@ -27,57 +51,66 @@
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
-            <p class="mb-0 text-xs-right display-1">{{ this.offerPrice }}</p>
+            <p class="mb-0 text-xs-left text-sm-right"
+              :class="{
+                'display-1' : $vuetify.breakpoint.smAndUp
+              }">
+              {{ this.offerPrice }}</p>
           </v-flex>
           <v-flex xs12>
-            <p>{{ offer.updated_at | moment('calendar') }}</p>
+            <p class="body-1 mb-0">
+              Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
+              <span v-if="offer.closed"
+                class="error--text ml-4">
+                Объявление было закрыто владельцем
+              </span>
+            </p>
           </v-flex>
         </v-layout>
-        <v-layout row wrap>
+        <v-layout row wrap
+          class="mt-3">
           <v-flex xs12 sm8>
             <div class="offer-view__image-placeholder grey lighten-2 d-flex align-center">
               <p class="grey--text text-xs-center title">Без фото</p>
             </div>
           </v-flex>
-          <v-flex xs12 sm4 class="pl-4">
-            <v-layout row wrap>
-              <v-flex xs12>
-                <p>{{ phoneNumber }}</p>
-                <v-btn block flat depressed class="blue white--text ma-0 mt-2" @click="phoneVisible = !phoneVisible">
-                  {{ phoneVisible ? 'Скрыть телефон' : 'Показать телефон' }}
-                </v-btn>
-              </v-flex>
-
-              <v-flex xs12>
-                <v-btn v-if="closable" block flat depressed class="ma-0 mt-2" @click="close">
-                  Закрыть объявление
-                </v-btn>
-                <!--- TODO: Stilno nujno --->
-                <h3 v-if="offer.closed">Закрытое обьявление</h3>
-              </v-flex>
-            </v-layout>
+          <v-flex xs12 sm4 :class="{ 
+              'pl-4' : $vuetify.breakpoint.smAndUp,
+              'pt-4' : $vuetify.breakpoint.xsOnly
+            }">
+            <v-btn block flat depressed
+              class="offer-view__button-show-phone button_blue ma-0"
+              @click="phoneVisible = !phoneVisible">
+                <p class="white--text text-none ma-0">
+                  <span class="title font-weight-regular">{{ phoneVisible ? 'Скрыть телефон' : 'Показать телефон' }}</span><br>
+                  <span class="body-1">{{ phoneNumber }}</span>
+                </p>
+            </v-btn>
+            <v-btn v-if="closable"
+              block flat depressed
+              color="error"
+              class="ma-0 mt-2"
+              @click="close">
+              Закрыть объявление
+            </v-btn>
+            <v-img v-if="offer.user.photo.url" :src="offer.user.photo.url" contain :height="100" alt="photo"/>
+            <p v-else>Без фото</p>
+            <p v-if="offer.user.name" class="mb-0 pt-3 text-xs-center">{{ offer.user.name }}</p>
+            <p v-else class="mb-0 py-3 text-xs-center">Имя не указано</p>
+            <p class="mb-0 py-3 text-xs-center">Зарегестрирован {{ offer.user.created_at | moment('calendar').toLowerCase() }}</p>
           </v-flex>
-          
-          <v-layout row wrap class="mt-3">
-            <v-flex xs12>
-              <p class="mb-0 py-3">
-                <span class="grey--text">Адрес:</span>
-                {{ offer.location }}
-              </p>
-              <v-divider />
-            </v-flex>
-            <v-flex xs12>
-              <p class="mb-0 py-3">{{ offer.description }}</p>
-              <v-divider />
-            </v-flex>
-            <v-flex xs12>
-              <p class="mb-0 py-3">{{ offer.user.name }}</p>
-              <v-img v-if="offer.user.photo.url" :src="offer.user.photo.url" contain :height="100" alt="photo"/>
-              <!--- TODO: Стас поправь плиз) --->
-              <p v-else>Без фото</p>
-              <p class="mb-0 py-3">Зарегестрирован {{ offer.user.created_at | moment('calendar') }}</p>
-            </v-flex>
-          </v-layout>
+        </v-layout>
+        <v-layout row wrap class="mt-3">
+          <v-flex xs12>
+            <p class="mb-0 py-3">
+              <span class="grey--text">Адрес:</span>
+              {{ offer.location }}
+            </p>
+            <v-divider />
+          </v-flex>
+          <v-flex xs12>
+            <p class="mb-0 py-3">{{ offer.description }}</p>
+          </v-flex>
         </v-layout>
       </div>
     </v-container>
@@ -122,8 +155,7 @@ export default {
     phoneNumber() {
       if (this.phoneVisible)  return this.offer.phone_number;
 
-      let replaceCount = this.offer.phone_number.length - 6;
-      if (replaceCount < 0) replaceCount = 0;
+      let replaceCount = Math.round(this.offer.phone_number.length * 0.6);
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
@@ -158,5 +190,9 @@ export default {
 
 .offer-view__loader {
   height: 400px;
+}
+
+.offer-view__button-show-phone {
+  height: 64px;
 }
 </style>

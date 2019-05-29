@@ -118,7 +118,6 @@ export default {
       await this.$validator.validateAll();
       if (!this.valid) return;
     
-      console.log(this.$route);
       authService.updatePassword({
         password: this.password,
         password_confirmation: this.password_confirmation
