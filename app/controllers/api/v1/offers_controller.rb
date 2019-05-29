@@ -1,4 +1,6 @@
 module Api::V1
+  require_dependency Rails.root.join('app', 'concepts', 'api', 'v1', 'offer', 'contract', 'create')
+
   class OffersController < ApiController
     include Pundit
     before_action :authenticate_user!, except: [:index, :show]
