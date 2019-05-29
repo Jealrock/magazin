@@ -32,5 +32,8 @@ module Magazin
     config.active_job.queue_adapter = :sidekiq
     I18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.{rb,yml}')]
     I18n.default_locale = :ru
+    
+    # autoload trailblazer
+    config.autoload_paths << Rails.root.join('app', 'concepts')
   end
 end
