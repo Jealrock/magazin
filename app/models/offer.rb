@@ -1,7 +1,7 @@
 class Offer < ApplicationRecord
   belongs_to :user
 
-  scope :open, -> { where(closed: false) }
+  scope :opened, -> { where(closed: false) }
 
   def close
     self.closed = true
