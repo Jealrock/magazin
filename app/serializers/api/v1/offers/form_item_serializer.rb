@@ -1,8 +1,12 @@
 module Api::V1
   module Offers
     class FormItemSerializer < Api::V1::ApplicationSerializer
-      attributes :id, :user_id, :closed, :type, :price, :exchange_item, :title, :description, :location,
-                 :email, :phone_number, :created_at, :updated_at
+      attributes :id, :user_id, :closed, :type, :price, :exchange_item, :title, :description,
+                 :email, :phone_number, :created_at, :updated_at, :location
+
+      attribute :photos do |object|
+        object.photos.map(&:file)
+      end
 
       attribute :user do |object|
         {
