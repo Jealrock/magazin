@@ -12,7 +12,7 @@ class OffersService {
 
   async create(params) {
     return axiosInstance
-      .post('/offers', this.buildOffer(params))
+      .post('/offers', this.buildOfferFormData(params), { headers: { 'Content-Type': 'multipart/form-data' }})
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
@@ -29,17 +29,26 @@ class OffersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  buildOffer(params) {
-    let builtOffer = params;
+  buildOfferFormData(params) {
+    let formData = new FormData();
+    Object.keys(params).forEach(key => {
+      if (Array.isArray(params[key])) {
+        params[key].forEach(item => formData.append(key + '[]', item));
+      } else {
+        formData.append(key, params[key])
+      }
+    });
+
     if(params.type === "FreeOffer") {
-      builtOffer.price = null;
-      builtOffer.exchange_item = null;
+      formData.set('price', null);
+      formData.set('exchange_item', null);
     }
     else if (params.type === "ExchangeOffer")
-      builtOffer.price = null;
+      formData.set('price', null);
     else if (params.type === "CashOffer")
-      builtOffer.exchange_item = null;
-    return builtOffer;
+      formData.set('exchange_item', null);
+
+    return formData;
   }
 
   buildErrorMessage(error) {

@@ -4,7 +4,7 @@
       :to="`/offer/${item.id}`">
       <v-card class="elevation-0">
         <v-img
-          :src="item.coverImageUrl"
+          :src="item.photos[0] && item.photos[0].url"
           alt="photo"
           :class="'indigo'"
           aspect-ratio="1.5"

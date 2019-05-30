@@ -71,7 +71,8 @@
           class="mt-3">
           <v-flex xs12 sm8>
             <div class="offer-view__image-placeholder grey lighten-2 d-flex align-center">
-              <p class="grey--text text-xs-center title">Без фото</p>
+              <v-img v-if="offer.photos[0]" :src="offer.photos[0].url" aspect-ratio="1.5"/>
+              <p v-else class="grey--text text-xs-center title">Без фото</p>
             </div>
           </v-flex>
           <v-flex xs12 sm4 :class="{ 
