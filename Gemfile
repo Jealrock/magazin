@@ -34,7 +34,7 @@ gem 'dry-validation', '0.11.1'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
+gem 'webpacker', '~> 3.5.5'
 
 # Background jobs
 gem 'sidekiq'

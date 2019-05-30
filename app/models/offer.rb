@@ -1,4 +1,5 @@
 class Offer < ApplicationRecord
+  has_many :photos
   belongs_to :user
 
   scope :opened, -> { where(closed: false) }
