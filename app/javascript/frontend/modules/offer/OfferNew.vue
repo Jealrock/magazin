@@ -17,20 +17,23 @@
           >
             <div v-html="error" />
           </v-alert>
+
           <div>
             <v-form
               ref="form"
               v-model="valid"
             >
               <h4 class="title font-weight-bold black--text">Параметры</h4>
+
+              <MultiplePhotoUpload @update="onPhotosUpdated"/>
+
               <v-select
-                v-model="type"
+                v-model="type" 
                 v-validate="'required'"
                 :items="types"
                 label="Вид объявления"
                 data-vv-name="method"
                 :error-messages="errors.collect('method')"
-                
                 required
               />
               <v-text-field
@@ -118,12 +121,17 @@
 </template>
 
 <script>
+import MultiplePhotoUpload from './form/MultiplePhotoUpload';
 import { mapGetters, mapMutations } from 'vuex';
 import { offersService } from './services/offersService';
 
 export default {
   $_veeValidate: {
     validator: 'new',
+  },
+
+  components: {
+    MultiplePhotoUpload,
   },
 
   data: () => ({
@@ -140,6 +148,7 @@ export default {
     }],
 
     type: 'CashOffer',
+    photos: [],
     title: '',
     description: '',
     price: '',
@@ -161,12 +170,17 @@ export default {
       'setOffer',
     ]),
 
+    onPhotosUpdated(photos) {
+      this.photos = photos;
+    },
+
     async submit() {
       await this.$validator.validateAll();
       if (!this.valid) return;
 
       offersService.create({
         type: this.type,
+        photos: this.photos,
         price: this.price,
         exchange_item: this.exchangeItem,
         title: this.title,
