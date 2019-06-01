@@ -133,11 +133,3 @@ export default {
   color: #0091d9;
 }
 </style>
-
-<style scoped>
-@media only screen and (min-width: 1264px) {
-  .container {
-      max-width: 1000px;
-  }
-}
-</style>

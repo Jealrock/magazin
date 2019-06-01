@@ -1,7 +1,8 @@
 <template>
   <v-container>
     <v-layout row wrap justify-center>
-      <v-flex xs12 sm6 md5 class="elevation-2">
+      <v-flex xs12 sm8 md6 lg5
+        :class="{ 'elevation-2' : $vuetify.breakpoint.smAndUp }">
         <h1 class="text-xs-center mt-3">
           Настройки
         </h1>
@@ -16,30 +17,31 @@
             </v-alert>
 
             <div>
-              <v-flex xs12 px-4 pb-4>
+              <v-layout row wrap justify-center
+                class="pt-3 pb-4">
                 <input type="file" id="photo" ref="photo" v-on:change="handlePhotoUpload()"/>
                 <v-hover>
                   <v-avatar
                     slot-scope="{ hover }"
-                    :size="84"
-                    :class="photoUrl ? 'white' : 'indigo'">
+                    :size="100"
+                    :class="photoUrl ? 'white' : 'info'">
                     <v-img v-if="photoUrl" :src="photoUrl" alt="photo"/>
                     <v-icon v-else dark>account_circle</v-icon>
                     <v-fade-transition>
                       <v-avatar
                         v-if="hover"
-                        :size="84"
                         id="photo-hover"
+                        :size="100"
                         @click="uploadPhoto()">
                         <div>
-                          <v-icon class="mt-2"dark>photo_camera</v-icon><br>
+                          <v-icon class="mt-2" dark>photo_camera</v-icon><br>
                           <span class="white--text">Edit</span>
                         </div>
                       </v-avatar>
                     </v-fade-transition>
                   </v-avatar>
                 </v-hover>
-              </v-flex>
+              </v-layout>
               <v-form ref="form" v-model="valid">
                 <v-text-field
                   v-model="email"
@@ -51,19 +53,29 @@
                   required
                   @keyup.enter="submit"
                 />
-                <v-text-field v-model="name" label="Имя" type="text" data-vv-name="name" @keyup.enter="submit"/>
-                <v-text-field v-model="city" label="Город" type="text" data-vv-name="city" @keyup.enter="submit"/>
+                <v-text-field v-model="name" label="Имя" type="text" @keyup.enter="submit"/>
+                <v-text-field v-model="city" label="Город" type="text" @keyup.enter="submit"/>
+                <v-text-field v-model="phoneNumber" label="Номер телефона" type="text" @keyup.enter="submit"/>
 
-                <v-layout row wrap>
+                <v-layout row wrap
+                  class="mt-5">
                   <v-flex
                     :class=" {
-                    'xs6 offset-xs3' : $vuetify.breakpoint.smAndUp,
-                    'xs12' : $vuetify.breakpoint.xsOnly
-                    } "
-                    >
+                      'xs6 offset-xs3' : $vuetify.breakpoint.smAndUp,
+                      'xs12' : $vuetify.breakpoint.xsOnly
+                    } ">
                     <v-btn class="ma-0" :class=" { 'info' : valid, disabled: !valid }" depressed block large @click="submit">
                       Сохранить
                     </v-btn>
+                  </v-flex>
+                  <v-flex xs12
+                    class="mt-4">
+                    <router-link
+                      to="/profile"
+                      class="custom-black--text d-block text-xs-center"
+                    >
+                      Назад
+                    </router-link>
                   </v-flex>
                 </v-layout>
               </v-form>
@@ -89,9 +101,10 @@ export default {
     valid: true,
     error: null,
     success: null,
-    email: '',
-    name: '',
-    city: '',
+    email: null,
+    name: null,
+    city: null,
+    phoneNumber: null,
     photo: null,
     photoUrl: null,
   }),
@@ -105,6 +118,7 @@ export default {
     this.name = this.currentUser.name;
     this.city = this.currentUser.city;
     this.photoUrl = this.currentUser.photo.url;
+    this.phoneNumber = this.currentUser.phone_number;
   },
 
   methods: {
@@ -122,21 +136,22 @@ export default {
       await this.$validator.validateAll();
       if (!this.valid) return;
 
-      usersService.update({ 
+      usersService.update({
         id: this.currentUser.id,
-        email: this.email, 
+        email: this.email,
         name: this.name,
         city: this.city,
-        photo: this.$refs.photo.files[0] 
+        photo: this.$refs.photo.files[0],
+        phone_number: this.phoneNumber,
       })
         .then((user) => {
           this.setCurrentUser(user);
-          this.success = "Настройки успешно сохранены";
+          this.success = 'Настройки успешно сохранены';
         })
         .catch((error) => this.error = error);
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
