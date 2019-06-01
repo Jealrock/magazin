@@ -10,6 +10,7 @@ module User::Contract
     property :name
     property :city
     property :email
+    property :phone_number
 
     validation do
       required(:email).filled
