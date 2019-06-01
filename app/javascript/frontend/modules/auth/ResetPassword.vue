@@ -2,7 +2,8 @@
   <div id="sign-form-container">
     <v-container>
       <v-layout row wrap justify-center>
-        <v-flex xs12 sm6 md5 class="elevation-2">
+        <v-flex xs12 sm8 md6 lg5 
+            :class=" { 'elevation-2' : $vuetify.breakpoint.smAndUp } ">
           <h1 class="text-xs-center mt-3">
             Новый пароль
           </h1>
@@ -36,7 +37,7 @@
                     <v-flex
                       :class=" {
                         'xs6 offset-xs3' : $vuetify.breakpoint.smAndUp,
-                        'xs12' : $vuetify.breakpoint.xsOnly
+                        'xs12 mt-4' : $vuetify.breakpoint.xsOnly
                       } "
                     >
                       <v-btn

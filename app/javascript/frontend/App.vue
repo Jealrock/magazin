@@ -7,19 +7,13 @@
 </template>
 
 <script>
-const defaultLayout = 'app';
+const DEFAULT_LAYOUT = 'app';
 
 export default {
   computed: {
     layout() {
-      return `${(this.$route.meta.layout || defaultLayout)}-layout`;
+      return `${(this.$route.meta.layout || DEFAULT_LAYOUT)}-layout`;
     },
   },
 };
 </script>
-
-<style scoped>
-.theme--light.application {
-  background: white;
-}
-</style>
