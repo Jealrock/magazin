@@ -21,7 +21,8 @@ module Api::V1::Offer
     end
 
     def build_photos!(_options, model:, params:, **)
-      model.photos = params[:photos].map { |file| Photo.new(file: file) }
+      model.photos = params[:photos].map { |file| Photo.new(file: file) } unless params[:photos].nil?
+
       model
     end
   end
