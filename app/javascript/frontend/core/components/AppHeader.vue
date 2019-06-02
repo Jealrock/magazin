@@ -54,7 +54,6 @@ import { authService } from '@frontend/modules/auth/services/authService';
 export default {
   data: () => ({
     error: null,
-    hover: false,
   }),
 
   computed: {
@@ -97,7 +96,7 @@ export default {
 
 .button {
   &_blue {
-    background: #01aaff;
+    background-color: #01aaff;
   }
 }
 

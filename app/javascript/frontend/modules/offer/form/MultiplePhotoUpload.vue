@@ -26,7 +26,7 @@
                 <v-responsive 
                   v-if="hover"
                   :aspect-ratio="1"
-                  class="photo-upload__remove-photo-button"
+                  class="photo-upload__remove-photo-button cursor_pointer"
                   @click="removePhoto(index)">
                   <div class="d-flex full_height">
                     <v-icon dark x-large>cancel</v-icon>
@@ -41,7 +41,7 @@
             <v-responsive :aspect-ratio="1"
               slot-scope="{ hover }"
               @click = 'uploadPhoto'
-              class="photo-upload__add-photo-button grey lighten-3">
+              class="grey lighten-3 cursor_pointer">
               <div class="d-flex full_height">
                 <v-icon light x-large>add_a_photo</v-icon>
               </div>
@@ -98,21 +98,26 @@ export default {
 };
 </script>
 
+<style>
+.full_height {
+  height: 100%;
+}
+
+.full_width {
+  width: 100%;
+}
+
+.cursor_pointer {
+  cursor: pointer;
+}
+</style>
+
 <style scoped>
 .photo-upload__remove-photo-button {
   position: absolute;
-  cursor: pointer;
   top: 0;
   width: 100%;
   background: rgba(0, 0, 0, .5);
-}
-
-.photo-upload__add-photo-button {
-  cursor: pointer;
-}
-
-.full_height {
-  height: 100%;
 }
 
 input[type="file"] {
