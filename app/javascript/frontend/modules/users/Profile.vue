@@ -1,6 +1,6 @@
 <template>
   <div class="user-profile">
-    <v-container pa-0 px-3>
+    <v-container class="pa-0 px-3">
       <v-layout row wrap
         class="mt-3">
         <v-flex xs12 sm3>
@@ -30,14 +30,6 @@
 .button {
   &_green {
     background: #97cf27;
-  }
-}
-</style>
-
-<style scoped>
-@media only screen and (min-width: 1264px) {
-  .container {
-      max-width: 1000px;
   }
 }
 </style>

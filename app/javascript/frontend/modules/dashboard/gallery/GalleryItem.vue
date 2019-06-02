@@ -6,7 +6,7 @@
         <v-img
           :src="item.photos[0] && item.photos[0].url"
           alt="photo"
-          :class="'indigo'"
+          class="grey lighten-3"
           aspect-ratio="1.5"
         />
         <v-card-title class="px-0">

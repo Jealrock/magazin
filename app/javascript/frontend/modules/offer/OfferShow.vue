@@ -51,7 +51,7 @@
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
-            <p class="mb-0 text-xs-left text-sm-right"
+            <p class="mt-1 mb-0 text-xs-left text-sm-right"
               :class="{
                 'display-1' : $vuetify.breakpoint.smAndUp
               }">
@@ -68,11 +68,19 @@
           </v-flex>
         </v-layout>
         <v-layout row wrap
-          class="mt-3">
+          class="mt-4">
           <v-flex xs12 sm8>
-            <div class="offer-view__image-placeholder grey lighten-2 d-flex align-center">
-              <v-img v-if="offer.photos[0]" :src="offer.photos[0].url" aspect-ratio="1.5"/>
-              <p v-else class="grey--text text-xs-center title">Без фото</p>
+            <v-carousel v-if="offer.photos.length"
+              class="elevation-0"
+              :cycle="false">
+              <v-carousel-item
+                v-for="(item, i) in offer.photos"
+                :key="i"
+                :src="item.url">
+              </v-carousel-item>
+            </v-carousel>
+            <div v-else class="offer-view__image-placeholder grey lighten-3 d-flex align-center">
+              <p class="grey--text text-xs-center title">Без фото</p>
             </div>
           </v-flex>
           <v-flex xs12 sm4 :class="{ 
@@ -90,18 +98,28 @@
             <v-btn v-if="closable"
               block flat depressed
               color="error"
-              class="ma-0 mt-2"
+              class="ma-0 mt-3"
               @click="close">
               Закрыть объявление
             </v-btn>
-            <v-img v-if="offer.user.photo.url" :src="offer.user.photo.url" contain :height="100" alt="photo"/>
-            <p v-else>Без фото</p>
-            <p v-if="offer.user.name" class="mb-0 pt-3 text-xs-center">{{ offer.user.name }}</p>
-            <p v-else class="mb-0 py-3 text-xs-center">Имя не указано</p>
-            <p class="mb-0 py-3 text-xs-center">Зарегестрирован {{ offer.user.created_at | moment('calendar').toLowerCase() }}</p>
+            <v-layout row justify-space-between
+              class="mt-5">
+              <div class="pr-1">
+                <p v-if="offer.user.name" class="mb-0 body-2">{{ offer.user.name }}</p>
+                <p v-else class="mb-0 body-2">Имя не указано</p>
+                <p class="mb-0 caption">Зарегестрирован {{ offer.user.created_at | moment('calendar').toLowerCase() }}</p>
+              </div>
+              <div>
+                <v-avatar :size="60">
+                  <v-img :src="offer.user.photo.url"
+                    class="grey lighten-3"
+                    alt="photo"/>
+                </v-avatar>
+              </div>
+            </v-layout>
           </v-flex>
         </v-layout>
-        <v-layout row wrap class="mt-3">
+        <v-layout row wrap class="mt-5">
           <v-flex xs12>
             <p class="mb-0 py-3">
               <span class="grey--text">Адрес:</span>
@@ -179,12 +197,6 @@ export default {
 </script>
 
 <style scoped>
-@media only screen and (min-width: 1264px) {
-  .container {
-      max-width: 1000px;
-  }
-}
-
 .offer-view__image-placeholder {
   height: 300px;
 }
