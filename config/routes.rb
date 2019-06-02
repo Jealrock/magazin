@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :users, only: %i[update]
+      get 'geolocations/address', to: 'geolocations#address'
+      get 'geolocations/city', to: 'geolocations#city'
+
       resources :offers, only: %i[index show create] do
         member do
           post :close
