@@ -1,6 +1,6 @@
 <template>
   <div class="offer-new">
-    <v-container pa-0 px-3>
+    <v-container class="pa-0 px-3">
       <v-layout row wrap>
         <v-flex xs12>
           <h1 class="title font-weight-regular grey--text my-2">Новое объявление</h1>
@@ -23,9 +23,9 @@
               ref="form"
               v-model="valid"
             >
-              <h4 class="title font-weight-bold black--text">Параметры</h4>
-
-              <MultiplePhotoUpload @update="onPhotosUpdated"/>
+              <h4 class="title font-weight-bold black--text mb-4">
+                Параметры
+              </h4>
 
               <v-select
                 v-model="type" 
@@ -39,19 +39,19 @@
               <v-text-field
                 v-if="type === 'CashOffer'"
                 v-model="price"
+                v-validate="'required'"
                 label="Цена"
                 type="text"
                 data-vv-name="price"
                 :error-messages="errors.collect('price')"
-                
                 required
               />
               <v-text-field
                 v-if="type === 'ExchangeOffer'"
                 v-model="exchangeItem"
+                v-validate="'required'"
                 label="На что меняете?"
                 type="text"
-                
                 hint="Если вы не ещё не определились - оставьте поле пустым"
                 persistent-hint
               />
@@ -62,7 +62,7 @@
                 type="text"
                 data-vv-name="title"
                 :error-messages="errors.collect('title')"
-                
+                @keyup.enter="submit"
                 required
                 hint="Не пишите в названии цену и контактную информацию — для этого есть отдельные поля"
                 persistent-hint
@@ -73,25 +73,25 @@
                 label="Описание объявления"
                 data-vv-name="description"
                 :error-messages="errors.collect('description')"
-                
+                @keyup.enter="submit"
                 required
                 hint="Не указывайте в описании телефон и e-mail — для этого есть отдельные поля"
                 persistent-hint
               />
-              <h4 class="title font-weight-bold black--text mt-4">Контактная информация</h4>
+
+              <MultiplePhotoUpload @update="onPhotosUpdated" :max="10"/>
+
+              <h4 class="title font-weight-bold black--text mt-4 mb-4">
+                Контактная информация
+              </h4>
               <v-text-field
                 v-model="location"
+                v-validate="'required'"
                 label="Адрес"
-                
-              />
-              <v-text-field
-                v-model="email"
-                v-validate="'required|email'"
-                label="Электронная почта"
-                type="email"
-                data-vv-name="email"
-                :error-messages="errors.collect('email')"
-                
+                type="text"
+                data-vv-name="location"
+                :error-messages="errors.collect('location')"
+                @keyup.enter="submit"
                 required
               />
               <v-text-field
@@ -102,7 +102,6 @@
                 data-vv-name="phone number"
                 :error-messages="errors.collect('phone number')"
                 @keyup.enter="submit"
-                
                 required
               />
               <v-btn
@@ -154,7 +153,6 @@ export default {
     price: '',
     exchangeItem: '',
     location: '',
-    email: '',
     phoneNumber: '',
     error: null,
   }),
@@ -186,7 +184,6 @@ export default {
         title: this.title,
         description: this.description,
         location: this.location,
-        email: this.email,
         phone_number: this.phoneNumber,
       })
         .then((response) => {
@@ -200,11 +197,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-@media only screen and (min-width: 1264px) {
-  .container {
-      max-width: 1000px;
-  }
-}
-</style>
