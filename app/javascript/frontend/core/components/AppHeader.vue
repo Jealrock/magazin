@@ -2,7 +2,7 @@
   <header class="header">
     <v-container class="pa-0 px-3">
       <v-layout row wrap align-center>
-        <v-flex xs4>
+        <v-flex xs6 hidden-sm-and-down>
           <nav class="nav">
             <router-link
               to="/"
@@ -12,7 +12,7 @@
             </router-link>
           </nav>
         </v-flex>
-        <v-flex xs8>
+        <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end align-center>
             <v-icon class="grey--text text--lighten-1">favorite</v-icon>
 
@@ -39,6 +39,9 @@
             </v-btn>
           </v-layout>
         </v-flex>
+        <v-flex xs12 hidden-md-and-up>
+          <v-toolbar-side-icon @click="setAside(true)" />
+        </v-flex>
       </v-layout>
     </v-container>
   </header>
@@ -50,9 +53,7 @@ import { authService } from '@frontend/modules/auth/services/authService';
 
 export default {
   data: () => ({
-    dialog: false,
     error: null,
-    hover: false,
   }),
 
   computed: {
@@ -60,15 +61,18 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['clearUsersState']),
+    ...mapMutations([
+      'clearUsersState',
+      'setAside',
+    ]),
 
     logout() {
       authService.signout()
-        .then(response => {
+        .then((response) => {
           this.clearUsersState();
-          this.$router.push('/dashboard');
+          this.$router.push('/');
         })
-        .catch(error => this.error = error);
+        .catch((error) => this.error = error);
     },
   },
 };
@@ -92,7 +96,7 @@ export default {
 
 .button {
   &_blue {
-    background: #01aaff;
+    background-color: #01aaff;
   }
 }
 
@@ -106,11 +110,5 @@ export default {
   border-bottom: 1px solid #d8d8d8;
   background-color: #f7f7f7;
   padding: 3px 0px 4px;
-}
-
-@media only screen and (min-width: 1264px) {
-  .container {
-      max-width: 1000px;
-  }
 }
 </style>
