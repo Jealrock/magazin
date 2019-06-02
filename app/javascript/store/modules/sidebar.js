@@ -3,7 +3,7 @@ const state = {
 };
 
 const getters = {
-  getAside(state) {
+  isAsideOpen(state) {
     return state.aside;
   },
 };

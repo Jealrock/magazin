@@ -127,9 +127,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.dashboard .header__link {
-  color: #0091d9;
-}
-</style>
