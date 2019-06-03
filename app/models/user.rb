@@ -6,6 +6,15 @@ class User < ApplicationRecord
   include DeviseTokenAuth::Concerns::User
 
   mount_uploader :photo, PhotoUploader
+  geocoded_by :address, if: ->(obj) { obj.address.present? && obj.address_changed? } do |obj, results|
+    if (location = results.first)
+      obj.city = location.city
+      obj.latitude = location.latitude
+      obj.longitude = location.longitude
+    end
+  end
 
   has_many :offers
+
+  after_validation :geocode
 end
