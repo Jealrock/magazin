@@ -8,7 +8,7 @@ module User::Contract
 
     property :photo
     property :name
-    property :city
+    property :address
     property :email
     property :phone_number
 
