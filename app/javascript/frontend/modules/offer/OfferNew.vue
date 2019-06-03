@@ -84,16 +84,15 @@
               <h4 class="title font-weight-bold black--text mt-4 mb-4">
                 Контактная информация
               </h4>
-              <v-text-field
-                v-model="location"
-                v-validate="'required'"
-                label="Адрес"
-                type="text"
-                data-vv-name="location"
-                :error-messages="errors.collect('location')"
-                @keyup.enter="submit"
-                required
+
+              <AutocompleteInput 
+                :items="suggestedAddresses"
+                :label="'Адрес'"
+                :loaded="suggestedAddressesLoaded"
+                @update="onAddressUpdate"
+                @change="onAddressChange"
               />
+
               <v-text-field
                 v-model="phoneNumber"
                 v-validate="'required'"
@@ -110,8 +109,7 @@
                 @click="submit"
               >
                 Далее
-              </v-btn>
-            </v-form>
+              </v-btn> </v-form>
           </div>
         </v-flex>
       </v-layout>
@@ -121,8 +119,10 @@
 
 <script>
 import MultiplePhotoUpload from './form/MultiplePhotoUpload';
+import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
 import { mapGetters, mapMutations } from 'vuex';
 import { offersService } from './services/offersService';
+import geolocationsService from '@frontend/core/services/geolocationsService';
 
 export default {
   $_veeValidate: {
@@ -131,10 +131,13 @@ export default {
 
   components: {
     MultiplePhotoUpload,
+    AutocompleteInput
   },
 
   data: () => ({
     valid: true,
+    suggestedAddresses: [], 
+    suggestedAddressesLoaded: true, 
     types: [{
       text: 'Отдаю даром',
       value: 'FreeOffer',
@@ -152,7 +155,7 @@ export default {
     description: '',
     price: '',
     exchangeItem: '',
-    location: '',
+    address: '',
     phoneNumber: '',
     error: null,
   }),
@@ -172,6 +175,19 @@ export default {
       this.photos = photos;
     },
 
+    onAddressChange(address) {
+      this.address = address;
+    },
+
+    async onAddressUpdate(inputAddress) {
+      this.suggestedAddressesLoaded = false;
+
+      geolocationsService.search(inputAddress)
+        .then(locations => this.suggestedAddresses = locations.map(location => location.address))
+        .catch(error => this.error = error)
+        .finally(() => this.suggestedAddressesLoaded = true)
+    },
+
     async submit() {
       await this.$validator.validateAll();
       if (!this.valid) return;
@@ -183,7 +199,7 @@ export default {
         exchange_item: this.exchangeItem,
         title: this.title,
         description: this.description,
-        location: this.location,
+        address: this.address,
         phone_number: this.phoneNumber,
       })
         .then((response) => {
