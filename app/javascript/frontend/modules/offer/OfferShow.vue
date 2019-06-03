@@ -123,7 +123,7 @@
           <v-flex xs12>
             <p class="mb-0 py-3">
               <span class="grey--text">Адрес:</span>
-              {{ offer.location }}
+              {{ offer.address }}
             </p>
             <v-divider />
           </v-flex>

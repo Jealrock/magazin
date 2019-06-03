@@ -1,15 +1,20 @@
 module Api::V1
   class GeolocationsController < ApiController
-    def address
-      run Geolocation::Address
-      render json: {
-        data: result['model'].map(&:display_name)
-      }
+    def index
+      run Geolocation::Index
+      render json: { data: serialize_locations(result['model']) }
     end
 
-    def city
-      run Geolocation::City
-      result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
+    private
+
+    # id is mandatory field for fast_jsonapi
+    def serialize_locations(locations)
+      locations.map do |location|
+        {
+          city: location.city,
+          address: location.address
+        }
+      end
     end
   end
 end

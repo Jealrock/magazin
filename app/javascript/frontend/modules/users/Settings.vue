@@ -54,9 +54,16 @@
                   @keyup.enter="submit"
                 />
                 <v-text-field v-model="name" label="Имя" type="text" @keyup.enter="submit"/>
-                <v-text-field v-model="city" label="Город" type="text" @keyup.enter="submit"/>
-                <v-text-field v-model="phoneNumber" label="Номер телефона" type="text" @keyup.enter="submit"/>
+                <AutocompleteInput 
+                  :items="suggestedCities"
+                  :value="city"
+                  :label="'Город'"
+                  :loaded="suggestedCitiesLoaded"
+                  @update="onCityUpdate"
+                  @change="onCityChange"
+                />
 
+                <v-text-field v-model="phoneNumber" label="Номер телефона" type="text" @keyup.enter="submit"/>
                 <v-layout row wrap
                   class="mt-5">
                   <v-flex
@@ -89,28 +96,42 @@
 
 
 <script>
+import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
 import { mapGetters, mapMutations } from 'vuex'
 import usersService from './services/usersService';
+import geolocationsService from '@frontend/core/services/geolocationsService';
 
 export default {
   $_veeValidate: {
     validator: 'new',
   },
 
+  components: {
+    AutocompleteInput
+  },
+
   data: () => ({
+    suggestedCities: [], 
+    suggestedLocations: [],
+    suggestedCitiesLoaded: true, 
     valid: true,
     error: null,
     success: null,
     email: null,
     name: null,
-    city: null,
+    city: '',
     phoneNumber: null,
     photo: null,
     photoUrl: null,
   }),
 
   computed: {
-    ...mapGetters(['currentUser'])
+    ...mapGetters(['currentUser']),
+    
+    address() {
+      const location = this.suggestedLocations.find(location => location.city == this.city);
+      return location ? location.address : this.currentUser.address;
+    }
   },
 
   created() {
@@ -119,6 +140,8 @@ export default {
     this.city = this.currentUser.city;
     this.photoUrl = this.currentUser.photo.url;
     this.phoneNumber = this.currentUser.phone_number;
+
+    if (this.city && this.city.length != 0) this.suggestedCities = [this.currentUser.city];
   },
 
   methods: {
@@ -132,6 +155,25 @@ export default {
       this.photoUrl = URL.createObjectURL(this.$refs.photo.files[0]);
     },
 
+    onCityChange(city) {
+      this.city = city;
+    },
+
+    async onCityUpdate(inputCity) {
+      this.suggestedCitiesLoaded = false;
+
+      geolocationsService.search(inputCity)
+        .then(locations => {
+          // to correctly connect Geocoder ruby gem
+          this.suggestedLocations = locations;
+          this.suggestedCities = this._.uniq(
+            locations.filter(location => location.city).map(location => location.city)
+          );
+        })
+        .catch(error => this.error = error)
+        .finally(() => this.suggestedCitiesLoaded = true)
+    },
+
     async submit() {
       await this.$validator.validateAll();
       if (!this.valid) return;
@@ -140,7 +182,7 @@ export default {
         id: this.currentUser.id,
         email: this.email,
         name: this.name,
-        city: this.city,
+        address: this.address, 
         photo: this.$refs.photo.files[0],
         phone_number: this.phoneNumber,
       })

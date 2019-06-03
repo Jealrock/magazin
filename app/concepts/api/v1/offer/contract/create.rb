@@ -9,14 +9,14 @@ module Offer::Contract
     property :type
     property :title
     property :description
-    property :location
+    property :address
     property :phone_number
 
     validation do
       required(:type).filled
       required(:title).filled
       required(:description).filled(min_size?: 10)
-      required(:location).filled
+      required(:address).filled
       required(:phone_number).filled
     end
   end
