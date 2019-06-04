@@ -58,13 +58,25 @@
               {{ this.offerPrice }}</p>
           </v-flex>
           <v-flex xs12>
-            <p class="body-1 mb-0">
-              Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
-              <span v-if="offer.closed"
-                class="error--text ml-4">
+            <v-layout row align-center>
+              <v-btn outline small depressed
+                color="grey"
+                class="ma-0"
+                @click="checkoutFavorite">
+                <v-icon color="info" v-if="isFavorite(offer.id)">favorite</v-icon>
+                <v-icon color="info" v-else>favorite_border</v-icon>
+                <p class="body-1 text-none black--text mb-0 ml-2">
+                  Добавить в избранное
+                </p>
+              </v-btn>
+              <p class="body-1 mb-0 ml-4">
+                Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
+              </p>
+              <p class="body-1 mb-0 error--text ml-4"
+                v-if="offer.closed">
                 Объявление было закрыто владельцем
-              </span>
-            </p>
+              </p>
+            </v-layout>
           </v-flex>
         </v-layout>
         <v-layout row wrap
@@ -157,6 +169,7 @@ export default {
   computed: {
     ...mapGetters({
       offer: 'getOffer',
+      isFavorite: 'isFavorite',
       loaded: 'isOfferLoaded',
       user: 'currentUser',
     }),
@@ -186,11 +199,21 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setOffer']),
+    ...mapMutations([
+      'setOffer',
+      'addToFavorites',
+      'removeFromFavorites',
+    ]),
 
     close() {
       offersService.close(this.offer.id)
         .then(resp => this.setOffer(resp));
+    },
+
+    checkoutFavorite() {
+      const id = this.offer.id
+      if (this.isFavorite(id)) this.removeFromFavorites(id);
+      else this.addToFavorites(id);
     }
   }
 };
