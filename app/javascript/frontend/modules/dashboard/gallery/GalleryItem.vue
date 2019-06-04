@@ -1,5 +1,11 @@
 <template>
   <div class="item">
+    <v-btn small depressed flat fab absolute
+      class="item__add-to-favorites-button"
+      @click="checkoutFavorite">
+      <v-icon v-if="isFavorite(item.id)">favorite</v-icon>
+      <v-icon v-else>favorite_border</v-icon>
+    </v-btn>
     <router-link
       :to="`/offer/${item.id}`">
       <v-card class="elevation-0">
@@ -23,12 +29,20 @@
 </template>
 
 <script>
+import { mapGetters, mapMutations } from 'vuex';
+
+import { favoritesService } from '@frontend/modules/favorites/services/favoritesService';
+
 export default {
   props: {
     item: Object,
   },
   
   computed: {
+    ...mapGetters([
+      'isFavorite'
+    ]),
+
     price() {
       if (this.item.type === 'CashOffer') return this.item.price + ' руб.';
       if (this.item.type === 'ExchangeOffer') {
@@ -38,6 +52,38 @@ export default {
       if (this.item.type === 'FreeOffer') return 'Отдам даром';
       return 'Уточнить';
     }
-  }
+  },
+
+  methods: {
+    ...mapMutations([
+      'addToFavorites',
+      'removeFromFavorites',
+    ]),
+
+    checkoutFavorite() {
+      const id = this.item.id;
+      if (this.isFavorite(id)) {
+        favoritesService.delete(id);
+        this.removeFromFavorites(id);
+      }
+      else {
+        favoritesService.post({
+          offer_id: id,
+        });
+        this.addToFavorites(id);
+      }
+    },
+  },
 };
 </script>
+
+<style scoped>
+.item {
+  position: relative;
+}
+
+.item__add-to-favorites-button {
+  right: 8px;
+  top: 4px;
+}
+</style>

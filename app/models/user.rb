@@ -8,4 +8,6 @@ class User < ApplicationRecord
   mount_uploader :photo, PhotoUploader
 
   has_many :offers
+  has_many :favorites
+  has_many :favorite_offers, through: :favorites, source: :offer
 end

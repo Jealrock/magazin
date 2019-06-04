@@ -14,7 +14,7 @@
         </v-flex>
         <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end align-center>
-            <v-icon class="grey--text text--lighten-1">favorite</v-icon>
+            <v-icon class="grey--text text--lighten-1 cursor_pointer">favorite</v-icon>
 
             <router-link v-if="!currentUser.uid"
               to="/sign_in"
@@ -22,12 +22,13 @@
               Вход и регистрация
             </router-link>
             
-            <div v-else>
-              <a class="link link_grey body-1 pl-4 pr-3"
+            <div v-else
+              class="nav px-3">
+              <a class="link link_grey body-1 px-3 py-2"
                 @click="logout">Выйти</a>
               <router-link
                 to="/profile"
-                class="link link_grey body-1 pr-4 pl-3">
+                class="link link_grey body-1 px-3 py-2">
                 Профиль
               </router-link>
             </div>
