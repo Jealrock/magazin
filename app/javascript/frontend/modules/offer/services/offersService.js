@@ -29,6 +29,13 @@ class OffersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
+  async notify(offer_id) {
+    return axiosInstance
+      .post(`/offers/${offer_id}/notify`)
+      .then(resp => resp.data.data.attributes)
+      .catch(error => { throw this.buildErrorMessage(error) });
+  }
+
   buildOfferFormData(params) {
     let formData = new FormData();
     Object.keys(params).forEach(key => {

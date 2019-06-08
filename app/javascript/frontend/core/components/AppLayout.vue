@@ -11,11 +11,39 @@
 import AppHeader from '@frontend/core/components/AppHeader';
 import AppFooter from '@frontend/core/components/AppFooter';
 import AppSidebar from '@frontend/core/components/AppSidebar';
+import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
+
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     AppHeader, AppFooter, AppSidebar,
   },
+
+  computed: {
+    ...mapGetters(['currentUser'])
+  },
+
+  methods: {
+    requestNotificationPermitions() {
+      if (!('Notification' in window) || !this.currentUser.id) return;
+
+      if (Notification.permission == "granted") {
+        subscriptionsManager.createSubscription();
+      } else {
+        Notification.requestPermission().then((result) => {
+          if (result === 'granted' ) {
+            subscriptionsManager.createSubscription();
+          }
+          return;
+        });
+      }
+    },
+  },
+
+  created() {
+    this.requestNotificationPermitions();
+  }
 };
 </script>
 

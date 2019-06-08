@@ -7,6 +7,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import VueMoment from 'vue-moment';
 import VueLodash from 'vue-lodash';
+import './registerServiceWorker';
 
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
@@ -15,6 +16,7 @@ import { axiosInstance } from '@frontend/core/services/axios';
 
 import AppLayout from '@frontend/core/components/AppLayout';
 import store from '../store/store';
+
 
 Vue.component('app-layout', AppLayout);
 

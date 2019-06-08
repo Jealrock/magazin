@@ -22,5 +22,10 @@ module Api::V1
       run Offer::Close
       result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
     end
+
+    def notify
+      run Offer::Notify
+      result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
+    end
   end
 end
