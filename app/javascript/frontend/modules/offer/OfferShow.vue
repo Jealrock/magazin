@@ -102,6 +102,15 @@
               @click="close">
               Закрыть объявление
             </v-btn>
+
+            <v-btn v-if="this.user.id === this.offer.user_id"
+              block flat depressed
+              color="error"
+              class="ma-0 mt-3"
+              @click="notify">
+              Отправить PUSH нотификацию 
+            </v-btn>
+
             <v-layout row justify-space-between
               class="mt-5">
               <div class="pr-1">
@@ -190,6 +199,11 @@ export default {
 
     close() {
       offersService.close(this.offer.id)
+        .then(resp => this.setOffer(resp));
+    },
+
+    notify() {
+      offersService.notify(this.offer.id)
         .then(resp => this.setOffer(resp));
     }
   }

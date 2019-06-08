@@ -14,4 +14,8 @@ class OfferPolicy < ApplicationPolicy
   def close?
     @user && @user.id == @record.user_id
   end
+
+  def send_notifcation?
+    @user && @user.id == @record.user_id
+  end
 end
