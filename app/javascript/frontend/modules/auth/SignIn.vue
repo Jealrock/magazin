@@ -144,7 +144,7 @@ export default {
 
           permissionsManager.requestNotifications().then(isGranted => {
             if (isGranted) subscriptionsManager.createSubscription();
-          })
+          });
 
           if (!this.beforeAuthRoute) {
             this.$router.push('/');
