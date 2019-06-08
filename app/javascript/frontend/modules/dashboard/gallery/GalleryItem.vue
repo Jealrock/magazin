@@ -1,8 +1,9 @@
 <template>
   <div class="item">
-    <v-btn small depressed flat fab absolute
+    <v-btn v-if="currentUser.uid"
+      small depressed flat fab absolute
       class="item__add-to-favorites-button"
-      @click="checkoutFavorite">
+      @click="toggleFavorite(item.id)">
       <v-icon v-if="isFavorite(item.id)">favorite</v-icon>
       <v-icon v-else>favorite_border</v-icon>
     </v-btn>
@@ -29,50 +30,37 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-
-import { favoritesService } from '@frontend/modules/favorites/services/favoritesService';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   props: {
-    item: Object,
+    item: {
+      type: Object,
+      default: () => {},
+    },
   },
-  
+
   computed: {
     ...mapGetters([
-      'isFavorite'
+      'isFavorite',
+      'currentUser',
     ]),
 
     price() {
-      if (this.item.type === 'CashOffer') return this.item.price + ' руб.';
+      if (this.item.type === 'CashOffer') return `${this.item.price} руб.`;
       if (this.item.type === 'ExchangeOffer') {
         if (this.item.exchange_item) return `Обмен на ${this.item.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
       if (this.item.type === 'FreeOffer') return 'Отдам даром';
       return 'Уточнить';
-    }
+    },
   },
 
   methods: {
-    ...mapMutations([
-      'addToFavorites',
-      'removeFromFavorites',
+    ...mapActions([
+      'toggleFavorite',
     ]),
-
-    checkoutFavorite() {
-      const id = this.item.id;
-      if (this.isFavorite(id)) {
-        favoritesService.delete(id);
-        this.removeFromFavorites(id);
-      }
-      else {
-        favoritesService.post({
-          offer_id: id,
-        });
-        this.addToFavorites(id);
-      }
-    },
   },
 };
 </script>

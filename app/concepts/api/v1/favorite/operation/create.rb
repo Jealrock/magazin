@@ -6,6 +6,7 @@ module Api::V1::Favorite
     step :add_user_id!
     step :add_offer_id!
     step :save!
+    step :get_offer!
 
     private
 
@@ -17,6 +18,11 @@ module Api::V1::Favorite
     def save!(_options, model:, **)
       model.save!
       model
+    end
+
+    def get_offer!(options, model:, **)
+      offer = model.offer
+      options['model'] = offer
     end
   end
 end

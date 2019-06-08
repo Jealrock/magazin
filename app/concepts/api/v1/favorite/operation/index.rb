@@ -3,7 +3,7 @@ module Api::V1::Favorite
     step :model!
 
     def model!(options, current_user:, **)
-      options['model'] = User.find(current_user.id).favorite_offers
+      options['model'] = current_user.favorite_offers
     end
   end
 end
