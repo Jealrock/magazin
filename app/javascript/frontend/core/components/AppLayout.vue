@@ -12,6 +12,7 @@ import AppHeader from '@frontend/core/components/AppHeader';
 import AppFooter from '@frontend/core/components/AppFooter';
 import AppSidebar from '@frontend/core/components/AppSidebar';
 import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
+import permissionsManager from  "@frontend/core/services/permissionsManager";
 
 import { mapGetters } from 'vuex';
 
@@ -24,25 +25,12 @@ export default {
     ...mapGetters(['currentUser'])
   },
 
-  methods: {
-    requestNotificationPermitions() {
-      if (!('Notification' in window) || !this.currentUser.id) return;
-
-      if (Notification.permission == "granted") {
-        subscriptionsManager.createSubscription();
-      } else {
-        Notification.requestPermission().then((result) => {
-          if (result === 'granted' ) {
-            subscriptionsManager.createSubscription();
-          }
-          return;
-        });
-      }
-    },
-  },
-
   created() {
-    this.requestNotificationPermitions();
+    if (!this.currentUser.id) return;
+
+    permissionsManager.requestNotifications().then(isGranted => {
+      if (isGranted) subscriptionsManager.createSubscription();
+    });
   }
 };
 </script>
