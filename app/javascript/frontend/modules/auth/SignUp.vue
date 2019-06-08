@@ -110,6 +110,8 @@
 <script>
 import { mapMutations, mapState } from 'vuex';
 import { authService } from './services/authService';
+import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
+import permissionsManager from  "@frontend/core/services/permissionsManager";
 
 export default {
   $_veeValidate: {
@@ -142,6 +144,10 @@ export default {
         .then((response) => {
           this.setAuthData(response.headers);
           this.setCurrentUser(response.data.data);
+
+          permissionsManager.requestNotifications().then(isGranted => {
+            if (isGranted) subscriptionsManager.createSubscription();
+          });
 
           if (!this.beforeAuthRoute) {
             this.$router.push('/');
