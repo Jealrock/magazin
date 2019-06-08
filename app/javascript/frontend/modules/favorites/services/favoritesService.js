@@ -1,7 +1,7 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
 class FavoritesService {
-  get() {
+  all() {
     return axiosInstance
       .get('/favorites')
       .then((response) => response)
@@ -10,7 +10,7 @@ class FavoritesService {
       });
   }
 
-  post(params) {
+  create(params) {
     return axiosInstance
       .post('/favorites', params)
       .then((response) => response)
@@ -22,9 +22,7 @@ class FavoritesService {
   delete(offerId) {
     return axiosInstance
       .delete(`/favorites/${offerId}`)
-      .then((response) => {
-        console.log(response);
-      })
+      .then((response) => response)
       .catch((error) => {
         throw new Error(error);
       });

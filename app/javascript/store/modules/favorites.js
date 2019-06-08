@@ -1,3 +1,5 @@
+import { favoritesService } from '@frontend/modules/favorites/services/favoritesService';
+
 const state = {
   favorites: [],
 };
@@ -22,7 +24,7 @@ const mutations = {
   },
 
   addToFavorites(state, offer) {
-    state.favorites = state.favorites.concat([{id: offer}]);
+    state.favorites = state.favorites.concat([offer]);
   },
 
   removeFromFavorites(state, id) {
@@ -34,6 +36,19 @@ const mutations = {
 };
 
 const actions = {
+  toggleFavorite(context, offer_id) {
+    if(context.getters.isFavorite(offer_id)) {
+      favoritesService.delete(offer_id)
+        .then((response) => {
+          context.commit('removeFromFavorites', response.data.data.attributes.offer_id);
+        });
+    } else {
+      favoritesService.create({ offer_id: offer_id })
+        .then((response) => {
+          context.commit('addToFavorites', response.data.data.attributes);
+        });
+    }
+  },
 };
 
 export default {

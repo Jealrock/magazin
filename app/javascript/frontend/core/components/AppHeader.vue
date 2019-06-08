@@ -14,7 +14,10 @@
         </v-flex>
         <v-flex xs6 hidden-sm-and-down>
           <v-layout justify-end align-center>
-            <v-icon class="grey--text text--lighten-1 cursor_pointer">favorite</v-icon>
+            <v-icon class="grey--text text--lighten-1 cursor_pointer"
+              @click="$router.push('/favorites')">
+              favorite
+            </v-icon>
 
             <router-link v-if="!currentUser.uid"
               to="/sign_in"
