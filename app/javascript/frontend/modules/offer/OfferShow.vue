@@ -27,6 +27,15 @@
       <div v-else>
         <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
+            <v-breadcrumbs :items="breadcrumbs">
+              <template v-slot:divider>
+                <v-icon>chevron_right</v-icon>
+              </template>
+            </v-breadcrumbs>
+          </v-flex>
+        </v-layout>
+        <v-layout row wrap>
+          <v-flex xs12 sm6>
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
@@ -179,7 +188,19 @@ export default {
       isFavorite: 'isFavorite',
       loaded: 'isOfferLoaded',
       user: 'currentUser',
+      getCategory: 'getCategory'
     }),
+    
+    breadcrumbs() {
+      let breadcrumbs = [];
+      const offerCategory = this.getCategory(this.offer.category_id);
+      if (!offerCategory) return breadcrumbs;
+      const parentCategory = offerCategory.parent_id ? this.getCategory(offerCategory.parent_id) : null;
+      
+      if (parentCategory) breadcrumbs.push(this.buildCategoryBreadcrumb(parentCategory));
+      breadcrumbs.push(this.buildCategoryBreadcrumb(offerCategory));
+      return breadcrumbs;
+    },
 
     offerPrice() {
       if (this.offer.type === 'CashOffer') return `${this.offer.price} руб.`;
@@ -229,6 +250,14 @@ export default {
       offersService.notify(this.offer.id)
         .then(resp => this.setOffer(resp));
     },
+
+    buildCategoryBreadcrumb(category) {
+      return {
+        text: category.title,
+        disabled: false,
+        href: '/?by_category=' + category.id
+      }
+    }
   },
 };
 </script>

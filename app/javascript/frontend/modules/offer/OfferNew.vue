@@ -28,6 +28,17 @@
               </h4>
 
               <v-select
+                v-model="category_id" 
+                v-validate="'required'"
+                :items="categories"
+                item-text="title"
+                item-value="id"
+                label="Категория"
+                data-vv-name="category_id"
+                :error-messages="errors.collect('category_id')"
+                required
+              />
+              <v-select
                 v-model="type" 
                 v-validate="'required'"
                 :items="types"
@@ -150,6 +161,7 @@ export default {
     }],
 
     type: 'CashOffer',
+    category_id: null,
     photos: [],
     title: '',
     description: '',
@@ -162,8 +174,16 @@ export default {
 
   computed: {
     ...mapGetters([
-      'currentUser',
+      'currentUser', 'mainCategories', 'childCategories'
     ]),
+
+    categories() {
+      return this.mainCategories.reduce((acc, cur) => {
+        if (acc.length != 0) acc.push({ divider: true });
+        acc.push(cur);
+        return acc.concat(this.childCategories(cur.id).map(category => category));
+      }, []);
+    }
   },
 
   methods: {
@@ -191,9 +211,11 @@ export default {
     async submit() {
       await this.$validator.validateAll();
       if (!this.valid) return;
-
+      
+      debugger;
       offersService.create({
         type: this.type,
+        category_id: this.category_id,
         photos: this.photos,
         price: this.price,
         exchange_item: this.exchangeItem,

@@ -18,7 +18,6 @@ export default new Router({
       redirect: '/',
     },
     DASHBOARD_ROUTER,
-
     SIGN_IN_ROUTER,
     SIGN_UP_ROUTER,
     RESET_PASSWORD_ROUTER,
@@ -27,7 +26,6 @@ export default new Router({
     OFFER_SHOW_ROUTER,
     PROFILE_ROUTER,
     PROFILE_SETTINGS_ROUTER,
-
     FAVORITES_LIST,
   ],
 });
