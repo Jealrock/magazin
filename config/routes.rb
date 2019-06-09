@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       resources :users, only: %i[update]
       resources :geolocations, only: %i[index]
       resources :subscriptions, only: %i[create]
+      resources :categories, only: %i[index]
       resources :offers, only: %i[index show create] do
         member do
           post :close
