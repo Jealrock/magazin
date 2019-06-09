@@ -109,6 +109,15 @@
               @click="close">
               Закрыть объявление
             </v-btn>
+
+            <v-btn v-if="this.user.id === this.offer.user_id"
+              block flat depressed
+              color="error"
+              class="ma-0 mt-3"
+              @click="notify">
+              Отправить PUSH нотификацию 
+            </v-btn>
+
             <v-layout row justify-space-between
               class="mt-5">
               <div class="pr-1">
@@ -131,7 +140,7 @@
           <v-flex xs12>
             <p class="mb-0 py-3">
               <span class="grey--text">Адрес:</span>
-              {{ offer.location }}
+              {{ offer.address }}
             </p>
             <v-divider />
           </v-flex>
@@ -214,6 +223,11 @@ export default {
       this.loading = true
       this.toggleFavorite(this.offer.id)
         .then((response) => this.loading = false)
+    },
+
+    notify() {
+      offersService.notify(this.offer.id)
+        .then(resp => this.setOffer(resp));
     },
   },
 };

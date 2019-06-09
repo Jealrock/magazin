@@ -35,6 +35,7 @@ gem 'dry-validation', '0.11.1'
 gem 'bootsnap', '>= 1.1.0', require: false
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
 gem 'webpacker', '~> 3.5.5'
+gem 'webpush', github: 'zaru/webpush', branch: 'master'
 
 # Background jobs
 gem 'sidekiq'
@@ -60,6 +61,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
+  gem 'pry-rails'
 end
 
 group :development do
@@ -79,7 +81,6 @@ end
 group :test do
   gem 'database_cleaner'
 end
-
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
