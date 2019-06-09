@@ -1,7 +1,7 @@
 module Api::V1
   class FavoritesController < ApiController
     include Pundit
-    before_action :authenticate_user!, only: %i[create destroy]
+    before_action :authenticate_user!, only: [:create, :destroy]
 
     def index
       run Favorite::Index
