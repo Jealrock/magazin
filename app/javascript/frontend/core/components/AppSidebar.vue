@@ -4,14 +4,13 @@
       v-model="aside">
       <v-toolbar flat
         height="100px"
-        class="info">
+        class="info"
+        @click="$router.push(currentUser.uid ? '/profile' : '/sign_in')">
         <v-list class="pa-0">
-          <v-list-tile v-if="!currentUser.uid" avatar
-            @click="$router.push('/sign_in')">
+          <v-list-tile v-if="!currentUser.uid" avatar>
             <v-list-tile-avatar
               :size="70"
-              color="grey lighten-3"
-            >
+              color="grey lighten-3">
               <v-icon>person_outline</v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content class="ml-4">
@@ -21,15 +20,20 @@
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile v-else avatar
-            @click="$router.push('/profile')">
-            <v-list-tile-avatar :size="70">
+          <v-list-tile v-else avatar>
+            <v-list-tile-avatar v-if="currentUser.photo.url"
+              :size="70">
               <v-img :src="currentUser.photo.url" />
+            </v-list-tile-avatar>
+            <v-list-tile-avatar v-else
+              :size="70"
+              color="grey lighten-3">
+              <v-icon>person_outline</v-icon>
             </v-list-tile-avatar>
             <v-list-tile-content class="ml-4">
               <v-list-tile-title
                 class="subheading white--text font-weight-bold">
-                {{ currentUser.name }}
+                {{ currentUser.name || 'Профиль' }}
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -52,7 +56,10 @@
             <v-icon>favorite_border</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            Избранное
+            <router-link to="/favorites"
+              class="black--text d-flex full_height full_width align-center">
+              Избранное
+            </router-link>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider />
