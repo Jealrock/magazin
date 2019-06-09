@@ -17,7 +17,6 @@ export default new Router({
       redirect: '/',
     },
     DASHBOARD_ROUTER,
-
     SIGN_IN_ROUTER,
     SIGN_UP_ROUTER,
     RESET_PASSWORD_ROUTER,
