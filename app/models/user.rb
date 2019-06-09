@@ -16,5 +16,8 @@ class User < ApplicationRecord
 
   has_many :offers
 
+  has_many :favorites
+  has_many :favorite_offers, through: :favorites, source: :offer
+
   after_validation :geocode
 end

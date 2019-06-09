@@ -1,5 +1,14 @@
 <template>
   <div class="item">
+    <v-btn v-if="currentUser.uid"
+      small depressed flat fab absolute
+      :loading="loading"
+      :disabled="loading"
+      class="item__add-to-favorites-button"
+      @click="startToggleFavorite">
+      <v-icon v-if="isFavorite(item.id)">favorite</v-icon>
+      <v-icon v-else>favorite_border</v-icon>
+    </v-btn>
     <router-link
       :to="`/offer/${item.id}`">
       <v-card class="elevation-0">
@@ -23,21 +32,58 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
   props: {
-    item: Object,
+    item: {
+      type: Object,
+      default: () => {},
+    },
   },
-  
+
+  data: () => ({
+    loading: false,
+  }),
+
   computed: {
+    ...mapGetters([
+      'isFavorite',
+      'currentUser',
+    ]),
+
     price() {
-      if (this.item.type === 'CashOffer') return this.item.price + ' руб.';
+      if (this.item.type === 'CashOffer') return `${this.item.price} руб.`;
       if (this.item.type === 'ExchangeOffer') {
         if (this.item.exchange_item) return `Обмен на ${this.item.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
       if (this.item.type === 'FreeOffer') return 'Отдам даром';
       return 'Уточнить';
-    }
-  }
+    },
+  },
+
+  methods: {
+    ...mapActions([
+      'toggleFavorite',
+    ]),
+
+    startToggleFavorite() {
+      this.loading = true;
+      this.toggleFavorite(this.item.id)
+        .then((response) => this.loading = false)
+    },
+  },
 };
 </script>
+
+<style scoped>
+.item {
+  position: relative;
+}
+
+.item__add-to-favorites-button {
+  right: 8px;
+  top: 4px;
+}
+</style>
