@@ -15,7 +15,7 @@ module Api::V1
 
     def destroy
       run Favorite::Destroy
-      result_show_create(result, serializer: ::Api::V1::FavoriteSerializer)
+      result_show_create(result, serializer: ::Api::V1::Offers::ListItemSerializer)
     end
   end
 end

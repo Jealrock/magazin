@@ -6,7 +6,7 @@ import {
 } from '@frontend/modules/auth/router';
 import { PROFILE_ROUTER, PROFILE_SETTINGS_ROUTER } from '@frontend/modules/users/router';
 import { OFFER_SHOW_ROUTER, OFFER_NEW_ROUTER } from '@frontend/modules/offer/router';
-import { FAVORITES_OFFER } from '@frontend/modules/favorites/router';
+import { FAVORITES_LIST } from '@frontend/modules/favorites/router';
 
 Vue.use(Router);
 
@@ -28,6 +28,6 @@ export default new Router({
     PROFILE_ROUTER,
     PROFILE_SETTINGS_ROUTER,
 
-    FAVORITES_OFFER,
+    FAVORITES_LIST,
   ],
 });

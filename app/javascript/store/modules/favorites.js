@@ -36,14 +36,14 @@ const mutations = {
 };
 
 const actions = {
-  toggleFavorite(context, offer_id) {
+  async toggleFavorite(context, offer_id) {
     if(context.getters.isFavorite(offer_id)) {
-      favoritesService.delete(offer_id)
+      return favoritesService.delete(offer_id)
         .then((response) => {
-          context.commit('removeFromFavorites', response.data.data.attributes.offer_id);
+          context.commit('removeFromFavorites', response.data.data.attributes.id);
         });
     } else {
-      favoritesService.create({ offer_id: offer_id })
+      return favoritesService.create({ offer_id: offer_id })
         .then((response) => {
           context.commit('addToFavorites', response.data.data.attributes);
         });

@@ -1,6 +1,6 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
-const DEFAULT_PER_PAGE = 25;
+const DEFAULT_PER_PAGE = 24;
 
 class OffersService {
   async all(params) {
