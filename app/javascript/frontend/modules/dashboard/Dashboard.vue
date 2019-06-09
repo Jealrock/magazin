@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard">
-    <v-container class="pa-0 px-3">
+    <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap>
         <v-flex xs12>
           <CategoriesBar />
@@ -33,17 +33,16 @@
             :items-in-row="4"
           />
         </v-flex>
-
-        <v-flex xs12>
-          <v-pagination
-            v-if="offersPaginationData.total_count > per_page"
-            total-visible="per_page"
-            circle
-            :value="offersPaginationData.page"
-            :length="offersPaginationData.pages"
-            @input="changePage"
-          ></v-pagination>
-        </v-flex>
+      </v-layout>
+      <v-layout row wrap justify-center>
+        <v-pagination
+          v-if="offersPaginationData.total_count > per_page"
+          total-visible="per_page"
+          circle
+          :value="offersPaginationData.page"
+          :length="offersPaginationData.pages"
+          @input="changePage"
+        ></v-pagination>
       </v-layout>
       <!-- <v-layout row wrap> -->
       <!--   <v-flex xs12> -->

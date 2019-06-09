@@ -2,8 +2,10 @@
   <div class="item">
     <v-btn v-if="currentUser.uid"
       small depressed flat fab absolute
+      :loading="loading"
+      :disabled="loading"
       class="item__add-to-favorites-button"
-      @click="toggleFavorite(item.id)">
+      @click="startToggleFavorite">
       <v-icon v-if="isFavorite(item.id)">favorite</v-icon>
       <v-icon v-else>favorite_border</v-icon>
     </v-btn>
@@ -40,6 +42,10 @@ export default {
     },
   },
 
+  data: () => ({
+    loading: false,
+  }),
+
   computed: {
     ...mapGetters([
       'isFavorite',
@@ -61,6 +67,12 @@ export default {
     ...mapActions([
       'toggleFavorite',
     ]),
+
+    startToggleFavorite() {
+      this.loading = true;
+      this.toggleFavorite(this.item.id)
+        .then((response) => this.loading = false)
+    },
   },
 };
 </script>

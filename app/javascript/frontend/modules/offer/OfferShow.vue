@@ -38,17 +38,32 @@
           </v-flex>
           <v-flex xs12 class="mt-3">
             <v-layout row align-center>
-              <v-btn v-if="user.uid"
-                outline small depressed
-                color="grey"
-                class="ma-0 mr-4"
-                @click="toggleFavorite(offer.id)">
-                <v-icon color="info" v-if="isFavorite(offer.id)">favorite</v-icon>
-                <v-icon color="info" v-else>favorite_border</v-icon>
-                <p class="body-1 text-none black--text mb-0 ml-2">
-                  Добавить в избранное
-                </p>
-              </v-btn>
+              <div v-if="user.uid">
+                <v-btn v-if="!isFavorite(offer.id)"
+                  outline small depressed
+                  :loading="loading"
+                  :disabled="loading"
+                  color="grey"
+                  class="ma-0 mr-4"
+                  @click="startToggleFavorite">
+                  <v-icon color="info">favorite_border</v-icon>
+                  <p class="body-1 text-none black--text mb-0 ml-2">
+                    Добавить в избранное
+                  </p>
+                </v-btn>
+                <v-btn v-else
+                  small depressed
+                  :loading="loading"
+                  :disabled="loading"
+                  color="info"
+                  class="ma-0 mr-4"
+                  @click="startToggleFavorite">
+                  <v-icon color="white">favorite</v-icon>
+                  <p class="body-1 text-none white--text mb-0 ml-2">
+                    В избранном
+                  </p>
+                </v-btn>
+              </div>
               <p class="body-1 mb-0">
                 Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
               </p>
@@ -145,7 +160,7 @@ export default {
   data() {
     return {
       phoneVisible: false,
-      loader: null,
+      loading: false,
     };
   },
 
@@ -177,7 +192,7 @@ export default {
 
     closable() {
       return this.user.id === this.offer.user_id
-        && this.offer.closed;
+        && !this.offer.closed;
     },
   },
 
@@ -193,6 +208,12 @@ export default {
     close() {
       offersService.close(this.offer.id)
         .then(resp => this.setOffer(resp));
+    },
+
+    startToggleFavorite() {
+      this.loading = true
+      this.toggleFavorite(this.offer.id)
+        .then((response) => this.loading = false)
     },
   },
 };
