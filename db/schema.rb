@@ -32,10 +32,12 @@ ActiveRecord::Schema.define(version: 2019_06_09_110727) do
     t.boolean "closed", default: false
     t.string "title"
     t.text "description"
-    t.string "location"
+    t.string "address"
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
     t.index ["type"], name: "index_offers_on_type"
     t.index ["user_id"], name: "index_offers_on_user_id"
   end
@@ -46,6 +48,16 @@ ActiveRecord::Schema.define(version: 2019_06_09_110727) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["offer_id"], name: "index_photos_on_offer_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.string "endpoint"
+    t.string "p256dh"
+    t.string "auth"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -69,6 +81,9 @@ ActiveRecord::Schema.define(version: 2019_06_09_110727) do
     t.datetime "updated_at", null: false
     t.string "photo"
     t.string "phone_number"
+    t.string "address"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true

@@ -11,11 +11,27 @@
 import AppHeader from '@frontend/core/components/AppHeader';
 import AppFooter from '@frontend/core/components/AppFooter';
 import AppSidebar from '@frontend/core/components/AppSidebar';
+import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
+import permissionsManager from  "@frontend/core/services/permissionsManager";
+
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     AppHeader, AppFooter, AppSidebar,
   },
+
+  computed: {
+    ...mapGetters(['currentUser'])
+  },
+
+  created() {
+    if (!this.currentUser.id) return;
+
+    permissionsManager.requestNotifications().then(isGranted => {
+      if (isGranted) subscriptionsManager.createSubscription();
+    });
+  }
 };
 </script>
 
