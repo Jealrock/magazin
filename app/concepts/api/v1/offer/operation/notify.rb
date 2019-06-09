@@ -23,7 +23,9 @@ module Api::V1::Offer
     def build_message(offer)
       JSON.generate(
         title: 'Новое объявление',
-        body: offer.title
+        body: offer.title,
+        icon: offer.photos.first.file.url(:thumb),
+        offer_id: offer.id
       )
     end
   end

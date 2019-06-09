@@ -3,28 +3,7 @@
     <v-container class="pa-0 px-3">
       <v-layout row wrap>
         <v-flex xs12>
-          <nav class="nav">
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Авто</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Недвижимость</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Работа</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Услуги</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >ещё...</a>
-          </nav>
+          <CategoriesBar />
         </v-flex>
         <v-flex xs12>
           <Search />
@@ -66,14 +45,42 @@
               }">
               {{ this.offerPrice }}</p>
           </v-flex>
-          <v-flex xs12>
-            <p class="body-1 mb-0">
-              Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
-              <span v-if="offer.closed"
-                class="error--text ml-4">
+          <v-flex xs12 class="mt-3">
+            <v-layout row align-center>
+              <div v-if="user.uid">
+                <v-btn v-if="!isFavorite(offer.id)"
+                  outline small depressed
+                  :loading="loading"
+                  :disabled="loading"
+                  color="grey"
+                  class="ma-0 mr-4"
+                  @click="startToggleFavorite">
+                  <v-icon color="info">favorite_border</v-icon>
+                  <p class="body-1 text-none black--text mb-0 ml-2">
+                    Добавить в избранное
+                  </p>
+                </v-btn>
+                <v-btn v-else
+                  small depressed
+                  :loading="loading"
+                  :disabled="loading"
+                  color="info"
+                  class="ma-0 mr-4"
+                  @click="startToggleFavorite">
+                  <v-icon color="white">favorite</v-icon>
+                  <p class="body-1 text-none white--text mb-0 ml-2">
+                    В избранном
+                  </p>
+                </v-btn>
+              </div>
+              <p class="body-1 mb-0">
+                Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}
+              </p>
+              <p class="body-1 mb-0 error--text ml-4"
+                v-if="offer.closed">
                 Объявление было закрыто владельцем
-              </span>
-            </p>
+              </p>
+            </v-layout>
           </v-flex>
         </v-layout>
         <v-layout row wrap
@@ -123,15 +130,16 @@
             <v-layout row justify-space-between
               class="mt-5">
               <div class="pr-1">
-                <p v-if="offer.user.name" class="mb-0 body-2">{{ offer.user.name }}</p>
-                <p v-else class="mb-0 body-2">Имя не указано</p>
-                <p class="mb-0 caption">Зарегестрирован {{ offer.user.created_at | moment('calendar').toLowerCase() }}</p>
+                <p class="mb-0 body-2">{{ offer.user.name || 'Имя не указано' }}</p>
+                <p class="mb-0 caption">Зарегистрирован {{ offer.user.created_at | moment('calendar').toLowerCase() }}</p>
               </div>
               <div>
-                <v-avatar :size="60">
-                  <v-img :src="offer.user.photo.url"
-                    class="grey lighten-3"
+                <v-avatar :size="60"
+                  color="grey lighten-3">
+                  <v-img v-if="offer.user.photo.url"
+                    :src="offer.user.photo.url"
                     alt="photo"/>
+                  <v-icon v-else>person_outline</v-icon>
                 </v-avatar>
               </div>
             </v-layout>
@@ -155,26 +163,29 @@
 </template>
 
 <script>
-import Search from '@frontend/modules/dashboard/search/Search';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
-import { mapGetters, mapMutations } from 'vuex';
+import Search from '@frontend/modules/dashboard/search/Search';
+import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar';
 
 import { offersService } from './services/offersService';
 
 export default {
   components: {
-    Search,
+    Search, CategoriesBar,
   },
 
   data() {
     return {
-      phoneVisible: false
+      phoneVisible: false,
+      loading: false,
     };
   },
 
   computed: {
     ...mapGetters({
       offer: 'getOffer',
+      isFavorite: 'isFavorite',
       loaded: 'isOfferLoaded',
       user: 'currentUser',
       getCategory: 'getCategory'
@@ -192,7 +203,7 @@ export default {
     },
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer') return this.offer.price + ' руб.';
+      if (this.offer.type === 'CashOffer') return `${this.offer.price} руб.`;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
@@ -202,25 +213,37 @@ export default {
     },
 
     phoneNumber() {
-      if (this.phoneVisible)  return this.offer.phone_number;
+      if (this.phoneVisible) return this.offer.phone_number;
 
-      let replaceCount = Math.round(this.offer.phone_number.length * 0.6);
+      const replaceCount = Math.round(this.offer.phone_number.length * 0.6);
       const regex = new RegExp(`.{${replaceCount}}$`);
       return this.offer.phone_number.replace(regex, 'X'.repeat(replaceCount));
     },
-    
+
     closable() {
-      return this.user.id === this.offer.user_id &&
-             !this.offer.closed;
-    }
+      return this.user.id === this.offer.user_id
+        && !this.offer.closed;
+    },
   },
 
   methods: {
-    ...mapMutations(['setOffer']),
+    ...mapMutations([
+      'setOffer',
+    ]),
+
+    ...mapActions([
+      'toggleFavorite',
+    ]),
 
     close() {
       offersService.close(this.offer.id)
         .then(resp => this.setOffer(resp));
+    },
+
+    startToggleFavorite() {
+      this.loading = true
+      this.toggleFavorite(this.offer.id)
+        .then((response) => this.loading = false)
     },
 
     notify() {
@@ -235,7 +258,7 @@ export default {
         href: '/?by_category=' + category.id
       }
     }
-  }
+  },
 };
 </script>
 

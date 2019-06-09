@@ -1,30 +1,9 @@
 <template>
   <div class="dashboard">
-    <v-container class="pa-0 px-3">
+    <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap>
         <v-flex xs12>
-          <nav class="nav">
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Авто</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Недвижимость</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Работа</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >Услуги</a>
-            <a
-              href="#"
-              class="link link_blue body-1 py-2 pr-3"
-            >ещё...</a>
-          </nav>
+          <CategoriesBar />
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -54,17 +33,16 @@
             :items-in-row="4"
           />
         </v-flex>
-
-        <v-flex xs12>
-          <v-pagination
-            v-if="offersPaginationData.total_count > per_page"
-            total-visible="per_page"
-            circle
-            :value="offersPaginationData.page"
-            :length="offersPaginationData.pages"
-            @input="changePage"
-          ></v-pagination>
-        </v-flex>
+      </v-layout>
+      <v-layout row wrap justify-center>
+        <v-pagination
+          v-if="offersPaginationData.total_count > per_page"
+          total-visible="per_page"
+          circle
+          :value="offersPaginationData.page"
+          :length="offersPaginationData.pages"
+          @input="changePage"
+        ></v-pagination>
       </v-layout>
       <!-- <v-layout row wrap> -->
       <!--   <v-flex xs12> -->
@@ -80,13 +58,14 @@ import { mapGetters, mapMutations } from 'vuex';
 
 import { DEFAULT_PER_PAGE, offersService } from '@frontend/modules/offer/services/offersService';
 
-import CategoriesList from './categories-list/CategoriesList';
+import CategoriesBar from './categories/CategoriesBar';
+import CategoriesList from './categories/CategoriesList';
 import Search from './search/Search';
 import Gallery from './gallery/Gallery';
 
 export default {
   components: {
-    CategoriesList, Search, Gallery,
+    CategoriesBar, CategoriesList, Search, Gallery,
   },
 
   data: () => ({
