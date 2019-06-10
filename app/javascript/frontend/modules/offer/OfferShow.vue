@@ -208,7 +208,7 @@ export default {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
-      if (this.offer.type === 'FreeOffer') return 'Отдам даром';
+      if (this.offer.type === 'FreeOffer') return 'Отдам БисмилЛах1';
       return 'Уточнить';
     },
 

@@ -150,7 +150,7 @@ export default {
     suggestedAddresses: [], 
     suggestedAddressesLoaded: true, 
     types: [{
-      text: 'Отдаю даром',
+      text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',
     }, {
       text: 'Продам',
