@@ -3,6 +3,19 @@ module Api::V1
     include Pundit
     before_action :authenticate_user!, except: [:index, :show]
 
+    has_scope :by_title
+    has_scope :by_city
+    has_scope :by_type
+    has_scope :by_category_id do |_controller, scope, value|
+      category = ::Category.find(value)
+
+      if category.parent_id
+        scope.by_category_id(value)
+      else
+        scope.by_category_id(category.children.pluck(:id))
+      end
+    end
+
     def index
       run Offer::Index
       result_index(result, serializer: ::Api::V1::Offers::ListItemSerializer)
