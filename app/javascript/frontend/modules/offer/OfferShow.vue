@@ -109,7 +109,6 @@
               <template v-slot:activator="{ on }">
                 <v-btn block flat depressed
                   class="button button_green white--text ma-0"
-                  @click="notify"
                   v-on="on">
                   Отправить PUSH нотификацию 
                 </v-btn>
@@ -118,16 +117,26 @@
               <v-card>
                 <v-card-title primary-title>
                   <p class="mb-0 text-xs-center mx-auto font-weight-bold text-uppercase">Отправить уведомление</p>
-                  <v-layout row justify-center class="mt-4">
-                    <v-btn
-                      color="info">
-                      Всем пользователям
-                    </v-btn>
-                    <v-btn
-                      color="success">
-                      Конкретным пользователям
-                    </v-btn>
-                  </v-layout>
+                  <v-container class="pa-0">
+                    <v-layout row wrap justify-center class="mt-4">
+                      <v-flex xs12 sm6 class="pr-2">
+                        <v-btn
+                          block
+                          color="info"
+                          @click="notify">
+                          Всем пользователям
+                        </v-btn>
+                      </v-flex>
+                      <v-flex xs12 sm6 class="pl-2">
+                        <v-btn
+                          block
+                          color="success"
+                          @click="notify">
+                          Конкретным пользователям
+                        </v-btn>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
                 </v-card-title>
               </v-card>
             </v-dialog>

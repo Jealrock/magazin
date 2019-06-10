@@ -84,14 +84,14 @@ export default {
       text: 'Все',
       value: null,
     }, {
-      text: 'Отдам БисмилЛах1',
-      value: 'FreeOffer',
+      text: 'Обменяю',
+      value: 'ExchangeOffer',
     }, {
       text: 'Продам',
       value: 'CashOffer',
     }, {
-      text: 'Обменяю',
-      value: 'ExchangeOffer',
+      text: 'Отдам БисмилЛах1',
+      value: 'FreeOffer',
     }],
     type: '',
     title: '',
