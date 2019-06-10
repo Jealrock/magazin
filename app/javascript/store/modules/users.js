@@ -1,13 +1,18 @@
 const state = {
   currentUser: {},
   signedIn: false,
-  authData: {}
+  authData: {},
+  userOffers: [],
 }
 
 const getters = {
   currentUser (state) {
     return state.currentUser
-  }
+  },
+
+  userOffers (state) {
+    return state.userOffers;
+  },
 }
 
 const mutations = {
@@ -29,7 +34,11 @@ const mutations = {
     state.currentUser = {}
     state.signedIn = false
     state.authData = {}
-  }
+  },
+
+  setUserOffers (state, offers) {
+    state.userOffers = offers;
+  },
 }
 
 export default {

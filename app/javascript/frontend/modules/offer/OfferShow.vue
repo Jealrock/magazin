@@ -27,7 +27,8 @@
       <div v-else>
         <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
-            <v-breadcrumbs :items="breadcrumbs">
+            <v-breadcrumbs :items="breadcrumbs"
+              class="pa-0">
               <template v-slot:divider>
                 <v-icon>chevron_right</v-icon>
               </template>
@@ -39,7 +40,7 @@
             <h1 class="display-1">{{ offer.title }}</h1>
           </v-flex>
           <v-flex xs12 sm6>
-            <p class="mt-1 mb-0 text-xs-left text-sm-right"
+            <p class="mb-0 text-xs-left text-sm-right"
               :class="{
                 'display-1' : $vuetify.breakpoint.smAndUp
               }">
@@ -103,6 +104,33 @@
               'pl-4' : $vuetify.breakpoint.smAndUp,
               'pt-4' : $vuetify.breakpoint.xsOnly
             }">
+            <v-dialog v-if="this.user.id === this.offer.user_id"
+              width="600">
+              <template v-slot:activator="{ on }">
+                <v-btn block flat depressed
+                  class="button button_green white--text ma-0"
+                  @click="notify"
+                  v-on="on">
+                  Отправить PUSH нотификацию 
+                </v-btn>
+              </template>
+
+              <v-card>
+                <v-card-title primary-title>
+                  <p class="mb-0 text-xs-center mx-auto font-weight-bold text-uppercase">Отправить уведомление</p>
+                  <v-layout row justify-center class="mt-4">
+                    <v-btn
+                      color="info">
+                      Всем пользователям
+                    </v-btn>
+                    <v-btn
+                      color="success">
+                      Конкретным пользователям
+                    </v-btn>
+                  </v-layout>
+                </v-card-title>
+              </v-card>
+            </v-dialog>
             <v-btn block flat depressed
               class="offer-view__button-show-phone button_blue ma-0"
               @click="phoneVisible = !phoneVisible">
@@ -117,14 +145,6 @@
               class="ma-0 mt-3"
               @click="close">
               Закрыть объявление
-            </v-btn>
-
-            <v-btn v-if="this.user.id === this.offer.user_id"
-              block flat depressed
-              color="error"
-              class="ma-0 mt-3"
-              @click="notify">
-              Отправить PUSH нотификацию 
             </v-btn>
 
             <v-layout row justify-space-between
