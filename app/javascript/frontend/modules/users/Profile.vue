@@ -12,9 +12,12 @@
           </div>
         </v-flex>
         <v-flex xs12 sm9 class="pl-3">
-          <p>Ваши объявления</p>
-          <v-divider />
-          <p>Пока у вас нет объявлений</p>
+          <h1 class="font-weight-bold">Ваши объявления</h1>
+          <v-divider class="mb-3" />
+          <p v-if="!userOffers.length">Пока у вас нет объявлений</p>
+          <Gallery v-else
+            :items="userOffers" 
+            :items-in-row="3"/>
           <v-btn depressed flat
             class="button_green white--text body-1 font-weight-regular text-none px-3 ma-0"
             @click="$router.push('/offer')">
@@ -25,6 +28,24 @@
     </v-container>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex';
+
+import Gallery from '@frontend/modules/dashboard/gallery/Gallery';
+
+export default {
+  components: {
+    Gallery,
+  },
+
+  computed: {
+    ...mapGetters([
+      'userOffers',
+    ]),
+  },
+};
+</script>
 
 <style>
 .button {
