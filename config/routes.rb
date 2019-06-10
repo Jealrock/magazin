@@ -9,7 +9,9 @@ Rails.application.routes.draw do
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
       resources :users, only: %i[update] do
-        get :offers
+        collection do
+          get :offers
+        end
       end
       resources :favorites, only: %i[index create destroy]
       resources :geolocations, only: %i[index]
