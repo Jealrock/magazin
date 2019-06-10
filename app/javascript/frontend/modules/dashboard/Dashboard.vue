@@ -14,7 +14,7 @@
       <v-layout row wrap class="mt-3">
         <v-flex xs12>
           <p class="body-2 font-weight-regular black--text mb-1">
-            Всего обьявлений 
+            Всего обьявлений: 
             <!-- <span class="dashboard__location">Москве</span>: -->
             <span class="dashboard__items-count grey--text">{{ offersPaginationData.total_count }}</span>
           </p>

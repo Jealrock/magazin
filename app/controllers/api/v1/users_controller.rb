@@ -7,5 +7,10 @@ module Api::V1
       run User::Update
       result_show_create(result, serializer: ::Api::V1::UserSerializer)
     end
+
+    def offers
+      run User::Offers
+      result_show_create(result, serializer: ::Api::V1::Offers::ListItemSerializer)
+    end
   end
 end

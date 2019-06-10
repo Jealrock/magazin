@@ -8,6 +8,13 @@ class UsersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
+  async getOffers(userID) {
+    return axiosInstance
+      .get(`/users/${userID}/offers`)
+      .then((resp) => resp.data.data)
+      .catch(error => { throw new Error(error) });
+  }
+
   buildUser(params) {
     const formData = new FormData();
     Object.keys(params).forEach(key => {
