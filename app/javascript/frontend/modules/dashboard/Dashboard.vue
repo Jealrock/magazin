@@ -14,9 +14,9 @@
       <v-layout row wrap class="mt-3">
         <v-flex xs12>
           <p class="body-2 font-weight-regular black--text mb-1">
-            Все объявления в
-            <span class="dashboard__location">Москве</span>:
-            <span class="dashboard__items-count grey--text">0</span>
+            Всего обьявлений 
+            <!-- <span class="dashboard__location">Москве</span>: -->
+            <span class="dashboard__items-count grey--text">{{ offersPaginationData.total_count }}</span>
           </p>
         </v-flex>
       </v-layout>
@@ -92,7 +92,10 @@ export default {
     changePage(page) {
       this.$router.push({
         path: '/',
-        query: { page }
+        query: { 
+          ...this.$route.query,
+          page: page 
+        }
       })
     },
   },

@@ -212,7 +212,6 @@ export default {
       await this.$validator.validateAll();
       if (!this.valid) return;
       
-      debugger;
       offersService.create({
         type: this.type,
         category_id: this.category_id,

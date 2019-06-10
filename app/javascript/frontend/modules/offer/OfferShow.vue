@@ -255,7 +255,7 @@ export default {
       return {
         text: category.title,
         disabled: false,
-        href: '/?by_category=' + category.id
+        to: { path: '/', query: { by_category_id: category.id } }
       }
     }
   },
