@@ -5,7 +5,7 @@ module Api::V1::User
     private
 
     def get_offer!(options, current_user:, **)
-      options['model'] = current_user.offers
+      options['model'] = current_user.offers.order(created_at: :desc)
       options['model']
     end
   end

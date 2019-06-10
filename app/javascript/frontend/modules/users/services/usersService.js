@@ -8,9 +8,9 @@ class UsersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  async getOffers(userID) {
+  async getOffers() {
     return axiosInstance
-      .get(`/users/${userID}/offers`)
+      .get(`/users/offers`)
       .then((resp) => resp.data.data)
       .catch(error => { throw new Error(error) });
   }
