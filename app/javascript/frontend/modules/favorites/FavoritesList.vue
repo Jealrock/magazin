@@ -1,6 +1,6 @@
 <template>
-  <div class="favorites-index">
-    <v-container class="pa-0 px-3">
+  <div class="favorites-list">
+    <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap>
         <v-flex xs12>
           <CategoriesBar />

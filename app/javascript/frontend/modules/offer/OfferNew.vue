@@ -1,6 +1,6 @@
 <template>
   <div class="offer-new">
-    <v-container class="pa-0 px-3">
+    <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap>
         <v-flex xs12>
           <h1 class="title font-weight-regular grey--text my-2">Новое объявление</h1>
@@ -116,7 +116,7 @@
               />
               <v-btn
                 color="info"
-                class="ma-0"
+                class="ma-0 mt-4"
                 @click="submit"
               >
                 Далее
@@ -142,7 +142,7 @@ export default {
 
   components: {
     MultiplePhotoUpload,
-    AutocompleteInput
+    AutocompleteInput,
   },
 
   data: () => ({
@@ -211,7 +211,7 @@ export default {
     async submit() {
       await this.$validator.validateAll();
       if (!this.valid) return;
-      
+
       offersService.create({
         type: this.type,
         category_id: this.category_id,
