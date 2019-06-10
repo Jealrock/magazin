@@ -84,7 +84,7 @@ export default {
       text: 'Все',
       value: null,
     }, {
-      text: 'Отдаю даром',
+      text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',
     }, {
       text: 'Продам',
