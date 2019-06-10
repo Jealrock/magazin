@@ -9,11 +9,9 @@ module Api::V1
     has_scope :by_category_id do |_controller, scope, value|
       category = ::Category.find(value)
 
-      if category.parent_id
-        scope.by_category_id(value)
-      else
-        scope.by_category_id(category.children.pluck(:id))
-      end
+      ids = [category.id]
+      ids += category.children.pluck(:id) unless category.parent_id
+      scope.by_category_id(ids)
     end
 
     def index
