@@ -56,6 +56,8 @@ gem 'geocoder'
 
 # File upload
 gem 'carrierwave'
+gem 'fog'
+gem 'fog-aws'
 gem 'mini_magick'
 
 group :development, :test do
