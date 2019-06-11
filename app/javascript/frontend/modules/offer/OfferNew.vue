@@ -3,7 +3,7 @@
     <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap>
         <v-flex xs12>
-          <h1 class="title font-weight-regular grey--text my-2">Новое объявление</h1>
+          <h1 class="title font-weight-regular grey--text my-3">Новое объявление</h1>
           <v-divider />
         </v-flex>
       </v-layout>
@@ -31,13 +31,29 @@
                 v-model="category_id" 
                 v-validate="'required'"
                 :items="categories"
-                item-text="title"
                 item-value="id"
                 label="Категория"
                 data-vv-name="category_id"
                 :error-messages="errors.collect('category_id')"
                 required
-              />
+              >
+                <template slot="item" slot-scope="data">
+                  <div class="v-list__tile__content">
+                    <div class="v-list__tile__title"
+                      :class="{
+                        'body-1' : data.item.parent_id,
+                        'subheading font-weight-bold' : !data.item.parent_id,
+                      }">
+                      {{ data.item.title }}
+                    </div>
+                  </div>
+                </template>
+                <template slot="selection" slot-scope="data">
+                  <div class="v-select__selection v-select__selection--comma">
+                    {{ data.item.title }}
+                  </div>
+                </template>
+              </v-select>
               <v-select
                 v-model="type" 
                 v-validate="'required'"
@@ -147,17 +163,17 @@ export default {
 
   data: () => ({
     valid: true,
-    suggestedAddresses: [], 
-    suggestedAddressesLoaded: true, 
+    suggestedAddresses: [],
+    suggestedAddressesLoaded: true,
     types: [{
-      text: 'Отдам БисмилЛах1',
-      value: 'FreeOffer',
-    }, {
       text: 'Продам',
       value: 'CashOffer',
     }, {
       text: 'Обменяю',
       value: 'ExchangeOffer',
+    }, {
+      text: 'Отдам БисмилЛах1',
+      value: 'FreeOffer',
     }],
 
     type: 'CashOffer',
@@ -174,7 +190,7 @@ export default {
 
   computed: {
     ...mapGetters([
-      'currentUser', 'mainCategories', 'childCategories'
+      'currentUser', 'mainCategories', 'childCategories',
     ]),
 
     categories() {
@@ -183,7 +199,7 @@ export default {
         acc.push(cur);
         return acc.concat(this.childCategories(cur.id).map(category => category));
       }, []);
-    }
+    },
   },
 
   methods: {

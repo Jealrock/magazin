@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AppAlert />
     <AppSidebar />
     <AppHeader />
     <router-view />
@@ -8,9 +9,10 @@
 </template>
 
 <script>
-import AppHeader from '@frontend/core/components/AppHeader';
-import AppFooter from '@frontend/core/components/AppFooter';
-import AppSidebar from '@frontend/core/components/AppSidebar';
+import AppHeader from './AppHeader';
+import AppFooter from './AppFooter';
+import AppSidebar from './AppSidebar';
+import AppAlert from './AppAlert';
 import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
 import permissionsManager from  "@frontend/core/services/permissionsManager";
 
@@ -18,7 +20,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   components: {
-    AppHeader, AppFooter, AppSidebar,
+    AppHeader, AppFooter, AppSidebar, AppAlert,
   },
 
   computed: {
