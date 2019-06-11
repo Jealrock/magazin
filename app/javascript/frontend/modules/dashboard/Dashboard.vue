@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 import { DEFAULT_PER_PAGE, offersService } from '@frontend/modules/offer/services/offersService';
 
@@ -78,6 +78,8 @@ export default {
 
   methods: {
     ...mapMutations(['setAllOffers']),
+
+    ...mapActions(['showAlert']),
 
     loadOffers() {
       offersService.all(this.$route.query)

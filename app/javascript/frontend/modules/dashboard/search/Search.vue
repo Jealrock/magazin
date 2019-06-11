@@ -6,11 +6,27 @@
           v-model="category_id"
           placeholder="Любая категория"
           class="search__select-input white mt-0 pt-0 px-2"
-          item-text="title"
           item-value="id"
           :items="categories"
           :hide-details="true"
-        ></v-select>
+        >
+          <template slot="item" slot-scope="data">
+            <div class="v-list__tile__content">
+              <div class="v-list__tile__title"
+                :class="{
+                  'body-1' : data.item.parent_id,
+                  'subheading font-weight-bold' : !data.item.parent_id,
+                }">
+                {{ data.item.title }}
+              </div>
+            </div>
+          </template>
+          <template slot="selection" slot-scope="data">
+            <div class="v-select__selection v-select__selection--comma">
+              {{ data.item.title }}
+            </div>
+          </template>
+        </v-select>
       </v-flex>
       <v-flex xs12 md2>
         <v-select
@@ -103,7 +119,7 @@ export default {
     ...mapGetters(['mainCategories', 'childCategories']),
 
     categories() {
-      return [{title: 'Все категории', id: null}].concat(
+      return [{id: null, parent_id: null, title: 'Все категории',}].concat(
         this.mainCategories.reduce((acc, cur) => {
           if (acc.length != 0) acc.push({ divider: true });
           acc.push(cur);
