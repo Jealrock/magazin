@@ -7,5 +7,12 @@ module Api::V1::User
     step Contract::Validate()
     failure :invalid!
     step Contract::Persist()
+    step :actualize_model!
+
+    private
+
+    def actualize_model!(options, **)
+      options['model'] = options['model'].reload
+    end
   end
 end
