@@ -33,8 +33,8 @@
                 :items="categories"
                 item-value="id"
                 label="Категория"
-                data-vv-name="category_id"
-                :error-messages="errors.collect('category_id')"
+                data-vv-name="category"
+                :error-messages="errors.collect('category')"
                 required
               >
                 <template slot="item" slot-scope="data">
@@ -64,13 +64,14 @@
                 required
               />
               <v-text-field
-                v-if="type === 'CashOffer'"
+                v-if="type === 'CashOffer' || type === 'ServiceOffer'"
                 v-model="price"
                 v-validate="'required'"
                 label="Цена"
                 type="text"
                 data-vv-name="price"
                 :error-messages="errors.collect('price')"
+                @keyup.enter="submit"
                 required
               />
               <v-text-field
@@ -79,13 +80,17 @@
                 v-validate="'required'"
                 label="На что меняете?"
                 type="text"
+                data-vv-name="exchange item"
+                :error-messages="errors.collect('exchange item')"
+                @keyup.enter="submit"
+                required
                 hint="Если вы не ещё не определились - оставьте поле пустым"
                 persistent-hint
               />
               <v-text-field
                 v-model="title"
                 v-validate="'required'"
-                label="Название объявления"
+                :label="`Название ${'объявления'}`"
                 type="text"
                 data-vv-name="title"
                 :error-messages="errors.collect('title')"
@@ -96,12 +101,8 @@
               />
               <v-textarea
                 v-model="description"
-                v-validate="'required|min:10'"
                 label="Описание объявления"
-                data-vv-name="description"
-                :error-messages="errors.collect('description')"
                 @keyup.enter="submit"
-                required
                 hint="Не указывайте в описании телефон и e-mail — для этого есть отдельные поля"
                 persistent-hint
               />
@@ -135,7 +136,7 @@
                 class="ma-0 mt-4"
                 @click="submit"
               >
-                Далее
+                Добавить
               </v-btn> </v-form>
           </div>
         </v-flex>
@@ -171,6 +172,9 @@ export default {
     }, {
       text: 'Обменяю',
       value: 'ExchangeOffer',
+    }, {
+      text: 'Услуга',
+      value: 'ServiceOffer',
     }, {
       text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',
