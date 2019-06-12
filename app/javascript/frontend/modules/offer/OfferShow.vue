@@ -25,9 +25,7 @@
         />
       </v-layout>
       <div v-else>
-        <NotificationDialog
-          :visible="notificationDialog"
-          :offer-id="offer.id" />
+        <NotificationDialog :offer-id="offer.id" ref="notificationDialog" />
         <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
             <v-breadcrumbs :items="breadcrumbs"
@@ -107,7 +105,7 @@
             }">
             <v-btn block flat depressed
               class="button button_green white--text ma-0 mb-3"
-              @click="notificationDialog = true">
+              @click="showNotificationDialog">
               Отправить уведомление 
             </v-btn>
             <v-btn block flat depressed
@@ -178,8 +176,7 @@ export default {
   data() {
     return {
       phoneVisible: false,
-      loading: false,
-      notificationDialog: false,
+      loading: false
     };
   },
 
@@ -245,6 +242,10 @@ export default {
       this.loading = true
       this.toggleFavorite(this.offer.id)
         .then((response) => this.loading = false)
+    },
+
+    showNotificationDialog() {
+      this.$refs.notificationDialog.showMainDialog();
     },
 
     buildCategoryBreadcrumb(category) {

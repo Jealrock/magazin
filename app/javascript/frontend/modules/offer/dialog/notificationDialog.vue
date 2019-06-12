@@ -25,7 +25,7 @@
                 <v-btn
                   block
                   color="success"
-                  @click="mainDialog = false; settingsDialog = true">
+                  @click="showSettingDialog">
                   Конкретным пользователям
                 </v-btn>
               </v-flex>
@@ -89,11 +89,6 @@ import { offersService } from '@frontend/modules/offer/services/offersService';
 
 export default {
   props: {
-    visible: {
-      type: Boolean,
-      default: false,
-    },
-
     offerId: {
       type: Number,
       required: true,
@@ -147,6 +142,16 @@ export default {
       'showAlert',
     ]),
 
+    showMainDialog() {
+      this.mainDialog = true;
+      this.settingsDialog = false;
+    },
+
+    showSettingDialog() {
+      this.mainDialog = false;
+      this.settingsDialog = true;
+    },
+
     notify() {
       offersService.notify(this.offerId)
         .then(resp => {
@@ -159,6 +164,6 @@ export default {
           });
         });
     },
-  },
+  }
 };
 </script>
