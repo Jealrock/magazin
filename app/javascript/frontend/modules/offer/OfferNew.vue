@@ -90,7 +90,7 @@
               <v-text-field
                 v-model="title"
                 v-validate="'required'"
-                :label="`Название ${'объявления'}`"
+                :label="`Название ${type === 'ServiceOffer' ? 'услуги' : 'объявления'}`"
                 type="text"
                 data-vv-name="title"
                 :error-messages="errors.collect('title')"
@@ -101,7 +101,7 @@
               />
               <v-textarea
                 v-model="description"
-                label="Описание объявления"
+                :label="`Описание ${type === 'ServiceOffer' ? 'услуги' : 'объявления'}`"
                 @keyup.enter="submit"
                 hint="Не указывайте в описании телефон и e-mail — для этого есть отдельные поля"
                 persistent-hint
