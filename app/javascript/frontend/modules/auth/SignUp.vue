@@ -150,7 +150,7 @@ export default {
           });
 
           if (!this.beforeAuthRoute) {
-            this.$router.push('/');
+            this.$router.push('/profile/settings');
             return;
           }
           this.$router.push(this.beforeAuthRoute);
