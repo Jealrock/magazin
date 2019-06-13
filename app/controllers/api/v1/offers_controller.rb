@@ -14,6 +14,12 @@ module Api::V1
       scope.by_category_id(ids)
     end
 
+    has_scope :min_price
+    has_scope :max_price
+    has_scope :min_date
+    has_scope :max_date
+    has_scope :only_with_photos, type: :boolean
+
     def index
       run Offer::Index
       result_index(result, serializer: ::Api::V1::Offers::ListItemSerializer)
