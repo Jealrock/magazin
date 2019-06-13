@@ -25,6 +25,7 @@
         />
       </v-layout>
       <div v-else>
+        <NotificationDialog :offer-id="offer.id" ref="notificationDialog" />
         <v-layout row wrap class="mt-5">
           <v-flex xs12 sm6>
             <v-breadcrumbs :items="breadcrumbs"
@@ -76,8 +77,7 @@
                   </p>
                 </v-btn>
               </div>
-              <p class="body-1 mb-0">
-                <span class="error--text" v-if="offer.closed">Объявление было закрыто владельцем</span>
+              <p class="body-1 mb-0"> <span class="error--text" v-if="offer.closed">Объявление было закрыто владельцем</span>
                 <span v-else>Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}</span>
               </p>
             </v-layout>
@@ -105,88 +105,9 @@
             }">
             <v-btn block flat depressed
               class="button button_green white--text ma-0 mb-3"
-              @click="pushNotificationDialog = true">
-              Отправить PUSH нотификацию 
+              @click="showNotificationDialog">
+              Отправить уведомление 
             </v-btn>
-            <v-dialog v-if="this.user.id === this.offer.user_id"
-              v-model="pushNotificationDialog"
-              width="600">
-              <v-card>
-                <v-card-title primary-title>
-                  <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление</h4>
-                  <v-container class="pa-0">
-                    <v-layout row wrap justify-center class="mt-4">
-                      <v-flex xs12 sm6
-                        :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                        <v-btn
-                          block
-                          color="info"
-                          @click="notify">
-                          Всем пользователям
-                        </v-btn>
-                      </v-flex>
-                      <v-flex xs12 sm6 
-                        :class="{ 
-                          'pl-2' : $vuetify.breakpoint.smAndUp,
-                          'mt-2' : $vuetify.breakpoint.xsOnly,
-                        }">
-                        <v-btn
-                          block
-                          color="success"
-                          @click="pushNotificationDialog = false; pushNotificationParametersDialog = true">
-                          Конкретным пользователям
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-title>
-              </v-card>
-            </v-dialog>
-            <v-dialog v-model="pushNotificationParametersDialog"
-              :width="600">
-              <v-card>
-                <v-card-title primary-title>
-                  <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление пользователям</h4>
-                  <v-container class="pa-0">
-                    <v-layout row wrap justify-center class="mt-4">
-                      <v-flex xs12 sm6>
-                        <v-checkbox
-                          v-model="notifyByCategories"
-                          label="По категориям" />
-                      </v-flex>
-                      <v-flex xs12 sm6>
-                        <v-autocomplete
-                          :disabled="!notifyByCategories"
-                          multiple chips
-                          :items="categories"
-                          label="Выберите" />
-                      </v-flex>
-                      <v-flex xs12 sm6>
-                        <v-checkbox
-                          v-model="notifyByGeo"
-                          label="По геолокации" />
-                      </v-flex>
-                      <v-flex xs12 sm6>
-                        <v-autocomplete
-                          :disabled="!notifyByGeo"
-                          multiple chips
-                          :items="geos"
-                          label="Выберите" />
-                      </v-flex>
-                      <v-flex xs12 sm6
-                        :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                        <v-btn
-                          block
-                          color="success"
-                          @click="notify">
-                          Отправить
-                        </v-btn>
-                      </v-flex>
-                    </v-layout>
-                  </v-container>
-                </v-card-title>
-              </v-card>
-            </v-dialog>
             <v-btn block flat depressed
               class="offer-view__button-show-phone button_blue ma-0"
               @click="phoneVisible = !phoneVisible">
@@ -243,52 +164,19 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 import Search from '@frontend/modules/dashboard/search/Search';
 import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar';
+import NotificationDialog from './dialog/notificationDialog';
 
 import { offersService } from './services/offersService';
 
 export default {
   components: {
-    Search, CategoriesBar,
+    Search, CategoriesBar, NotificationDialog,
   },
 
   data() {
     return {
       phoneVisible: false,
-      loading: false,
-      pushNotificationDialog: false,
-      pushNotificationParametersDialog: false,
-      notifyByCategories: true,
-      notifyByGeo: false,
-
-      categories: [
-        'Транспорт',
-        'Для дома и дачи',
-        'Для бизнеса',
-        'Недвижимость',
-        'Бытовая электроника',
-        'Работа',
-        'Услуги',
-        'Хобби и отдых',
-        'Личные вещи',
-        'Животные',
-      ],
-      geos: [
-        'Москва',
-        'Санкт-Петербург',
-        'Новосибирск',
-        'Екатеринбург',
-        'Нижний Новгород',
-        'Казань',
-        'Челябинск',
-        'Омск',
-        'Самара',
-        'Ростов-на-Дону',
-        'Уфа',
-        'Красноярск',
-        'Пермь',
-        'Воронеж',
-        'Волгоград',
-      ],
+      loading: false
     };
   },
 
@@ -313,7 +201,7 @@ export default {
     },
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer') return `${this.offer.price} руб.`;
+      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer') return `${this.offer.price} руб.`;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
@@ -343,7 +231,6 @@ export default {
 
     ...mapActions([
       'toggleFavorite',
-      'showAlert',
     ]),
 
     close() {
@@ -357,17 +244,8 @@ export default {
         .then((response) => this.loading = false)
     },
 
-    notify() {
-      offersService.notify(this.offer.id)
-        .then(resp => { 
-          this.setOffer(resp) 
-          this.pushNotificationDialog = false;
-          this.pushNotificationParametersDialog = false;
-          this.showAlert({
-            type: 'success',
-            text: 'Успешно отправлено',
-          });
-        });
+    showNotificationDialog() {
+      this.$refs.notificationDialog.showMainDialog();
     },
 
     buildCategoryBreadcrumb(category) {
