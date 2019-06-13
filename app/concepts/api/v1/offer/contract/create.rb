@@ -17,7 +17,6 @@ module Offer::Contract
       required(:type).filled
       required(:category_id).filled
       required(:title).filled
-      required(:description).filled(min_size?: 10)
       required(:address).filled
       required(:phone_number).filled
     end
