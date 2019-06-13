@@ -21,13 +21,13 @@
 /yarn-error.log
 
 /public/assets
+/public/uploads
 .byebug_history
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
 /public/packs
 /public/packs-test
-/yarn.lock
 /package-lock.json
 yarn-debug.log*
 .yarn-integrity

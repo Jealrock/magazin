@@ -1,5 +1,5 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'test';
+process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
-const environment = require('./environment')
+const sharedWebpackConfig = require('./shared');
 
-module.exports = environment.toWebpackConfig()
+module.exports = sharedWebpackConfig;
