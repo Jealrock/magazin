@@ -56,7 +56,7 @@
             <v-icon>favorite_border</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <router-link to="/favorites"
+            <router-link to="/profile/favorites"
               class="black--text d-flex full_height full_width align-center">
               Избранное
             </router-link>

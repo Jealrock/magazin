@@ -1,10 +1,12 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
+const DEFAULT_PER_PAGE = 24;
+
 class FavoritesService {
-  all() {
+  all(params) {
     return axiosInstance
-      .get('/favorites')
-      .then((response) => response)
+      .get('/favorites', {params: params})
+      .then((response) => response.data)
       .catch((error) => {
         throw new Error(error);
       });
@@ -30,4 +32,4 @@ class FavoritesService {
 }
 
 const favoritesService = new FavoritesService();
-export { favoritesService }
+export { DEFAULT_PER_PAGE, favoritesService }

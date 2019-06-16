@@ -5,8 +5,7 @@ const requireFavorites = async function(to, from, next) {
   if (store.getters.currentUser.uid) {
     favoritesService.all()
       .then((response) => {
-        const offers = response.data.data.map((offer) => offer.attributes);
-        store.commit('setFavorites', offers);
+        store.commit('setFavorites', response);
       })
       .catch((error) => {
         throw new Error(error);
