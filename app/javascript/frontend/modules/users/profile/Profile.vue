@@ -4,27 +4,9 @@
       <v-layout row wrap
         class="mt-3">
         <v-flex xs12 sm3>
-          <div :class="{
-              'mr-3' : $vuetify.breakpoint.smAndUp,
-            }"
-            class="grey lighten-3 py-3">
-            <router-link to="/profile"
-              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
-              Мои объявления
-            </router-link>
-            <router-link to="/favorites"
-              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
-              Избранное
-            </router-link>
-            <router-link to="/messages"
-              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
-              Сообщения
-            </router-link>
-            <router-link to="/profile/settings"
-              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
-              Настройки
-            </router-link>
-          </div>
+          <ProfileNavigation :class="{
+            'mr-3' : $vuetify.breakpoint.smAndUp,
+          }"/>
         </v-flex>
         <v-flex xs12 sm9>
           <h1 class="font-weight-bold">Мои объявления</h1>
@@ -59,10 +41,11 @@ import { mapGetters, mapMutations } from 'vuex';
 import { DEFAULT_PER_PAGE, usersService } from '@frontend/modules/users/services/usersService';
 
 import Gallery from '@frontend/modules/dashboard/gallery/Gallery';
+import ProfileNavigation from './ProfileNavigation';
 
 export default {
   components: {
-    Gallery,
+    Gallery, ProfileNavigation,
   },
 
   data: () => ({

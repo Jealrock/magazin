@@ -1,4 +1,4 @@
-import { favoritesService } from '@frontend/modules/favorites/services/favoritesService';
+import { favoritesService } from '@frontend/modules/users/profile/favorites/services/favoritesService';
 
 const state = {
   favorites: [],
