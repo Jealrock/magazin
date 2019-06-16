@@ -7,6 +7,7 @@ import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import VueMoment from 'vue-moment';
 import VueLodash from 'vue-lodash';
+import ActionCableVue from 'actioncable-vue';
 import './registerServiceWorker';
 
 import Vuetify from 'vuetify';
@@ -17,8 +18,15 @@ import { axiosInstance } from '@frontend/core/services/axios';
 import AppLayout from '@frontend/core/components/AppLayout';
 import store from '../store/store';
 
+import configs from '@/packs/configs';
 
 Vue.component('app-layout', AppLayout);
+
+Vue.use(ActionCableVue, {
+  debug: !configs.isProduction,
+  debugLevel: 'error',
+  connectionUrl: configs.webSocketUrl,
+});
 
 const moment = require('moment');
 require('moment/locale/ru');

@@ -8,6 +8,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json } do
     namespace :v1 do
+      mount ActionCable.server => '/cable'
+
       resources :users, only: %i[update] do
         collection do
           get :offers

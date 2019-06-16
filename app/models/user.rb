@@ -20,4 +20,8 @@ class User < ApplicationRecord
   has_many :favorite_offers, through: :favorites, source: :offer
 
   after_validation :geocode
+
+  def messages
+    Message.with(id)
+  end
 end

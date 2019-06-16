@@ -1,5 +1,6 @@
 import Profile from './Profile.vue'
 import Settings from './Settings.vue'
+import Messages from './Messages.vue'
 import requireAuth from '@frontend/core/services/requireAuth'
 import requireOffers from './services/requireOffers'
 
@@ -14,5 +15,11 @@ export const PROFILE_ROUTER = {
 export const PROFILE_SETTINGS_ROUTER = {
   path: '/profile/settings',
   component: Settings,
+  beforeEnter: requireAuth
+};
+
+export const PROFILE_MESSAGES_ROUTER = {
+  path: '/profile/messages',
+  component: Messages,
   beforeEnter: requireAuth
 };
