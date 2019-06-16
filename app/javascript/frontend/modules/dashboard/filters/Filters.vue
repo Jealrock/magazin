@@ -134,7 +134,7 @@ export default {
 
     filter() {
       this.$router.push({
-        path: '/',
+        path: '/search',
         query: {
           ...this.$route.query,
           min_price: this.minPrice,

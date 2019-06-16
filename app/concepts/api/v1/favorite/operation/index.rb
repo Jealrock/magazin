@@ -3,7 +3,7 @@ module Api::V1::Favorite
     step :model!
 
     def model!(options, current_user:, **)
-      options['model'] = current_user.favorite_offers
+      options['model'] = current_user.favorite_offers.order(created_at: :desc)
     end
   end
 end

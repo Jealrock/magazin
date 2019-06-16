@@ -6,7 +6,7 @@
           <CategoriesBar />
         </v-flex>
         <v-flex xs12>
-          <Search />
+          <SearchBar />
         </v-flex>
       </v-layout>
       <v-layout
@@ -162,7 +162,7 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 
-import Search from '@frontend/modules/dashboard/search/Search';
+import SearchBar from '@frontend/modules/dashboard/search-bar/SearchBar';
 import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar';
 import NotificationDialog from './dialog/notificationDialog';
 
@@ -170,7 +170,7 @@ import { offersService } from './services/offersService';
 
 export default {
   components: {
-    Search, CategoriesBar, NotificationDialog,
+    SearchBar, CategoriesBar, NotificationDialog,
   },
 
   data() {
