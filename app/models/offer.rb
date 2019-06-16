@@ -25,8 +25,8 @@ class Offer < ApplicationRecord
 
   scope :min_price, ->(value) { where('offers.price >= ?', value) }
   scope :max_price, ->(value) { where('offers.price <= ?', value) }
-  scope :min_date, ->(value) { where('offers.updated_at >= ?', value) }
-  scope :max_date, ->(value) { where('offers.updated_at <= ?', value) }
+  scope :min_date, ->(value) { where('cast(offers.created_at as date) >= ?', value) }
+  scope :max_date, ->(value) { where('cast(offers.created_at as date) <= ?', value) }
   scope :only_with_photos, -> { joins(:photos) }
 
   def close

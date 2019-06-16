@@ -98,7 +98,7 @@
 <script>
 import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
 import { mapGetters, mapMutations } from 'vuex'
-import usersService from './services/usersService';
+import { usersService } from './services/usersService';
 import geolocationsService from '@frontend/core/services/geolocationsService';
 
 export default {

@@ -3,6 +3,7 @@ const state = {
   signedIn: false,
   authData: {},
   userOffers: [],
+  paginationData: {},
 }
 
 const getters = {
@@ -12,6 +13,10 @@ const getters = {
 
   userOffers (state) {
     return state.userOffers;
+  },
+
+  userOffersPaginationData (state) {
+    return state.paginationData;
   },
 }
 
@@ -36,8 +41,9 @@ const mutations = {
     state.authData = {}
   },
 
-  setUserOffers (state, offers) {
-    state.userOffers = offers;
+  setUserOffers (state, data) {
+    state.userOffers = data.data.map(offer => offer.attributes);
+    state.paginationData = data.meta.pagination;
   },
 }
 

@@ -9,5 +9,5 @@ export const FAVORITES_LIST = {
   path: '/favorites',
   name: 'favoritesList',
   component: FavoritesList,
-  beforeEnter: multiguard([requireAuth, requireFavorites]),
+  beforeEnter: multiguard([requireAuth]),
 }

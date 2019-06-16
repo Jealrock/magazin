@@ -1,28 +1,52 @@
 <template>
   <div class="user-profile">
-    <v-container class="pa-0 px-3">
+    <v-container class="pa-0 px-3 pb-5">
       <v-layout row wrap
         class="mt-3">
         <v-flex xs12 sm3>
-          <div class="grey lighten-3 px-3 py-2">
+          <div :class="{
+              'mr-3' : $vuetify.breakpoint.smAndUp,
+            }"
+            class="grey lighten-3 py-3">
+            <router-link to="/profile"
+              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
+              Мои объявления
+            </router-link>
+            <router-link to="/favorites"
+              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
+              Избранное
+            </router-link>
+            <router-link to="/messages"
+              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
+              Сообщения
+            </router-link>
             <router-link to="/profile/settings"
-              class="link link_green body-1 font-weight-bold">
+              class="py-1 px-3 link link_green body-1 font-weight-bold d-block">
               Настройки
             </router-link>
           </div>
         </v-flex>
-        <v-flex xs12 sm9 class="pl-3">
-          <h1 class="font-weight-bold">Ваши объявления</h1>
-          <v-divider class="mb-3" />
-          <p v-if="!userOffers.length">Пока у вас нет объявлений</p>
-          <Gallery v-else
-            :items="userOffers" 
-            :items-in-row="3"/>
+        <v-flex xs12 sm9>
+          <h1 class="font-weight-bold">Мои объявления</h1>
           <v-btn depressed flat
-            class="button_green white--text body-1 font-weight-regular text-none px-3 ma-0"
+            class="button_green white--text body-1 font-weight-regular text-none px-3 ma-0 mt-2"
             @click="$router.push('/offer')">
             Подать объявление
           </v-btn>
+          <v-divider class="my-3" />
+          <p v-if="!userOffers.length">Пока у вас нет объявлений</p>
+          <Gallery v-else
+            :items="userOffers" 
+            :items-in-row="4"/>
+          <v-layout row wrap justify-center>
+            <v-pagination
+              v-if="userOffersPaginationData.total_count > per_page"
+              total-visible="per_page"
+              circle
+              :value="userOffersPaginationData.page"
+              :length="userOffersPaginationData.pages"
+              @input="changePage" />
+          </v-layout>
         </v-flex>
       </v-layout>
     </v-container>
@@ -30,7 +54,9 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
+
+import { DEFAULT_PER_PAGE, usersService } from '@frontend/modules/users/services/usersService';
 
 import Gallery from '@frontend/modules/dashboard/gallery/Gallery';
 
@@ -39,10 +65,49 @@ export default {
     Gallery,
   },
 
+  data: () => ({
+    per_page: DEFAULT_PER_PAGE,
+  }),
+
   computed: {
     ...mapGetters([
       'userOffers',
+      'userOffersPaginationData',
     ]),
+  },
+
+  created() {
+    this.loadOffers();
+  },
+
+  methods: {
+    ...mapMutations([
+      'setUserOffers',
+    ]),
+
+    loadOffers() {
+      usersService.getOffers(this.$route.query)
+        .then((response) => {
+          this.setUserOffers(response);
+        })
+        .catch((error) => {
+          return this.$router.push('/');
+        });
+    },
+
+    changePage(page) {
+      this.$router.push({
+        path: '/profile',
+        query: {
+          ...this.$route.query,
+          page: page,
+        },
+      });
+    },
+  },
+
+  watch: {
+    '$route' : 'loadOffers',
   },
 };
 </script>

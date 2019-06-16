@@ -10,7 +10,7 @@ module Api::V1
 
     def offers
       run User::Offers
-      result_show_create(result, serializer: ::Api::V1::Offers::ListItemSerializer)
+      result_index(result, serializer: ::Api::V1::Offers::ListItemSerializer)
     end
   end
 end

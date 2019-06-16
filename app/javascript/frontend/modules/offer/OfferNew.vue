@@ -9,15 +9,6 @@
       </v-layout>
       <v-layout row wrap mt-4>
         <v-flex xs12>
-          <v-alert
-            :value="error"
-            type="error"
-            class="mx-0 mb-3"
-            outline
-          >
-            <div v-html="error" />
-          </v-alert>
-
           <div>
             <v-form
               ref="form"
@@ -131,6 +122,16 @@
                 @keyup.enter="submit"
                 required
               />
+
+              <v-alert
+                :value="error"
+                type="error"
+                class="mx-0 mb-3"
+                outline
+              >
+                <div v-html="error" />
+              </v-alert>
+
               <v-btn
                 color="info"
                 class="ma-0 mt-4"

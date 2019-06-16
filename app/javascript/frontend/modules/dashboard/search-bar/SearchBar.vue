@@ -106,6 +106,9 @@ export default {
       text: 'Продам',
       value: 'CashOffer',
     }, {
+      text: 'Услуги',
+      value: 'ServiceOffer',
+    }, {
       text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',
     }],
@@ -164,7 +167,7 @@ export default {
 
     find() {
       this.$router.push({ 
-        path: '/',
+        path: '/search',
         query: {
           ...this.$route.query,
           by_title: this.title,

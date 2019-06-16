@@ -2,6 +2,7 @@ import { favoritesService } from '@frontend/modules/favorites/services/favorites
 
 const state = {
   favorites: [],
+  paginationData: {},
 };
 
 const getters = {
@@ -15,12 +16,17 @@ const getters = {
     return function(id) {
       return ids.includes(id);
     }
-  }
+  },
+
+  favoritesPaginationData(state) {
+    return state.paginationData;
+  },
 };
 
 const mutations = {
-  setFavorites(state, favoriteOffers) {
-    state.favorites = favoriteOffers
+  setFavorites(state, data) {
+    state.favorites = data.data.map(offer => offer.attributes);
+    state.paginationData = data.meta.pagination;
   },
 
   addToFavorites(state, offer) {
