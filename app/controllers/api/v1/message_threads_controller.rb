@@ -5,7 +5,7 @@ module Api::V1
 
     def index
       run MessageThread::Index
-      result_index(result, serializer: ::Api::V1::MessageSerializer)
+      result_index(result, serializer: ::Api::V1::LastMessageInThreadSerializer)
     end
   end
 end

@@ -5,7 +5,14 @@ module Api::V1::Message
     step :model!
 
     def model!(options, current_user:, params:, **)
-      options['model'] = current_user.messages.with(params[:user_id]).ordered_by_time
+      options['model'] = if params[:with_user_id] == current_user.id
+                           # check this later
+                           Message.where(from_user_id: params[:with_user_id], to_user_id: params[:with_user_id])
+                                  .ordered_by_time
+                                  .distinct
+                         else
+                           current_user.messages.with(params[:with_user_id]).ordered_by_time.distinct
+                         end
     end
   end
 end

@@ -10,6 +10,13 @@ class UsersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
+  async find(userId) {
+    return axiosInstance
+      .get(`/users/${userId}`)
+      .then((resp) => resp.data.data)
+      .catch(error => { throw new Error(error) });
+  }
+
   async getOffers(params) {
     return axiosInstance
       .get('/users/offers', {params: {...params, per_page: DEFAULT_PER_PAGE}})

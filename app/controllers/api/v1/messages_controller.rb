@@ -9,8 +9,8 @@ module Api::V1
     end
 
     def create
-      run Message::Offers
-      result_show_create(result, serializer: ::Api::V1::Offers::ListItemSerializer)
+      run Message::Create
+      result_show_create(result, serializer: ::Api::V1::MessageSerializer)
     end
   end
 end

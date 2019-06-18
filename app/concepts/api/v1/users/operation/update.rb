@@ -1,7 +1,7 @@
 module Api::V1::User
   class Update < ApplicationOperation
     step Model(User, :find_by)
-    step Policy::Pundit(Api::V1::UserPolicy, :update?)
+    step Policy::Pundit(UserPolicy, :update?)
     failure :authorization_error!, fail_fast: true
     step Contract::Build(constant: User::Contract::Update)
     step Contract::Validate()

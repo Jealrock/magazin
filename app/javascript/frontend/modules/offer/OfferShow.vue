@@ -109,6 +109,11 @@
               Отправить уведомление 
             </v-btn>
             <v-btn block flat depressed
+              class="button button_green white--text ma-0 mb-3"
+              @click="sendMessage">
+              Написать сообщение 
+            </v-btn>
+            <v-btn block flat depressed
               class="offer-view__button-show-phone button_blue ma-0"
               @click="phoneVisible = !phoneVisible">
                 <p class="white--text text-none ma-0">
@@ -246,6 +251,15 @@ export default {
 
     showNotificationDialog() {
       this.$refs.notificationDialog.showMainDialog();
+    },
+
+    sendMessage() {
+      this.$router.push({
+        path: '/profile/messages',
+        query: {
+          with_user_id: this.offer.user_id,
+        },
+      });
     },
 
     buildCategoryBreadcrumb(category) {

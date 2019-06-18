@@ -41,6 +41,9 @@ Rails.application.configure do
   config.action_mailer.asset_host = 'http://localhost:3000'
   config.asset_host = ENV['ASSET_HOST'] 
 
+  config.action_cable.url = "ws://localhost:3000/api/v1/cable"   
+  config.action_cable.allowed_request_origins = ['http://localhost:3000']
+
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
 

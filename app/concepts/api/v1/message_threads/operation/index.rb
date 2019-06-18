@@ -5,10 +5,9 @@ module Api::V1::MessageThread
     step :model!
 
     def model!(options, current_user:, **)
-      options['model'] = current_user.messages.includes(:from_user, :to_user)
-                                     .group(:from_user_id, :to_user_id)
-                                     .limit(1)
-                                     .uniq
+      options['model'] = Message.includes(:from_user, :to_user)
+                                .recent_messages_with(current_user.id)
+                                .distinct
     end
   end
 end

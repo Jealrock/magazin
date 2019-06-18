@@ -10,12 +10,14 @@ Rails.application.routes.draw do
     namespace :v1 do
       mount ActionCable.server => '/cable'
 
-      resources :users, only: %i[update] do
+      resources :users, only: %i[update show] do
         collection do
           get :offers
         end
       end
       resources :favorites, only: %i[index create destroy]
+      resources :messages, only: %i[index create]
+      resources :message_threads, only: %i[index]
       resources :geolocations, only: %i[index]
       resources :subscriptions, only: %i[create]
       resources :categories, only: %i[index]
