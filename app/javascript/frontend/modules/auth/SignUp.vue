@@ -149,12 +149,8 @@ export default {
             if (isGranted) subscriptionsManager.createSubscription();
           });
 
-          if (!this.beforeAuthRoute) {
-            this.$router.push('/profile/settings');
-            return;
-          }
-          this.$router.push(this.beforeAuthRoute);
           this.setBeforeAuthRoute(null);
+          this.$router.push('/profile/settings');
         })
         .catch((error) => {
           this.error = error;
