@@ -24,7 +24,7 @@ module Api::V1::Offer
       JSON.generate(
         title: 'Новое объявление',
         body: offer.title,
-        icon: offer.photos.first.file.url(:thumb),
+        icon: offer.photos.first&.file&.url(:thumb),
         offer_id: offer.id
       )
     end
