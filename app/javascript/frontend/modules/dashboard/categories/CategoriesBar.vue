@@ -35,19 +35,6 @@
             {{ child.title }}
           </router-link>
         </v-flex>
-        <!--
-        <v-flex xs12 md-3 v-for="(main, mainIndex) in mainCategories" :key="mainIndex">
-          <div
-            v-for="(child, childIndex) in childCategories(main.id)"
-            :key="childIndex"
-          >
-            <router-link 
-              :to="categoryLink(child.title)"
-              class="link link_blue body-1 py-2 pr-3"
-            >{{ child.title }}</router-link>
-          </div>
-        </v-flex>
-        -->
       </v-layout>
     </v-menu>
   </nav>
@@ -66,7 +53,7 @@ export default {
         if (!category) return { path: '/' };
 
         return {
-          path: '/',
+          path: '/search',
           query: {
             by_category_id: category.id
           }

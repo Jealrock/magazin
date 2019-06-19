@@ -1,5 +1,7 @@
 import { axiosInstance } from '@frontend/core/services/axios';
 
+const DEFAULT_PER_PAGE = 24;
+
 class UsersService {
   async update(params) {
     return axiosInstance
@@ -8,10 +10,17 @@ class UsersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
-  async getOffers() {
+  async find(userId) {
     return axiosInstance
-      .get(`/users/offers`)
+      .get(`/users/${userId}`)
       .then((resp) => resp.data.data)
+      .catch(error => { throw new Error(error) });
+  }
+
+  async getOffers(params) {
+    return axiosInstance
+      .get('/users/offers', {params: {...params, per_page: DEFAULT_PER_PAGE}})
+      .then((resp) => resp.data)
       .catch(error => { throw new Error(error) });
   }
 
@@ -33,4 +42,4 @@ class UsersService {
 }
 
 const usersService = new UsersService();
-export default usersService;
+export { DEFAULT_PER_PAGE, usersService }

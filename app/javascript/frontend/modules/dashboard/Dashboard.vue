@@ -8,30 +8,27 @@
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <Search />
+          <SearchBar />
         </v-flex>
       </v-layout>
       <v-layout row wrap class="mt-3">
         <v-flex xs12>
-          <p class="body-2 font-weight-regular black--text mb-1">
+          <p class="body-2 font-weight-regular black--text mb-0">
             Всего обьявлений: 
-            <!-- <span class="dashboard__location">Москве</span>: -->
             <span class="dashboard__items-count grey--text">{{ offersPaginationData.total_count }}</span>
           </p>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
-          <CategoriesList />
+          <h2 class="title font-weight-bold my-3">Объявления</h2>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
         <v-flex xs12>
           <Gallery
-            title="Обьявления"
             :items="this.allOffers"
-            :items-in-row="4"
-          />
+            :items-in-row="4" />
         </v-flex>
       </v-layout>
       <v-layout row wrap justify-center>
@@ -44,11 +41,6 @@
           @input="changePage"
         ></v-pagination>
       </v-layout>
-      <!-- <v-layout row wrap> -->
-      <!--   <v-flex xs12> -->
-      <!--     <Gallery title="Новые объявления" /> -->
-      <!--   </v-flex> -->
-      <!-- </v-layout> -->
     </v-container>
   </div>
 </template>
@@ -59,21 +51,20 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { DEFAULT_PER_PAGE, offersService } from '@frontend/modules/offer/services/offersService';
 
 import CategoriesBar from './categories/CategoriesBar';
-import CategoriesList from './categories/CategoriesList';
-import Search from './search/Search';
+import SearchBar from './search-bar/SearchBar';
 import Gallery from './gallery/Gallery';
 
 export default {
   components: {
-    CategoriesBar, CategoriesList, Search, Gallery,
+    CategoriesBar, SearchBar, Gallery,
   },
 
   data: () => ({
-    per_page: DEFAULT_PER_PAGE
+    per_page: DEFAULT_PER_PAGE,
   }),
 
   computed: {
-    ...mapGetters(['allOffers', 'offersPaginationData'])
+    ...mapGetters(['allOffers', 'offersPaginationData']),
   },
 
   methods: {
@@ -94,20 +85,20 @@ export default {
     changePage(page) {
       this.$router.push({
         path: '/',
-        query: { 
+        query: {
           ...this.$route.query,
-          page: page 
-        }
-      })
+          page: page,
+        },
+      });
     },
   },
 
   created() {
-    this.loadOffers()
+    this.loadOffers();
   },
 
   watch: {
     '$route': 'loadOffers'
-  }
+  },
 };
 </script>

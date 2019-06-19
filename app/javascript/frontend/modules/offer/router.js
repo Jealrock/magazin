@@ -6,7 +6,7 @@ import OfferNew from './OfferNew';
 import requireAuth from '@frontend/core/services/requireAuth';
 import requireOffer from './services/requireOffer';
 import requireCategories from '@frontend/core/services/requireCategories';
-import requireFavorites from '@frontend/modules/favorites/services/requireFavorites';
+import requireFavorites from '@frontend/modules/users/profile/favorites/services/requireFavorites';
 
 export const OFFER_SHOW_ROUTER = {
   path: '/offer/:id',

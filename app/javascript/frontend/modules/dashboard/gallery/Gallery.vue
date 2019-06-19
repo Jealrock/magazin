@@ -1,8 +1,5 @@
 <template>
   <div class="gallery">
-    <h2 class="gallery__title">
-      {{ title }}
-    </h2>
     <v-container v-if="items.length" 
       grid-list-md class="pa-0">
       <v-layout row wrap>
@@ -34,10 +31,6 @@ export default {
     GalleryItem,
   },
   props: {
-    title: {
-      type: String,
-      default: '',
-    },
     items: {
       type: Array,
       default: () => [],

@@ -8,9 +8,14 @@ module Api::V1
       result_show_create(result, serializer: ::Api::V1::UserSerializer)
     end
 
+    def show
+      run User::Show
+      result_show_create(result, serializer: ::Api::V1::UserShowSerializer)
+    end
+
     def offers
       run User::Offers
-      result_show_create(result, serializer: ::Api::V1::Offers::ListItemSerializer)
+      result_index(result, serializer: ::Api::V1::Offers::ListItemSerializer)
     end
   end
 end

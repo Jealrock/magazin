@@ -6,7 +6,7 @@
           <CategoriesBar />
         </v-flex>
         <v-flex xs12>
-          <Search />
+          <SearchBar />
         </v-flex>
       </v-layout>
       <v-layout
@@ -108,6 +108,13 @@
               @click="showNotificationDialog">
               Отправить уведомление 
             </v-btn>
+            <v-btn 
+              v-if="user.id && user.id != offer.user_id"
+              block flat depressed
+              class="button button_green white--text ma-0 mb-3"
+              @click="sendMessage">
+              Написать сообщение 
+            </v-btn>
             <v-btn block flat depressed
               class="offer-view__button-show-phone button_blue ma-0"
               @click="phoneVisible = !phoneVisible">
@@ -162,7 +169,7 @@
 <script>
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 
-import Search from '@frontend/modules/dashboard/search/Search';
+import SearchBar from '@frontend/modules/dashboard/search-bar/SearchBar';
 import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar';
 import NotificationDialog from './dialog/notificationDialog';
 
@@ -170,7 +177,7 @@ import { offersService } from './services/offersService';
 
 export default {
   components: {
-    Search, CategoriesBar, NotificationDialog,
+    SearchBar, CategoriesBar, NotificationDialog,
   },
 
   data() {
@@ -246,6 +253,15 @@ export default {
 
     showNotificationDialog() {
       this.$refs.notificationDialog.showMainDialog();
+    },
+
+    sendMessage() {
+      this.$router.push({
+        path: '/profile/messages',
+        query: {
+          with_user_id: this.offer.user_id,
+        },
+      });
     },
 
     buildCategoryBreadcrumb(category) {

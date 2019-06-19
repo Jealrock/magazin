@@ -167,7 +167,7 @@ export default {
 
     find() {
       this.$router.push({ 
-        path: '/',
+        path: '/search',
         query: {
           ...this.$route.query,
           by_title: this.title,

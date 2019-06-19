@@ -52,7 +52,7 @@ class OffersService {
     }
     else if (params.type === "ExchangeOffer")
       formData.set('price', null);
-    else if (params.type === "CashOffer")
+    else if (params.type === "CashOffer" || params.type === "ServiceOffer")
       formData.set('exchange_item', null);
 
     return formData;

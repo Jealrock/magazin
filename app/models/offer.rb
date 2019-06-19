@@ -19,9 +19,15 @@ class Offer < ApplicationRecord
 
   scope :opened, -> { where(closed: false) }
   scope :by_category_id, ->(id) { where(category_id: id) }
-  scope :by_title, ->(title) { where('lower(offers.title) LIKE ?', "%#{title}%") }
+  scope :by_title, ->(title) { where('lower(offers.title) LIKE ?', "%#{title.downcase}%") }
   scope :by_city, ->(city) { where(city: city) }
   scope :by_type, ->(type) { where(type: type) }
+
+  scope :min_price, ->(value) { where('offers.price >= ?', value) }
+  scope :max_price, ->(value) { where('offers.price <= ?', value) }
+  scope :min_date, ->(value) { where('cast(offers.created_at as date) >= ?', value) }
+  scope :max_date, ->(value) { where('cast(offers.created_at as date) <= ?', value) }
+  scope :only_with_photos, -> { joins(:photos) }
 
   def close
     self.closed = true
