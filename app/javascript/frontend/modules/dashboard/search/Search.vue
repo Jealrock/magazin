@@ -106,6 +106,9 @@ export default {
       text: 'Продам',
       value: 'CashOffer',
     }, {
+      text: 'Услуги',
+      value: 'ServiceOffer',
+    }, {
       text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',
     }],
