@@ -92,10 +92,6 @@ export default {
 
   computed: {
     ...mapGetters(['currentUser', 'authData']),
-
-		channelId() {
-			return `${this.currentUser.id}_messages_channel`;
-		}
 	},
 
 	channels: {

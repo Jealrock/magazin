@@ -108,7 +108,9 @@
               @click="showNotificationDialog">
               Отправить уведомление 
             </v-btn>
-            <v-btn block flat depressed
+            <v-btn 
+              v-if="user.id && user.id != offer.user_id"
+              block flat depressed
               class="button button_green white--text ma-0 mb-3"
               @click="sendMessage">
               Написать сообщение 
