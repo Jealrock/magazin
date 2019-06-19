@@ -10,7 +10,7 @@ module Api::V1
 
     def create
       run Message::Create
-      result_show_create(result, serializer: ::Api::V1::MessageSerializer)
+      result_show_create(result, serializer: ::Api::V1::MessageWithUsersDataSerializer)
     end
   end
 end

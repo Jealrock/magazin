@@ -55,6 +55,19 @@ export default {
       });
     },
 
+    updateLastMessage(userId, message) {
+      const threadIndex = this.threads.findIndex(thread => thread.with_user.id == userId);
+      if (threadIndex >= 0) {
+        this.threads = [
+          ...this.threads.slice(0, threadIndex),
+          { ...this.threads[threadIndex], text: this.buildThreadText(message) },
+          ...this.threads.slice(threadIndex + 1)
+        ];
+      } else {
+        this.loadMessageThreads();
+      }
+    },
+
     buildWithUserAttributes(message) {
       if (message.from_user.id == this.currentUser.id) {
         return {

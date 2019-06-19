@@ -1,20 +1,24 @@
 <template>
-  <v-container class="pa-0 px-3" fluid fill-height>
-    <v-layout row wrap justify-top align-center class="mt-3">
-      <v-flex xs12 sm3 fill-height>
+  <v-container class="px-3 pt-3 pb-0" fill-height>
+    <v-layout row wrap justify-start align-start>
+      <v-flex xs12 sm3 align-start>
         <ProfileNavigation :class="{
           'mr-3' : $vuetify.breakpoint.smAndUp,
         }"/>
         <MessageThreads 
+           style="overflow-y: auto; height: 74vh;"
           :class="{
             'mr-3' : $vuetify.breakpoint.smAndUp,
           }"
+          ref="messageThreads"
         />
       </v-flex>
-      <v-flex xs12 sm9 fill-height>
-        <h1 class="font-weight-bold">Сообщения</h1>
+      <v-flex xs12 sm9 aling-start>
+        <h1 v-if="withUser" class="font-weight-bold">{{ 'Сообщения с ' + withUser.name }}</h1>
+        <h1 v-else class="font-weight-bold">Сообщения</h1>
+        <v-divider class="mt-2 mb-2" />
         <template v-if="withUser">
-          <v-list class="thread-messages" style="overflow-y: auto; max-height: 80%;">
+          <v-list class="messages-list" style="overflow-y: auto; height: 75vh;">
             <v-list-tile v-for="message in currentThreadMessages" :key="message.id" avatar>
               <template v-if="message.from_user_id == currentUser.id">
                 <v-list-tile-avatar>
@@ -30,8 +34,7 @@
                 <v-list-tile-action>
                   <v-list-tile-action-text>{{ message.created_at | moment('calendar').toLowerCase() }}</v-list-tile-action-text>
                 </v-list-tile-action>
-              </template>
-
+              </template> 
               <template v-else>
                 <v-list-tile-avatar>
                   <v-img v-if="withUser.photo.url" :src="withUser.photo.url" alt="user_photo"/>
@@ -49,13 +52,15 @@
               </template>
             </v-list-tile>
           </v-list>
-          <v-divider class="mt-3 mb-4" />
+          <v-divider class="mt-2 mb-2" />
           <v-text-field
             v-model="newMessageText"
             :append-outer-icon="'send'"
             box
-            placeholder="Введите сообщениe"
+            label="Введите сообщениe"
+            solo
             type="text"
+            @keyup.enter="sendMessage"
             @click:append-outer="sendMessage"
           ></v-text-field>
         </template>
@@ -96,7 +101,12 @@ export default {
 	channels: {
 		MessagesChannel: {
       received(data) {
-        this.currentThreadMessages.push(JSON.parse(data).data.attributes)
+        const message = JSON.parse(data).data.attributes;
+        if (this.withUser && message.from_user.id == this.withUser.id) {
+          this.currentThreadMessages.push(message);
+          this.scrollMessageBox();
+        }
+        this.$refs.messageThreads.updateLastMessage(message.from_user.id, message);
       },
 		}
 	},
@@ -110,7 +120,10 @@ export default {
 
       messagesService
         .all(this.$route.query.with_user_id)
-        .then(resp => this.currentThreadMessages = resp.map(message => message.attributes));
+        .then(resp => {
+          this.currentThreadMessages = resp.map(message => message.attributes);
+          this.scrollMessageBox();
+        });
     },
 
     loadWithUser() {
@@ -130,18 +143,24 @@ export default {
       messagesService
         .create({ text: this.newMessageText, to_user_id: this.$route.query.with_user_id })
         .then(resp => {
-          this.currentThreadMessages.push(resp.attributes)
+          this.currentThreadMessages.push(resp.attributes);
+          this.$refs.messageThreads.updateLastMessage(this.withUser.id, resp.attributes);
+          this.scrollMessageBox();
           this.newMessageText = '';
         });
+    },
+
+    scrollMessageBox() {
+      this.$nextTick(() => {
+        var container = this.$el.querySelector(".messages-list");
+        container.scrollTop = container.scrollHeight;
+      });
     }
   },
 
-  created() {
+	mounted() {
     this.loadMessages();
     this.loadWithUser();
-  },
-
-	mounted() {
 		this.$cable.subscribe(
       { 
         channel: 'MessagesChannel', 

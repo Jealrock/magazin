@@ -1,6 +1,4 @@
-class Api::V1::LastMessageInThreadSerializer < Api::V1::ApplicationSerializer
-  attribute :id, :text
-
+class Api::V1::MessageWithUsersDataSerializer < Api::V1::MessageSerializer
   attribute :from_user do |object|
     {
       id: object.from_user.id,
