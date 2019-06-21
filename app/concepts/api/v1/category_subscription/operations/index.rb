@@ -1,11 +1,11 @@
-module Api::V1::Favorite
+module Api::V1::CategorySubscription
   class Index < ApplicationOperation
     step :model!
 
     private
 
     def model!(options, current_user:, **)
-      options['model'] = current_user.favorite_offers.order(created_at: :desc)
+      options['model'] = current_user.subscribed_categories.order(created_at: :desc)
     end
   end
 end

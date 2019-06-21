@@ -7,9 +7,10 @@
       {{ getAlertText }}
       <v-btn
         flat
+        icon
         color="white"
         @click="setAlertVisibility(false)">
-        Close
+        <v-icon>cancel</v-icon>
       </v-btn>
     </v-snackbar>
   </div>
@@ -43,7 +44,7 @@ export default {
     ]),
 
     ...mapActions([
-      'showAlert'
+      'showAlert',
     ]),
   },
 };

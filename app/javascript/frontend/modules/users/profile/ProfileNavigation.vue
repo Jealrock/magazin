@@ -9,6 +9,12 @@
             exact>
             Мои объявления
           </router-link>
+          <router-link to="/profile/subscriptions"
+            class="py-1 px-3 link link_green body-1 font-weight-bold d-block"
+            :active-class="'link_active'"
+            exact>
+            Мои подписки
+          </router-link>
           <router-link to="/profile/favorites"
             class="py-1 px-3 link link_green body-1 font-weight-bold d-block"
             :active-class="'link_active'"

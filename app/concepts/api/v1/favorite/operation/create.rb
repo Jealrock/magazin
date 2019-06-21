@@ -1,7 +1,7 @@
 module Api::V1::Favorite
   class Create < ApplicationOperation
     step Policy::Pundit(FavoritePolicy, :create?)
-    failure :invalid!, fail_test: true
+    failure :authorization_error!, fail_test: true
     step :create_favorite!
     step :get_offer!
 

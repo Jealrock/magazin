@@ -7,24 +7,20 @@
           placeholder="Любая категория"
           class="search__select-input white mt-0 pt-0 px-2"
           item-value="id"
+          item-text="title"
           :items="categories"
           :hide-details="true"
         >
           <template slot="item" slot-scope="data">
-            <div class="v-list__tile__content">
-              <div class="v-list__tile__title"
+            <v-list-tile-content>
+              <v-list-tile-title
                 :class="{
                   'body-1' : data.item.parent_id,
                   'subheading font-weight-bold' : !data.item.parent_id,
                 }">
                 {{ data.item.title }}
-              </div>
-            </div>
-          </template>
-          <template slot="selection" slot-scope="data">
-            <div class="v-select__selection v-select__selection--comma">
-              {{ data.item.title }}
-            </div>
+              </v-list-tile-title>
+            </v-list-tile-content>
           </template>
         </v-select>
       </v-flex>

@@ -96,7 +96,7 @@ export default {
 
     changePage(page) {
       this.$router.push({
-        path: '/',
+        path: '/search',
         query: {
           ...this.$route.query,
           page: page,

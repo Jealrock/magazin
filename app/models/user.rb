@@ -19,5 +19,10 @@ class User < ApplicationRecord
   has_many :favorites
   has_many :favorite_offers, through: :favorites, source: :offer
 
+  has_many :subscriptions
+
+  has_many :category_subscriptions
+  has_many :subscribed_categories, through: :category_subscriptions, source: :category
+
   after_validation :geocode
 end
