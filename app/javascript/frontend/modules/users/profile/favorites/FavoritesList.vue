@@ -1,8 +1,7 @@
 <template>
   <div class="favorites-list">
     <v-container class="pa-0 px-3 pb-5">
-      <v-layout row wrap
-        class="mt-3">
+      <v-layout row wrap class="mt-3">
         <v-flex xs12 sm3>
           <ProfileNavigation :class="{
             'mr-3' : $vuetify.breakpoint.smAndUp,

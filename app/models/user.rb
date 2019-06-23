@@ -25,4 +25,8 @@ class User < ApplicationRecord
   has_many :subscribed_categories, through: :category_subscriptions, source: :category
 
   after_validation :geocode
+
+  def messages
+    Message.with(id)
+  end
 end

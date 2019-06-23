@@ -8,7 +8,11 @@ const state = {
 
 const getters = {
   currentUser (state) {
-    return state.currentUser
+    return state.currentUser;
+  },
+
+  authData (state) {
+    return state.authData;
   },
 
   userOffers (state) {

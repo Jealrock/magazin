@@ -41,6 +41,16 @@ ActiveRecord::Schema.define(version: 2019_06_21_140900) do
     t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
+  create_table "messages", force: :cascade do |t|
+    t.text "text"
+    t.bigint "from_user_id"
+    t.bigint "to_user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["from_user_id"], name: "index_messages_on_from_user_id"
+    t.index ["to_user_id"], name: "index_messages_on_to_user_id"
+  end
+
   create_table "offers", force: :cascade do |t|
     t.string "type", null: false
     t.bigint "user_id"
