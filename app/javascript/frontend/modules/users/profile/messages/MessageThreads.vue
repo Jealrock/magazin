@@ -6,7 +6,7 @@
           <v-list-tile v-for="thread in threads" :key="thread.id" avatar @click="switchThread(thread.with_user.id)">
             <v-list-tile-avatar>
               <v-img v-if="thread.with_user.photo.url" :src="thread.with_user.photo.url" alt="user_photo"/>
-              <v-icon v-else dark>account_circle</v-icon>
+              <v-icon v-else>account_circle</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -72,20 +72,20 @@ export default {
       if (message.from_user.id == this.currentUser.id) {
         return {
           id: message.to_user.id,
-          name: message.to_user.name,
+          name: message.to_user.name || 'Аноним',
           photo: message.to_user.photo
         }
       } else {
         return {
           id: message.from_user.id,
-          name: message.from_user.name,
+          name: message.from_user.name || 'Аноним',
           photo: message.from_user.photo
         }
       }
     },
 
     buildThreadText(message) {
-      return `<span class='text--primary'>${message.from_user.name}</span> &mdash; ${message.text}`;
+      return `<span class='text--primary'>${message.from_user.name || 'Аноним'}</span> &mdash; ${message.text}`;
     }
   },
 
