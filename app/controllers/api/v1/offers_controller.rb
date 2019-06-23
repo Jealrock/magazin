@@ -48,7 +48,7 @@ module Api::V1
     private
 
     def offers_have_price?
-      params[:by_type] && !(params[:by_type] == 'FreeOffer' || params[:by_type] == 'ExchangeOffer')
+      !params[:by_type] || !(params[:by_type] == 'FreeOffer' || params[:by_type] == 'ExchangeOffer')
     end
   end
 end

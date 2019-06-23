@@ -121,7 +121,7 @@ export default {
 
   computed: {
     hasPrice() {
-      return this.$route.query.by_type &&
+      return !this.$route.query.by_type || 
              !(this.$route.query.by_type == 'FreeOffer' ||
                this.$route.query.by_type == 'ExchangeOffer')
     }
