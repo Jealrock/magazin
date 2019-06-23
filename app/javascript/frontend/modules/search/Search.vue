@@ -12,11 +12,33 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap class="mt-3">
-        <v-flex xs12>
+        <v-flex xs12 sm9>
           <p class="body-2 font-weight-regular black--text mb-0">
             Найдено: 
             <span class="dashboard__items-count grey--text">{{ offersPaginationData.total_count }}</span>
           </p>
+        </v-flex>
+        <v-flex xs12 sm3>
+          <v-layout row v-if="selectedCategory"
+            class="justify-end">
+            <v-btn v-if="!isSubscribed(selectedCategory)"
+              depressed
+              outline
+              block
+              color="success"
+              class="ma-0 text-none"
+              @click="subscribeOnCategory(selectedCategory)">
+              Подписаться на категорию
+            </v-btn>
+            <v-btn v-else
+              depressed
+              block
+              color="success"
+              class="ma-0 text-none"
+              @click="unsubscribeFromCategory(selectedCategory)">
+              Отписаться от категории
+            </v-btn>
+          </v-layout>
         </v-flex>
       </v-layout>
       <v-layout row wrap>
@@ -25,10 +47,12 @@
         </v-flex>
       </v-layout>
       <v-layout row wrap>
-        <v-flex xs3>
-          <Filters class="mr-3" />
+        <v-flex xs12 sm3>
+          <Filters :class="{
+            'mr-3' : $vuetify.breakpoint.smAndUp, 
+          }" />
         </v-flex>
-        <v-flex xs9>
+        <v-flex xs12 sm9>
           <Gallery
             :items="this.allOffers"
             :items-in-row="4" />
@@ -53,6 +77,10 @@ import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 import { DEFAULT_PER_PAGE, offersService } from '@frontend/modules/offer/services/offersService';
 
+import {
+  categorySubscriptionsService,
+} from '@frontend/modules/users/profile/category-subscriptions/services/categorySubscriptionsService';
+
 import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar';
 import SearchBar from '@frontend/modules/dashboard/search-bar/SearchBar';
 import Gallery from '@frontend/modules/dashboard/gallery/Gallery';
@@ -68,7 +96,11 @@ export default {
   }),
 
   computed: {
-    ...mapGetters(['allOffers', 'offersPaginationData']),
+    ...mapGetters(['allOffers', 'offersPaginationData', 'isSubscribed',]),
+
+    selectedCategory() {
+      return this.$route.query.by_category_id;
+    },
   },
 
   watch: {
@@ -80,7 +112,11 @@ export default {
   },
 
   methods: {
-    ...mapMutations(['setAllOffers']),
+    ...mapMutations([
+      'setAllOffers',
+      'addCategorySubscription',
+      'removeCategorySubscription',
+    ]),
 
     ...mapActions(['showAlert']),
 
@@ -91,6 +127,28 @@ export default {
         })
         .catch((error) => {
           return this.$router.push('/');
+        });
+    },
+
+    subscribeOnCategory(id) {
+      categorySubscriptionsService.create({
+        category_id: id,
+      })
+        .then((response) => {
+          this.addCategorySubscription(response.data.data.attributes);
+        })
+        .catch((error) => {
+          throw new Error(error);
+        });;
+    },
+
+    unsubscribeFromCategory(id) {
+      categorySubscriptionsService.destroy(id)
+        .then((response) => {
+          this.removeCategorySubscription(response.data.data.attributes.id);
+        })
+        .catch((error) => {
+          throw new Error(error);
         });
     },
 

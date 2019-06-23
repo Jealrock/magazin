@@ -11,7 +11,7 @@ const getters = {
   isSubscribed(state) {
     const ids = state.categorySubscriptions.map((sub) => sub.id);
 
-    return (id) => ids.includes(id);
+    return (id) => ids.includes(Number(id));
   },
 };
 
