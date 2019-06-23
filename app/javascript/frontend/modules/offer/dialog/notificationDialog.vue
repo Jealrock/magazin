@@ -84,7 +84,7 @@
                   :chips="true"
                   :value="selectedCities"
                   :loaded="suggestedCitiesLoaded"
-                  class="white mt-0 pt-0 px-2"
+                  class="white mt-0 pt-0"
                   :hideDetails="true"
                   @update="onCityUpdate"
                   @change="onCitiesChange"
