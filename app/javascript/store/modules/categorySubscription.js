@@ -7,6 +7,12 @@ const getters = {
   getAllCategoriesSubscriptions(state) {
     return state.categorySubscriptions;
   },
+
+  isSubscribed(state) {
+    const ids = state.categorySubscriptions.map((sub) => sub.id);
+
+    return (id) => ids.includes(id);
+  },
 };
 
 const mutations = {

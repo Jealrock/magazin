@@ -79,7 +79,7 @@
                 <v-autocomplete
                   :disabled="!notifyByGeo"
                   multiple chips
-                  :items="geos"
+                  :items="cities"
                   label="Выберите" />
               </v-flex>
               <v-flex xs12 sm6
@@ -120,10 +120,10 @@ export default {
     notifyByCategories: true,
     notifyByGeo: false,
 
-    geos: [],
+    cities: [],
 
     selectedCategories: [],
-    selectedGeos: [],
+    selectedCities: [],
   }),
 
   computed: {

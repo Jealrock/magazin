@@ -6,39 +6,29 @@ module Api::V1::Offer
     failure :authorization_error!
     step :require_subscriptions!
     step :send_notifications!
-    step :get_offer!
 
     private
 
     def require_subscriptions!(options, params:, **)
       subscriptions = Subscription.all
 
-      subscriptions = filter_by_categories(subscriptions, params[:categories]) unless params[:categories].empty?
+      subscriptions = subscriptions.by_user_category_subscriptions(params[:categories]).distinct unless params[:categories].empty?
 
-      options['model'] = subscriptions
+      options['subscriptions'] = subscriptions
     end
 
-    def filter_by_categories(subscriptions, categories)
-      subscriptions.joins(user: [:category_subscriptions]).by_user_category_subscriptions(categories).distinct
-    end
-
-    def send_notifications!(_options, model:, params:, **)
-      offer = Offer.find(params[:id])
-      subscriptions = model
+    def send_notifications!(options, model:, **)
+      subscriptions = options['subscriptions']
 
       subscriptions.each do |sub|
         if ENV['SYNC_JOBS']
-          SendNotificationJob.perform_now(sub, build_message(offer))
+          SendNotificationJob.perform_now(sub, build_message(model))
         else
-          SendNotificationJob.perform_later(sub, build_message(offer))
+          SendNotificationJob.perform_later(sub, build_message(model))
         end
       end
 
       true
-    end
-
-    def get_offer!(options, params:, **)
-      options['model'] = Offer.find(params[:id])
     end
 
     def build_message(offer)

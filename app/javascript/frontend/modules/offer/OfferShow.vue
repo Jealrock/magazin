@@ -103,7 +103,7 @@
               'pl-4' : $vuetify.breakpoint.mdAndUp,
               'mt-4' : $vuetify.breakpoint.smAndDown
             }">
-            <v-btn v-if="this.user.id === this.offer.user_id"
+            <v-btn v-if="this.user && this.user.id === this.offer.user_id"
               block flat depressed
               class="button button_green white--text ma-0 mb-3"
               @click="showNotificationDialog">

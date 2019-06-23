@@ -2,8 +2,9 @@ module Api::V1::CategorySubscription
   class Destroy < ApplicationOperation
     step :find!
     failure :not_found!, fail_test: true
+    step Policy::Pundit(CategorySubscriptionPolicy, :destroy?)
+    failure :authorization_error, fail_test: true
     step :destroy!
-    step :get_category!
 
     private
 
@@ -11,14 +12,10 @@ module Api::V1::CategorySubscription
       options['model'] = current_user.category_subscriptions.find_by(category_id: params['id'])
     end
 
-    def destroy!(_options, model:, **)
+    def destroy!(options, model:, **)
       model.destroy!
-      model
-    end
 
-    def get_category!(options, model:, **)
-      category = model.category
-      options['model'] = category
+      options['model'] = model.category
     end
   end
 end
