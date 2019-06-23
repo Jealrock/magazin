@@ -3,6 +3,9 @@
     v-model="model"
     :items="items"
     :label="label"
+    :disabled="disabled"
+    :multiple="multiple"
+    :chips="chips"
     :placeholder="placeholder"
     :loading="!loaded"
     :search-input.sync="search"
@@ -17,17 +20,20 @@
 
 export default {
   props: {
-    value: { type: String, default: '' },
+    value: { type: String | Array, default: null },
     items: { type: Array, default: [] },
     label: { type: String, default: '' },
     placeholder: { type: String, default: '' },
+    disabled: { type: Boolean, default: false },
+    multiple: { type: Boolean, default: false },
+    chips: { type: Boolean, default: false },
     loaded: { type: Boolean, default: true },
     hideDetails: { type: Boolean, default: false }
   },
 
   data: () => ({
     timeout: null, 
-    model: '',
+    model: null,
     search: null,
   }),
 
@@ -43,7 +49,9 @@ export default {
     search (val) {
       if (this.timeout !== null)  clearTimeout(this.timeout);
       if (!val || val.length == 0) {
-        this.model = '';
+        if (typeof this.model == 'string') {
+          this.model = '';
+        }
         return;
       }
       if (!val || val.length < 3 || val == this.model) return;

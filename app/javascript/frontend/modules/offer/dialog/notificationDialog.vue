@@ -76,11 +76,19 @@
                   label="По геолокации" />
               </v-flex>
               <v-flex xs12 sm6>
-                <v-autocomplete
+                <AutocompleteInput 
                   :disabled="!notifyByGeo"
-                  multiple chips
-                  :items="cities"
-                  label="Выберите" />
+                  :items="suggestedCities"
+                  :placeholder="'Москва'"
+                  :multiple="true"
+                  :chips="true"
+                  :value="selectedCities"
+                  :loaded="suggestedCitiesLoaded"
+                  class="white mt-0 pt-0 px-2"
+                  :hideDetails="true"
+                  @update="onCityUpdate"
+                  @change="onCitiesChange"
+                />
               </v-flex>
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
@@ -101,11 +109,17 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapActions } from 'vuex';
+import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
+import geolocationsService from '@frontend/core/services/geolocationsService';
 
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { offersService } from '@frontend/modules/offer/services/offersService';
 
 export default {
+  components: {
+    AutocompleteInput
+  },
+
   props: {
     offerId: {
       type: Number,
@@ -120,10 +134,11 @@ export default {
     notifyByCategories: true,
     notifyByGeo: false,
 
-    cities: [],
+    suggestedCities: [], 
+    suggestedCitiesLoaded: true, 
+    selectedCities: [],
 
     selectedCategories: [],
-    selectedCities: [],
   }),
 
   computed: {
@@ -150,6 +165,27 @@ export default {
       'showAlert',
     ]),
 
+    onCitiesChange(cities) {
+      this.selectedCities = cities;
+    },
+
+    async onCityUpdate(inputCity) {
+      this.suggestedCitiesLoaded = false;
+
+      geolocationsService.search(inputCity)
+        .then(locations => {
+          // to correctly connect Geocoder ruby gem
+          this.suggestedLocations = locations;
+          this.suggestedCities = this._.uniq(
+            this.selectedCities.concat(
+              locations.filter(location => location.city).map(location => location.city)
+            )
+          );
+        })
+        .catch(error => this.error = error)
+        .finally(() => this.suggestedCitiesLoaded = true)
+    },
+
     showMainDialog() {
       this.mainDialog = true;
       this.settingsDialog = false;
@@ -163,6 +199,7 @@ export default {
     notify() {
       offersService.notify(this.offerId, {
           categories: this.selectedCategories,
+          cities: this.selectedCities,
         })
         .then(resp => {
           this.setOffer(resp);

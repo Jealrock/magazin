@@ -16,6 +16,8 @@ module Api::V1::Offer
         subscriptions = subscriptions.by_user_category_subscriptions(params[:categories]).distinct
       end
 
+      subscriptions = subscriptions.by_user_cities(params[:cities]).distinct unless params[:cities].empty?
+
       options['subscriptions'] = subscriptions
     end
 
