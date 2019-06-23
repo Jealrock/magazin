@@ -1,10 +1,10 @@
 <template>
   <div>
     <v-layout row wrap class="">
-      <v-flex xs12>
+      <v-flex v-if="hasPrice" xs12>
         <p class="body-2 mb-0">Цена</p>
       </v-flex>
-      <v-flex xs6>
+      <v-flex v-if="hasPrice" xs6>
         <v-text-field
           v-model="minPrice"
           placeholder="от"
@@ -13,7 +13,7 @@
           @keyup.enter="filter"
         />
       </v-flex>
-      <v-flex xs6>
+      <v-flex v-if="hasPrice" xs6>
         <v-text-field
           v-model="maxPrice"
           placeholder="до"
@@ -22,7 +22,7 @@
           @keyup.enter="filter"
         />
       </v-flex>
-      <v-flex xs12 class="mt-4">
+      <v-flex xs12 :class="{ 'mt-4': hasPrice }">
         <p class="body-2 mb-0">Дата</p>
       </v-flex>
       <v-flex xs6>
@@ -118,6 +118,14 @@ export default {
     maxDate: null,
     only_with_photos: null,
   }),
+
+  computed: {
+    hasPrice() {
+      return !this.$route.query.by_type || 
+             !(this.$route.query.by_type == 'FreeOffer' ||
+               this.$route.query.by_type == 'ExchangeOffer')
+    }
+  },
 
   created: function() {
     this.fillForm();

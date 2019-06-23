@@ -14,7 +14,7 @@
         />
       </v-flex>
       <v-flex xs12 sm9 aling-start>
-        <h1 v-if="withUser" class="font-weight-bold">{{ 'Сообщения с ' + withUser.name }}</h1>
+        <h1 v-if="withUser" class="font-weight-bold">{{ 'Сообщения с ' + withUserName }}</h1>
         <h1 v-else class="font-weight-bold">Сообщения</h1>
         <v-divider class="mt-2 mb-2" />
         <template v-if="withUser">
@@ -42,7 +42,7 @@
                 </v-list-tile-avatar>
 
                 <v-list-tile-content>
-                  <v-list-tile-title v-text="withUser.name"></v-list-tile-title>
+                  <v-list-tile-title v-text="withUserName"></v-list-tile-title>
                   <v-list-tile-sub-title v-text="message.text"></v-list-tile-sub-title>
                 </v-list-tile-content>
 
@@ -92,6 +92,12 @@ export default {
 
   computed: {
     ...mapGetters(['currentUser', 'authData']),
+    
+    withUserName() {
+      if (!this.withUser) return null;
+
+      return this.withUser.name || 'Аноним';
+    }
 	},
 
 	channels: {

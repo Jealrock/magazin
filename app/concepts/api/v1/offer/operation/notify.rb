@@ -12,7 +12,9 @@ module Api::V1::Offer
     def require_subscriptions!(options, params:, **)
       subscriptions = Subscription.all
 
-      subscriptions = subscriptions.by_user_category_subscriptions(params[:categories]).distinct unless params[:categories].empty?
+      unless params[:categories].empty?
+        subscriptions = subscriptions.by_user_category_subscriptions(params[:categories]).distinct
+      end
 
       options['subscriptions'] = subscriptions
     end
