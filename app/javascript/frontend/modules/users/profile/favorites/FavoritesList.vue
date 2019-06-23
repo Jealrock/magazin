@@ -10,7 +10,9 @@
         <v-flex xs12 sm9>
           <h1 class="font-weight-bold">Избранное</h1>
           <v-divider class="my-3" />
-          <Gallery :items="allFavorites"
+          <p v-if="!allFavorites.length">Пока у вас нет избранных объявлений</p>
+          <Gallery v-else
+            :items="allFavorites"
             :items-in-row="4" />
           <v-layout row wrap justify-center>
             <v-pagination

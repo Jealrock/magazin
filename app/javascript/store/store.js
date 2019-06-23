@@ -9,13 +9,14 @@ import routes from './modules/routes';
 import sidebar from './modules/sidebar';
 import categories from './modules/categories';
 import alert from './modules/alert';
+import categorySubscription from './modules/categorySubscription';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   strict: true,
   modules: {
-    offers, users, favorites, routes, sidebar, categories, alert,
+    offers, users, favorites, routes, sidebar, categories, alert, categorySubscription,
   },
   plugins: [createPersistedState({ paths: ['users'] })],
 });

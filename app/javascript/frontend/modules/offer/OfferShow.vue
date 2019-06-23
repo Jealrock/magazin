@@ -103,7 +103,8 @@
               'pl-4' : $vuetify.breakpoint.mdAndUp,
               'mt-4' : $vuetify.breakpoint.smAndDown
             }">
-            <v-btn block flat depressed
+            <v-btn v-if="this.user && this.user.id === this.offer.user_id"
+              block flat depressed
               class="button button_green white--text ma-0 mb-3"
               @click="showNotificationDialog">
               Отправить уведомление 
@@ -268,7 +269,7 @@ export default {
       return {
         text: category.title,
         disabled: false,
-        to: { path: '/', query: { by_category_id: category.id } }
+        to: { path: '/search', query: { by_category_id: category.id } }
       }
     }
   },

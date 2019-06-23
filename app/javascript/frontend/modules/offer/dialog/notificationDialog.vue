@@ -12,6 +12,7 @@
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
                 <v-btn
                   block
+                  depressed
                   color="info"
                   @click="notify">
                   Всем пользователям
@@ -24,6 +25,7 @@
                 }">
                 <v-btn
                   block
+                  depressed
                   color="success"
                   @click="showSettingDialog">
                   Конкретным пользователям
@@ -48,10 +50,25 @@
               </v-flex>
               <v-flex xs12 sm6>
                 <v-autocomplete
+                  v-model="selectedCategories"
                   :disabled="!notifyByCategories"
                   multiple chips
                   :items="categories"
-                  label="Выберите" />
+                  item-value="id"
+                  item-text="title"
+                  label="Укажите категории">
+                  <template v-slot:item="data">
+                    <v-list-tile-content>
+                      <v-list-tile-title
+                        :class="{
+                          'body-1' : data.item.parent_id,
+                          'subheading font-weight-bold' : !data.item.parent_id,
+                        }">
+                        {{ data.item.title }}
+                      </v-list-tile-title>
+                    </v-list-tile-content>
+                  </template>
+                </v-autocomplete>
               </v-flex>
               <v-flex xs12 sm6>
                 <v-checkbox
@@ -62,13 +79,14 @@
                 <v-autocomplete
                   :disabled="!notifyByGeo"
                   multiple chips
-                  :items="geos"
+                  :items="cities"
                   label="Выберите" />
               </v-flex>
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
                 <v-btn
                   block
+                  depressed
                   color="success"
                   @click="notify">
                   Отправить
@@ -83,7 +101,7 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from 'vuex';
+import { mapGetters, mapMutations, mapActions } from 'vuex';
 
 import { offersService } from '@frontend/modules/offer/services/offersService';
 
@@ -102,36 +120,26 @@ export default {
     notifyByCategories: true,
     notifyByGeo: false,
 
-    categories: [
-      'Транспорт',
-      'Для дома и дачи',
-      'Для бизнеса',
-      'Недвижимость',
-      'Бытовая электроника',
-      'Работа',
-      'Услуги',
-      'Хобби и отдых',
-      'Личные вещи',
-      'Животные',
-    ],
-    geos: [
-      'Москва',
-      'Санкт-Петербург',
-      'Новосибирск',
-      'Екатеринбург',
-      'Нижний Новгород',
-      'Казань',
-      'Челябинск',
-      'Омск',
-      'Самара',
-      'Ростов-на-Дону',
-      'Уфа',
-      'Красноярск',
-      'Пермь',
-      'Воронеж',
-      'Волгоград',
-    ],
+    cities: [],
+
+    selectedCategories: [],
+    selectedCities: [],
   }),
+
+  computed: {
+    ...mapGetters([
+      'mainCategories',
+      'childCategories',
+    ]),
+
+    categories() {
+      return this.mainCategories.reduce((acc, cur) => {
+        if (acc.length !== 0) acc.push({ divider: true });
+        acc.push(cur);
+        return acc.concat(this.childCategories(cur.id).map(category => category));
+      }, []);
+    },
+  },
 
   methods: {
     ...mapMutations([
@@ -153,17 +161,20 @@ export default {
     },
 
     notify() {
-      offersService.notify(this.offerId)
+      offersService.notify(this.offerId, {
+          categories: this.selectedCategories,
+        })
         .then(resp => {
           this.setOffer(resp);
           this.mainDialog = false;
           this.settingsDialog = false;
+          this.selectedCategories = [];
           this.showAlert({
             type: 'success',
             text: 'Успешно отправлено',
           });
         });
     },
-  }
+  },
 };
 </script>

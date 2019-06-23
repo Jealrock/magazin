@@ -4,12 +4,23 @@ module Api::V1::Offer
     failure :not_found!, fail_fast: true
     step Policy::Pundit(OfferPolicy, :send_notifcation?)
     failure :authorization_error!
+    step :require_subscriptions!
     step :send_notifications!
 
     private
 
-    def send_notifications!(_options, model:, **)
-      Subscription.all.each do |sub|
+    def require_subscriptions!(options, params:, **)
+      subscriptions = Subscription.all
+
+      subscriptions = subscriptions.by_user_category_subscriptions(params[:categories]).distinct unless params[:categories].empty?
+
+      options['subscriptions'] = subscriptions
+    end
+
+    def send_notifications!(options, model:, **)
+      subscriptions = options['subscriptions']
+
+      subscriptions.each do |sub|
         if ENV['SYNC_JOBS']
           SendNotificationJob.perform_now(sub, build_message(model))
         else

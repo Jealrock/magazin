@@ -50,7 +50,7 @@ export default {
     categoryLink() {
       return title => {
         const category = this.allCategories.find(category => category.title == title);
-        if (!category) return { path: '/' };
+        if (!category) return { path: '/search' };
 
         return {
           path: '/search',

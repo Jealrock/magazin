@@ -16,6 +16,7 @@ Rails.application.routes.draw do
         end
       end
       resources :favorites, only: %i[index create destroy]
+      resources :category_subscriptions, only: %i[index create destroy]
       resources :messages, only: %i[index create]
       resources :message_threads, only: %i[index]
       resources :geolocations, only: %i[index]

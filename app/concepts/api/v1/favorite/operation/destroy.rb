@@ -5,6 +5,8 @@ module Api::V1::Favorite
     step :destroy!
     step :get_offer!
 
+    private
+
     def find!(options, params:, current_user:, **)
       options['model'] = current_user.favorites.find_by(offer_id: params['id'])
     end
