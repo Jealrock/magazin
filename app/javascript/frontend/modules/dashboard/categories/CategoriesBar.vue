@@ -1,7 +1,10 @@
 <template>
-  <nav class="nav categories-bar">
+  <nav class="nav categories-bar align-center py-1">
+    <v-flex xs1>
+      <v-img :src="appLogo"  />
+    </v-flex>
     <router-link :to="categoryLink('Автомобили')"
-      class="link link_blue body-1 py-2 pr-3"
+      class="link link_blue body-1 py-2 px-3"
     >Авто</router-link>
     <router-link :to="categoryLink('Недвижимость')"
       class="link link_blue body-1 py-2 pr-3"
@@ -44,6 +47,10 @@
 import { mapGetters } from 'vuex';
 
 export default {
+  data: () => ({
+    appLogo: require('@frontend/assets/logo.png'),
+  }),
+
   computed: {
     ...mapGetters(['allCategories', 'mainCategories', 'childCategories']),
 
