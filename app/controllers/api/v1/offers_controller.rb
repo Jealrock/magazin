@@ -14,8 +14,8 @@ module Api::V1
       scope.by_category_id(ids)
     end
 
-    has_scope :min_price
-    has_scope :max_price
+    has_scope :min_price, if: :offers_have_price?
+    has_scope :max_price, if: :offers_have_price?
     has_scope :min_date
     has_scope :max_date
     has_scope :only_with_photos, type: :boolean
@@ -43,6 +43,12 @@ module Api::V1
     def notify
       run Offer::Notify
       result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
+    end
+
+    private
+
+    def offers_have_price?
+      params[:by_type] && !(params[:by_type] == 'FreeOffer' || params[:by_type] == 'ExchangeOffer')
     end
   end
 end
