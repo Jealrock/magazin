@@ -22,6 +22,13 @@ class OffersService {
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 
+  async update(params) {
+    return axiosInstance
+      .patch(`/offers/${params.id}`, this.buildOfferFormData(params), { headers: { 'Content-Type': 'multipart/form-data' }})
+      .then((resp) => resp)
+      .catch((error) => { throw this.buildErrorMessage(error) });
+  }
+
   async close(offer_id) {
     return axiosInstance
       .post(`/offers/${offer_id}/close`)
