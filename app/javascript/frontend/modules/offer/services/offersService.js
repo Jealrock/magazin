@@ -45,6 +45,9 @@ class OffersService {
 
   buildOfferFormData(params) {
     let formData = new FormData();
+
+    params['price'] = parseFloat(params['price'].replace(/(\s|\,)/g, ''));
+
     Object.keys(params).forEach(key => {
       if (Array.isArray(params[key])) {
         params[key].forEach(item => formData.append(key + '[]', item));
@@ -54,13 +57,13 @@ class OffersService {
     });
 
     if(params.type === "FreeOffer") {
-      formData.set('price', null);
-      formData.set('exchange_item', null);
+      formData.set('price', '');
+      formData.set('exchange_item', '');
     }
     else if (params.type === "ExchangeOffer")
-      formData.set('price', null);
+      formData.set('price', '');
     else if (params.type === "CashOffer" || params.type === "ServiceOffer")
-      formData.set('exchange_item', null);
+      formData.set('exchange_item', '');
 
     return formData;
   }

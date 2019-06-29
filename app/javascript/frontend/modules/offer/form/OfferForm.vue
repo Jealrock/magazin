@@ -34,6 +34,7 @@
       <v-select
         v-model="offer.type" 
         v-validate="'required'"
+        :disabled="this.method === 'patch'"
         :items="types"
         label="Вид объявления"
         data-vv-name="method"
@@ -43,7 +44,7 @@
       <v-text-field
         v-if="offer.type === 'CashOffer' || offer.type === 'ServiceOffer'"
         v-model="offer.price"
-        v-validate="'required'"
+        v-validate="{ required: true, regex: /^([0-9, .]+)$/}"
         label="Цена"
         type="text"
         data-vv-name="price"
@@ -53,7 +54,7 @@
       />
       <v-text-field
         v-if="offer.type === 'ExchangeOffer'"
-        v-model="exchangeItem"
+        v-model="offer.exchange_item"
         v-validate="'required'"
         label="На что меняете?"
         type="text"
@@ -93,6 +94,7 @@
       <AutocompleteInput 
         :items="suggestedAddresses"
         :label="'Адрес'"
+        :value="this.offer.address"
         :loaded="suggestedAddressesLoaded"
         @update="onAddressUpdate"
         @change="onAddressChange"
@@ -203,7 +205,17 @@ export default {
 
   created() {
     if (this.offerItem) {
-      console.log(this.offerItem);
+      this.offer.category_id = this.offerItem.category_id;
+      this.offer.type = this.offerItem.type;
+      this.offer.title = this.offerItem.title;
+      this.offer.description = this.offerItem.description;
+      this.offer.phone_number = this.offerItem.phone_number;
+
+      if (this.offerItem.price) this.offer.price = `${this.offerItem.price}`;
+      if (this.offerItem.exchange_item) this.offer.exchange_item = this.offerItem.exchange_item;
+
+      this.suggestedAddresses = [this.offerItem.address];
+      this.offer.address = this.offerItem.address;
     }
   },
 
@@ -244,6 +256,7 @@ export default {
           });
       } else if (this.method && this.method === 'patch') {
         offersService.update({
+          id: this.offerItem.id,
           ...this.offer,
         })
           .then((response) => {

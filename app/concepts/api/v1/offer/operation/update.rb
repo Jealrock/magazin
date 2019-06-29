@@ -17,7 +17,7 @@ module Api::V1::Offer
         'ExchangeOffer' => ExchangeOffer::Contract::Create.new(model),
         'FreeOffer' => FreeOffer::Contract::Create.new(model),
         'ServiceOffer' => ServiceOffer::Contract::Create.new(model)
-      }[params[:type]]
+      }[model.type]
     end
   end
 end
