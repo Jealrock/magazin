@@ -85,7 +85,9 @@
         persistent-hint
       />
 
-      <MultiplePhotoUpload @update="onPhotosUpdated" :max="10"/>
+      <MultiplePhotoUpload @update="onPhotosUpdated"
+        :max="10"
+        ref="photoUpload" />
 
       <h4 class="title font-weight-bold black--text mt-4 mb-4">
         Контактная информация
@@ -132,6 +134,8 @@
 </template>
 
 <script>
+import axios from 'axios'
+
 import MultiplePhotoUpload from './MultiplePhotoUpload';
 import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
 import { mapGetters, mapMutations } from 'vuex';
@@ -219,17 +223,33 @@ export default {
     }
   },
 
+  mounted() {
+    if (this.offerItem) {
+      this.offerItem.photos.forEach((photo) => {
+        this.setPhoto(photo);
+      });
+    }
+  },
+
   methods: {
     ...mapMutations([
       'setOffer',
     ]),
 
     onPhotosUpdated(photos) {
-      this.photos = photos;
+      this.offer.photos = photos;
     },
 
     onAddressChange(address) {
       this.offer.address = address;
+    },
+
+    async setPhoto(photo) {
+      const data = await axios.get(photo.url, { responseType: 'blob' });
+      const photoFile = new File([data.data], photo.name);
+
+      this.$refs.photoUpload.setPhoto(photoFile);
+      this.offer.photos = this.offer.photos.concat([photoFile]);
     },
 
     async onAddressUpdate(inputAddress) {
