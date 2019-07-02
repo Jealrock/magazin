@@ -46,7 +46,8 @@ class OffersService {
   buildOfferFormData(params) {
     let formData = new FormData();
 
-    params['price'] = parseFloat(params['price'].replace(/(\s|\,)/g, ''));
+    const fixedPrice = `${params['price']}`.replace(/ /g, '');
+    console.log(fixedPrice + ' - ' + typeof fixedPrice);
 
     Object.keys(params).forEach(key => {
       if (Array.isArray(params[key])) {

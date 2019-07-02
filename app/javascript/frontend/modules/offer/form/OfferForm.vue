@@ -44,7 +44,10 @@
       <v-text-field
         v-if="offer.type === 'CashOffer' || offer.type === 'ServiceOffer'"
         v-model="offer.price"
-        v-validate="{ required: true, regex: /^([0-9, .]+)$/}"
+        v-validate="{
+          required: true,
+          regex: /^(([\d ]+)(\.\d{1,2})?)$/
+        }"
         label="Цена"
         type="text"
         data-vv-name="price"
@@ -208,27 +211,25 @@ export default {
   },
 
   created() {
-    if (this.offerItem) {
-      this.offer.category_id = this.offerItem.category_id;
-      this.offer.type = this.offerItem.type;
-      this.offer.title = this.offerItem.title;
-      this.offer.description = this.offerItem.description;
-      this.offer.phone_number = this.offerItem.phone_number;
+    if (!this.offerItem) return;
 
-      if (this.offerItem.price) this.offer.price = `${this.offerItem.price}`;
-      if (this.offerItem.exchange_item) this.offer.exchange_item = this.offerItem.exchange_item;
+    this.offer.category_id = this.offerItem.category_id;
+    this.offer.type = this.offerItem.type;
+    this.offer.title = this.offerItem.title;
+    this.offer.description = this.offerItem.description;
+    this.offer.phone_number = this.offerItem.phone_number;
 
-      this.suggestedAddresses = [this.offerItem.address];
-      this.offer.address = this.offerItem.address;
-    }
+    if (this.offerItem.price) this.offer.price = this.offerItem.price;
+    if (this.offerItem.exchange_item) this.offer.exchange_item = this.offerItem.exchange_item;
+
+    this.suggestedAddresses = [this.offerItem.address];
+    this.offer.address = this.offerItem.address;
   },
 
   mounted() {
-    if (this.offerItem) {
-      this.offerItem.photos.forEach((photo) => {
-        this.setPhoto(photo);
-      });
-    }
+    if (!this.offerItem) return;
+
+    this.setPhotos();
   },
 
   methods: {
@@ -244,12 +245,20 @@ export default {
       this.offer.address = address;
     },
 
-    async setPhoto(photo) {
-      const data = await axios.get(photo.url, { responseType: 'blob' });
-      const photoFile = new File([data.data], photo.name);
+    async setPhotos() {
+      const photoFiles = [];
 
-      this.$refs.photoUpload.setPhoto(photoFile);
-      this.offer.photos = this.offer.photos.concat([photoFile]);
+      this.offerItem.photos.forEach((photo) => {
+        axios.get(photo.url, { responseType: 'blob' })
+          .then((response) => {
+            const file = new File([response.data], photo.name);
+
+            photoFiles.push(file);
+          });
+      });
+
+      this.offer.photos = photoFiles;
+      this.$refs.photoUpload.setPhotos(photoFiles);
     },
 
     async onAddressUpdate(inputAddress) {

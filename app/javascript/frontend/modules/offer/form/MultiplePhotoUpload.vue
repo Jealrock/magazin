@@ -86,8 +86,8 @@ export default {
       });
     },
 
-    setPhoto(photoFile) {
-      this.photos = this.photos.concat([photoFile]);
+    setPhotos(photoFiles) {
+      this.photos = photoFiles;
     },
 
     removePhoto(index) {

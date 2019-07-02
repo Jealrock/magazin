@@ -11,7 +11,7 @@ module Api::V1
             thumb: {
               url: photo.file.thumb.url
             },
-            name: photo.file.file.filename
+            name: photo.file&.file&.filename
           }
         end
       end

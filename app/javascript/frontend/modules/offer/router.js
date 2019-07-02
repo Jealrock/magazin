@@ -6,6 +6,7 @@ import OfferEdit from './OfferEdit';
 
 import requireAuth from '@frontend/core/services/requireAuth';
 import requireOffer from './services/requireOffer';
+import requireOfferOwnership from './services/requireOfferOwnership';
 import requireCategories from '@frontend/core/services/requireCategories';
 import requireFavorites from '@frontend/modules/users/profile/favorites/services/requireFavorites';
 
@@ -20,7 +21,7 @@ export const OFFER_EDIT_ROUTER = {
   path: '/offer/:id/edit',
   name: 'offerEdit',
   component: OfferEdit,
-  beforeEnter: multiguard([requireAuth, requireOffer, requireCategories]),
+  beforeEnter: multiguard([requireAuth, requireOffer, requireOfferOwnership, requireCategories]),
 };
 
 export const OFFER_NEW_ROUTER = {

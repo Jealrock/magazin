@@ -125,6 +125,7 @@
                 </p>
             </v-btn>
             <v-btn
+              v-if="user.id && user.id === offer.user_id"
               block flat depressed
               color="info"
               class="ma-0 mt-3"
