@@ -246,22 +246,21 @@ export default {
     },
 
     async setPhotos() {
-      const photoFiles = [];
-
-      const promises = await this.offerItem.photos.map((photo) =>
-        axios.get(photo.url, { responseType: 'blob' }));
-      const responses = await Promise.all(promises.map((promise) => promise.catch((error) => error)));
-
-      const validResponses = responses.filter((response) => !(response instanceof Error));
-      const errors = responses.filter((response) => (response instanceof Error));
-
-      errors.forEach((error) => {
-        throw new Error(error)
+      const requests = this.offerItem.photos.map(photo => {
+        return axios.get(photo.url, { responseType: 'blob' })
+                    .then(resp => resp)
+                    .catch(error => error)
       });
-      validResponses.forEach((response, index) => {
-        const file = new File([response.data], this.offerItem.photos[index].name);
 
-        photoFiles.push(file);
+      const responses = await Promise.all(requests);
+      const validResponses = responses.filter((response) => !(response instanceof Error));
+
+      responses.filter((response) => (response instanceof Error)).forEach((error) => {
+        console.error(error)
+      });
+
+      const photoFiles = validResponses.map((response, index) => {
+        return new File([response.data], this.offerItem.photos[index].name);
       });
 
       this.offer.photos = photoFiles;
