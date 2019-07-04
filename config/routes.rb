@@ -28,6 +28,9 @@ Rails.application.routes.draw do
           post :notify
         end
       end
+
+      get 'payments/success' => 'payments#success'
+      get 'payments/failure' => 'payments#failure'
     end
   end
 
