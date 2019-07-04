@@ -131,7 +131,7 @@
         class="ma-0 mt-4"
         @click="submit"
       >
-        Добавить
+        {{ submitBtnLabel }}
       </v-btn> </v-form>
   </div>
 </template>
@@ -200,6 +200,10 @@ export default {
     ...mapGetters([
       'currentUser', 'mainCategories', 'childCategories',
     ]),
+
+    submitBtnLabel() {
+      return this.method === 'post' ? 'Добавить' : 'Изменить';
+    },
 
     categories() {
       return this.mainCategories.reduce((acc, cur) => {
