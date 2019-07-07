@@ -2,18 +2,21 @@
   <nav class="nav categories-bar align-center py-1">
     <v-img :src="appLogo" 
       :max-width="'110px'" />
-    <router-link :to="offerTypeLink('CashOffer')"
-      class="link link_blue body-1 py-2 px-3"
-    >Продам</router-link>
     <router-link :to="offerTypeLink('ExchangeOffer')"
-      class="link link_blue body-1 py-2 pr-3"
+      class="link link_blue body-1 py-2 px-3"
     >Обменяю</router-link>
+    <router-link :to="offerTypeLink('CashOffer')"
+      class="link link_blue body-1 py-2 pr-3"
+    >Продам</router-link>
     <router-link :to="offerTypeLink('ServiceOffer')"
       class="link link_blue body-1 py-2 pr-3"
     >Услуги</router-link>
     <router-link :to="offerTypeLink('FreeOffer')"
       class="link link_blue body-1 py-2 pr-3"
     >Подарю БисмилЛах1</router-link>
+    <router-link :to="offerTypeLink(null)"
+      class="link link_blue body-1 py-2 pr-3"
+    >Все</router-link>
     <v-menu :max-width="875" 
       offset-y>
       <template v-slot:activator="{ on }">
