@@ -6,7 +6,7 @@
           <nav class="nav">
             <router-link
               to="/"
-              class="link link_grey body-1 py-2 pr-3"
+              class="link link_green body-1 py-2 pr-3"
             >
               Объявления
             </router-link>
@@ -27,11 +27,11 @@
             
             <div v-else
               class="nav px-3">
-              <a class="link link_grey body-1 px-3 py-2"
+              <a class="link link_green body-1 px-3 py-2"
                 @click="logout">Выйти</a>
               <router-link
                 to="/profile"
-                class="link link_grey body-1 px-3 py-2">
+                class="link link_green body-1 px-3 py-2">
                 Профиль
               </router-link>
             </div>
@@ -91,6 +91,10 @@ export default {
 .link {
   &_blue {
     color: #0091d9;
+  }
+
+  &_green {
+    color: #4caf50;
   }
 
   &_grey {

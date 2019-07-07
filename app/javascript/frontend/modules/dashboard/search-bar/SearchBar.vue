@@ -105,7 +105,7 @@ export default {
       text: 'Услуги',
       value: 'ServiceOffer',
     }, {
-      text: 'Отдам БисмилЛах1',
+      text: 'Подарю БисмилЛах1',
       value: 'FreeOffer',
     }],
     type: '',

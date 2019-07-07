@@ -1,20 +1,19 @@
 <template>
   <nav class="nav categories-bar align-center py-1">
-    <v-flex xs1>
-      <v-img :src="appLogo"  />
-    </v-flex>
-    <router-link :to="categoryLink('Автомобили')"
+    <v-img :src="appLogo" 
+      :max-width="'110px'" />
+    <router-link :to="offerTypeLink('CashOffer')"
       class="link link_blue body-1 py-2 px-3"
-    >Авто</router-link>
-    <router-link :to="categoryLink('Недвижимость')"
+    >Продам</router-link>
+    <router-link :to="offerTypeLink('ExchangeOffer')"
       class="link link_blue body-1 py-2 pr-3"
-    >Недвижимость</router-link>
-    <router-link :to="categoryLink('Услуги')"
+    >Обменяю</router-link>
+    <router-link :to="offerTypeLink('ServiceOffer')"
       class="link link_blue body-1 py-2 pr-3"
     >Услуги</router-link>
-    <router-link :to="categoryLink('Работа')"
+    <router-link :to="offerTypeLink('FreeOffer')"
       class="link link_blue body-1 py-2 pr-3"
-    >Работа</router-link>
+    >Подарю БисмилЛах1</router-link>
     <v-menu :max-width="875" 
       offset-y>
       <template v-slot:activator="{ on }">
@@ -66,7 +65,18 @@ export default {
           }
         }
       };
-    }
+    },
+
+    offerTypeLink() {
+      return (title) => {
+        return {
+          path: '/search',
+          query: {
+            by_type: title,
+          },
+        }
+      };
+    },
   },
 }
 </script>
