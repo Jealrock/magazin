@@ -45,6 +45,26 @@
             <v-layout row wrap justify-center class="mt-4">
               <v-flex xs12 sm6>
                 <v-checkbox
+                  v-model="notifyByGeo"
+                  label="По геолокации" />
+              </v-flex>
+              <v-flex xs12 sm6>
+                <AutocompleteInput 
+                  :disabled="!notifyByGeo"
+                  :items="suggestedCities"
+                  :placeholder="'Москва'"
+                  :multiple="true"
+                  :chips="true"
+                  :value="selectedCities"
+                  :loaded="suggestedCitiesLoaded"
+                  class="white mt-0 pt-0"
+                  :hideDetails="true"
+                  @update="onCityUpdate"
+                  @change="onCitiesChange"
+                />
+              </v-flex>
+              <v-flex xs12 sm6>
+                <v-checkbox
                   v-model="notifyByCategories"
                   label="По категориям" />
               </v-flex>
@@ -69,26 +89,6 @@
                     </v-list-tile-content>
                   </template>
                 </v-autocomplete>
-              </v-flex>
-              <v-flex xs12 sm6>
-                <v-checkbox
-                  v-model="notifyByGeo"
-                  label="По геолокации" />
-              </v-flex>
-              <v-flex xs12 sm6>
-                <AutocompleteInput 
-                  :disabled="!notifyByGeo"
-                  :items="suggestedCities"
-                  :placeholder="'Москва'"
-                  :multiple="true"
-                  :chips="true"
-                  :value="selectedCities"
-                  :loaded="suggestedCitiesLoaded"
-                  class="white mt-0 pt-0"
-                  :hideDetails="true"
-                  @update="onCityUpdate"
-                  @change="onCitiesChange"
-                />
               </v-flex>
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
