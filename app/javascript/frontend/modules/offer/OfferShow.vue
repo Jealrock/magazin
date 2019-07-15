@@ -127,6 +127,14 @@
                   <span class="body-1">{{ phoneNumber }}</span>
                 </p>
             </v-btn>
+            <v-btn
+              v-if="user.id && user.id === offer.user_id"
+              block flat depressed
+              color="info"
+              class="ma-0 mt-3"
+              @click="edit">
+              Изменить объявление
+            </v-btn>
             <v-btn v-if="closable"
               block flat depressed
               color="error"
@@ -243,6 +251,10 @@ export default {
     ...mapActions([
       'toggleFavorite',
     ]),
+
+    edit() {
+      this.$router.push(`/offer/${this.offer.id}/edit`);
+    },
 
     close() {
       offersService.close(this.offer.id)

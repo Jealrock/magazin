@@ -4,7 +4,7 @@
       Фотографии
     </h4>
 
-    <input v-if="uploadReady" type="file" id="photo" ref="photos" v-on:change="handlePhotoUpload()" multiple />
+    <input v-if="uploadReady" type="file" id="photo" ref="photos" v-on:change="handlePhotoUpload()" accept=".jpeg,.jpg,.png" multiple />
 
     <v-layout row wrap>
       <p class="caption grey--text text--darken-1 mb-1">Не более {{ max }}</p>
@@ -84,6 +84,10 @@ export default {
       this.$nextTick(() => {
         this.uploadReady = true;
       });
+    },
+
+    setPhotos(photoFiles) {
+      this.photos = photoFiles;
     },
 
     removePhoto(index) {
