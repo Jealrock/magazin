@@ -4,7 +4,9 @@
     <AppSidebar />
     <AppHeader />
     <AppLocaleSwitcher />
-    <router-view />
+    <router-view 
+      class="full_height" />
+    <AppFooter />
   </v-app>
 </template>
 

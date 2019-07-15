@@ -78,7 +78,10 @@
                 </v-btn>
               </div>
               <p class="body-1 mb-0"> <span class="error--text" v-if="offer.closed">Объявление было закрыто владельцем</span>
-                <span v-else>Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}</span>
+                <span v-else>
+                  Размещено {{ offer.created_at | moment('calendar').toLowerCase() }} —
+                  <span class="error--text">объявление удалится через 30 дней после публикаций</span>
+                </span>
               </p>
             </v-layout>
           </v-flex>
@@ -214,7 +217,7 @@ export default {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
-      if (this.offer.type === 'FreeOffer') return 'Отдам БисмилЛах1';
+      if (this.offer.type === 'FreeOffer') return 'Подарю БисмилЛах1';
       return 'Уточнить';
     },
 
