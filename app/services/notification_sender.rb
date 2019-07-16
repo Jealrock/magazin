@@ -1,5 +1,5 @@
 class NotifyUsers
-  def new(offer, params)
+  def new(offer, params = {})
     @params = params
     @message = build_message(offer)
   end

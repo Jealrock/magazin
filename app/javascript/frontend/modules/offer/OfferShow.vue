@@ -175,6 +175,7 @@ import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar'
 import NotificationDialog from './dialog/notificationDialog';
 
 import { offersService } from './services/offersService';
+import { paymentsService } from '@frontend/modules/payments/services/paymentsService';
 
 export default {
   components: {
@@ -253,7 +254,13 @@ export default {
     },
 
     showNotificationDialog() {
-      this.$refs.notificationDialog.showMainDialog();
+      paymentsService.create({
+        'payable_entity_id': this.offer.id,
+        'payable_entity_type': 'Offer',
+        'type': 'Notification'
+      }).then(paymentData => {
+        this.$refs.notificationDialog.showMainDialog(paymentData);
+      });
     },
 
     sendMessage() {

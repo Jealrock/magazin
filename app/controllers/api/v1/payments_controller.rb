@@ -3,12 +3,16 @@ module Api::V1
     include Pundit
 
     def create
-      @payment = current_user.payments.new(payment_params)
-      if @payment.save
-        render json: { status: 'ok' }
-      else
-        render json: { status: 'fail' }
-      end
+      run Payments::Create
+      render json: {
+        target_payment_data: result['model'].build_megakassa_params(ENV['PAYMENT_NOTIFICATION_TARGET_PRICE']),
+        all_payment_data: result['model'].build_megakassa_params(ENV['PAYMENT_NOTIFICATION_ALL_PRICE'])
+      }
+    end
+
+    def update
+      run Payments::Update
+      result_show_create(result, serializer: ::Api::V1::PaymentSerializer)
     end
 
     def success

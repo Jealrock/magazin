@@ -40,11 +40,6 @@ module Api::V1
       result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
     end
 
-    def notify
-      run Offer::Notify
-      result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
-    end
-
     private
 
     def offers_have_price?

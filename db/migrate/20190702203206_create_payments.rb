@@ -9,7 +9,7 @@ class CreatePayments < ActiveRecord::Migration[5.2]
 
       t.string :type, null: false
       t.string :status, null: false, default: Payment::STATUSES.first
-      t.jsonb :params, null: false, default: '{}'
+      t.jsonb :params
       t.string :payable_entity_type
       t.belongs_to :payable_entity
       t.timestamps

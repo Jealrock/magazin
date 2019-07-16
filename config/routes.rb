@@ -25,12 +25,15 @@ Rails.application.routes.draw do
       resources :offers, only: %i[index show create] do
         member do
           post :close
-          post :notify
         end
       end
-
-      get 'payments/success' => 'payments#success'
-      get 'payments/failure' => 'payments#failure'
+      
+      resource :payments, only: %i[create update] do
+        member do
+          get :success
+          get :failure
+        end
+      end
     end
   end
 

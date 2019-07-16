@@ -10,13 +10,18 @@
             <v-layout row wrap justify-center class="mt-4">
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <v-btn
-                  block
-                  depressed
-                  color="info"
-                  @click="notify">
-                  Всем пользователям
-                </v-btn>
+                <MegakassaForm 
+                  v-if="paymentData"
+                  :shopId="paymentData.all_payment_data.shop_id"
+                  :price="paymentData.all_payment_data.price"
+                  :description="paymentData.all_payment_data.desrciption"
+                  :orderId="paymentData.all_payment_data.order_id"
+                  :signature="paymentData.all_payment_data.signature"
+                >
+                  <template v-slot:submitBtn>
+                    <v-btn block depressed color="info">Всем пользователям</v-btn>
+                  </template>
+                </MegakassaForm>
               </v-flex>
               <v-flex xs12 sm6 
                 :class="{ 
@@ -90,15 +95,19 @@
                   @change="onCitiesChange"
                 />
               </v-flex>
-              <v-flex xs12 sm6
-                :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <v-btn
-                  block
-                  depressed
-                  color="success"
-                  @click="notify">
-                  Отправить
-                </v-btn>
+              <v-flex xs12 sm6 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
+                <MegakassaForm 
+                  v-if="paymentData"
+                  :shopId="paymentData.target_payment_data.shop_id"
+                  :price="paymentData.target_payment_data.price"
+                  :description="paymentData.target_payment_data.desrciption"
+                  :orderId="paymentData.target_payment_data.order_id"
+                  :signature="paymentData.target_payment_data.signature"
+                >
+                  <template v-slot:submitBtn>
+                    <v-btn block depressed color="success">Отправить</v-btn>
+                  </template>
+                </MegakassaForm>
               </v-flex>
             </v-layout>
           </v-container>
@@ -110,6 +119,7 @@
 
 <script>
 import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
+import MegakassaForm from '@frontend/modules/payments/MegakassaForm';
 import geolocationsService from '@frontend/core/services/geolocationsService';
 
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -117,7 +127,8 @@ import { offersService } from '@frontend/modules/offer/services/offersService';
 
 export default {
   components: {
-    AutocompleteInput
+    AutocompleteInput,
+    MegakassaForm
   },
 
   props: {
@@ -139,6 +150,8 @@ export default {
     selectedCities: [],
 
     selectedCategories: [],
+
+    paymentData: null
   }),
 
   computed: {
@@ -186,7 +199,8 @@ export default {
         .finally(() => this.suggestedCitiesLoaded = true)
     },
 
-    showMainDialog() {
+    showMainDialog(paymentData) {
+      this.paymentData = paymentData;
       this.mainDialog = true;
       this.settingsDialog = false;
     },
@@ -197,20 +211,9 @@ export default {
     },
 
     notify() {
-      offersService.notify(this.offerId, {
-          categories: this.selectedCategories,
-          cities: this.selectedCities,
-        })
-        .then(resp => {
-          this.setOffer(resp);
-          this.mainDialog = false;
-          this.settingsDialog = false;
-          this.selectedCategories = [];
-          this.showAlert({
-            type: 'success',
-            text: 'Успешно отправлено',
-          });
-        });
+      this.mainDialog = false;
+      this.settingsDialog = false;
+      this.selectedCategories = [];
     },
   },
 };

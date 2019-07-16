@@ -1,8 +1,9 @@
+# Legacy code :)
+# rubocop:disable Metrics/AbcSize, Metrics/MethodLength, Metrics/ParameterLists
 class Megakassa
-  # rubocop:disable Metrics/MethodLength, Metrics/ParameterLists
   def self.pay_redirect(
     amount, currency, description, order_id, method_id,
-    client_email, client_phone = '', debug = 1, signature, language
+    client_email, client_phone = '', language
   )
     data = {
       'shop_id' => ENV['MEGAKASSA_SHOP_ID'],
@@ -13,10 +14,11 @@ class Megakassa
       'method_id' => method_id,
       'client_email' => client_email,
       'client_phone' => client_phone,
-      'debug' => debug,
+      'debug' => ENV['MEGAKASSA_DEBUG'],
       'agree' => 'true',
       'signature' => generate_signature(
-        [ENV['MEGAKASSA_SHOP_ID'], amount, currency, description, order_id, method_id, client_email, debug, signature],
+        [ENV['MEGAKASSA_SHOP_ID'], amount, currency, description, order_id, method_id,
+         client_email, ENV['MEGAKASSA_DEBUG'], ENV['MEGAKASSA_SIGNATURE']],
         true
       ),
       'language' => language
@@ -33,7 +35,7 @@ class Megakassa
       return nil
     end
   end
-  # rubocop:enable Metrics/MethodLength, Metrics/ParameterLists
+  # rubocop:enable
 
   def self.generate_signature(arr, with_signature)
     data = arr.join(':')
@@ -53,7 +55,6 @@ class Megakassa
     num.join('.')
   end
 
-  # rubocop:disable Metrics/AbcSize
   def self.valid?(params)
     params['debug'] = 0 if params['debug'].empty?
 
@@ -77,5 +78,5 @@ class Megakassa
 
     true
   end
-  # rubocop:enable Metrics/AbcSize
 end
+# rubocop:enable Metrics/AbcSize, Metrics/MethodLength, Metrics/ParameterLists
