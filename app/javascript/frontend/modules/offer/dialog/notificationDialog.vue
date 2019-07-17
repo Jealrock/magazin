@@ -194,10 +194,10 @@ export default {
 
     handleCategoriesSelection(value) {
       // Checking if user chosed 'All category' option, then removing all already chosen categories and put 'All categories' 
-      if (value.includes(-1)) this.selectedCategories = [-1];
+      if (value.includes(ALL_CATEGORIES_OPTION.id)) this.selectedCategories = [ALL_CATEGORIES_OPTION.id];
 
       // Check if user selected certain category after selecting 'All categories', removing it and put selected category
-      if (value[0] === -1 && value.length > 1) this.selectedCategories = value.splice(1);
+      if (value[0] === ALL_CATEGORIES_OPTION.id && value.length > 1) this.selectedCategories = value.splice(1);
     },
 
     onCitiesChange(cities) {
@@ -251,7 +251,7 @@ export default {
 
       let categories = [];
       if (this.notifyByCategories) 
-        if (!this.selectedCategories.includes(-1))
+        if (!this.selectedCategories.includes(ALL_CATEGORIES_OPTION.id))
           categories = this.selectedCategories;
 
       offersService.notify(this.offerId, {
