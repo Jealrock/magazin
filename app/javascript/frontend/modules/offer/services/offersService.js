@@ -47,7 +47,6 @@ class OffersService {
     let formData = new FormData();
 
     const fixedPrice = parseFloat(`${params['price']}`.replace(/ /g, ''));
-    params['price'] = fixedPrice;
 
     Object.keys(params).forEach(key => {
       if (Array.isArray(params[key])) {
@@ -63,8 +62,10 @@ class OffersService {
     }
     else if (params.type === "ExchangeOffer")
       formData.set('price', '');
-    else if (params.type === "CashOffer" || params.type === "ServiceOffer")
+    else if (params.type === "CashOffer" || params.type === "ServiceOffer" || params.type === "ShopOffer") {
+      formData.set('price', fixedPrice);
       formData.set('exchange_item', '');
+    }
 
     return formData;
   }

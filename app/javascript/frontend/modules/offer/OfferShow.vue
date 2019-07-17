@@ -220,7 +220,7 @@ export default {
     },
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer') return `${this.offer.price} руб.`;
+      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer' || this.offer.type === 'ShopOffer') return `${this.offer.price} руб.`;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';

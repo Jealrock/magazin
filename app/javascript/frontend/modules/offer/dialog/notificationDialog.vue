@@ -4,6 +4,14 @@
       v-model="mainDialog"
       width="600">
       <v-card>
+        <v-toolbar
+          class="elevation-0">
+          <v-spacer />
+          <v-btn icon
+            @click="closeMainDialog">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-card-title primary-title>
           <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление</h4>
           <v-container class="pa-0">
@@ -39,6 +47,20 @@
     <v-dialog v-model="settingsDialog"
       :width="600">
       <v-card>
+        <v-toolbar
+          class="elevation-0">
+          <v-btn
+            class="elevation-0 ma-0 pl-1"
+            @click="backToMainDialog">
+            <v-icon>keyboard_arrow_left</v-icon>
+            Назад
+          </v-btn>
+          <v-spacer />
+          <v-btn icon
+            @click="closeSettingsDialog">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-card-title primary-title>
           <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление пользователям</h4>
           <v-container class="pa-0">
@@ -76,6 +98,7 @@
                   :items="categories"
                   item-value="id"
                   item-text="title"
+                  @input="handleCategoriesSelection"
                   label="Укажите категории">
                   <template v-slot:item="data">
                     <v-list-tile-content>
@@ -148,11 +171,13 @@ export default {
     ]),
 
     categories() {
-      return this.mainCategories.reduce((acc, cur) => {
-        if (acc.length !== 0) acc.push({ divider: true });
-        acc.push(cur);
-        return acc.concat(this.childCategories(cur.id).map(category => category));
-      }, []);
+      return [{id: -1, parent_id: null, title: 'Все категории',}].concat(
+        this.mainCategories.reduce((acc, cur) => {
+          if (acc.length !== 0) acc.push({ divider: true });
+          acc.push(cur);
+          return acc.concat(this.childCategories(cur.id).map(category => category));
+        }, [])
+      );
     },
   },
 
@@ -164,6 +189,25 @@ export default {
     ...mapActions([
       'showAlert',
     ]),
+
+    closeMainDialog() {
+      this.mainDialog = false;
+    },
+
+    closeSettingsDialog() {
+      this.settingsDialog = false;
+    },
+
+    backToMainDialog() {
+      this.settingsDialog = false;
+      this.mainDialog = true;
+    },
+
+    handleCategoriesSelection(value) {
+      console.log(this.selectedCategories);
+      if (value.includes(-1)) this.selectedCategories = [-1];
+      if (value[0] === -1 && value.length > 1) this.selectedCategories = value.splice(1);
+    },
 
     onCitiesChange(cities) {
       this.selectedCities = cities;
@@ -197,15 +241,23 @@ export default {
     },
 
     notify() {
+      const categories = this.selectedCategories.includes(-1) ? [] : this.selectedCategories;
+
       offersService.notify(this.offerId, {
-          categories: this.selectedCategories,
+          categories: categories,
           cities: this.selectedCities,
         })
         .then(resp => {
           this.setOffer(resp);
           this.mainDialog = false;
           this.settingsDialog = false;
+
+          this.notifyByGeo = false;
+          this.notifyByCategories = true;
           this.selectedCategories = [];
+          this.suggestedCities = [];
+          this.selectedCities = [];
+
           this.showAlert({
             type: 'success',
             text: 'Успешно отправлено',
