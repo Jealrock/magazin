@@ -105,6 +105,9 @@ export default {
       text: 'Услуги',
       value: 'ServiceOffer',
     }, {
+      text: 'Магазин',
+      value: 'ShopOffer',
+    }, {
       text: 'Подарю БисмилЛах1',
       value: 'FreeOffer',
     }],

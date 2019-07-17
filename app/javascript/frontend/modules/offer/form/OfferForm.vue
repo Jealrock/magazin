@@ -42,7 +42,7 @@
         required
       />
       <v-text-field
-        v-if="offer.type === 'CashOffer' || offer.type === 'ServiceOffer'"
+        v-if="offer.type === 'CashOffer' || offer.type === 'ServiceOffer' || offer.type === 'ShopOffer'"
         v-model="offer.price"
         v-validate="{
           required: true,
@@ -176,6 +176,9 @@ export default {
     }, {
       text: 'Услуга',
       value: 'ServiceOffer',
+    }, {
+      text: 'Магазин',
+      value: 'ShopOffer',
     }, {
       text: 'Отдам БисмилЛах1',
       value: 'FreeOffer',

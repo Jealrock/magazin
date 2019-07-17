@@ -4,6 +4,14 @@
       v-model="mainDialog"
       width="600">
       <v-card>
+        <v-toolbar
+          class="elevation-0">
+          <v-spacer />
+          <v-btn icon
+            @click="closeMainDialog">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-card-title primary-title>
           <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление</h4>
           <v-container class="pa-0">
@@ -39,6 +47,20 @@
     <v-dialog v-model="settingsDialog"
       :width="600">
       <v-card>
+        <v-toolbar
+          class="elevation-0">
+          <v-btn
+            class="elevation-0 ma-0 pl-1"
+            @click="backToMainDialog">
+            <v-icon>keyboard_arrow_left</v-icon>
+            Назад
+          </v-btn>
+          <v-spacer />
+          <v-btn icon
+            @click="settingsDialog = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </v-toolbar>
         <v-card-title primary-title>
           <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление пользователям</h4>
           <v-container class="pa-0">
@@ -76,6 +98,7 @@
                   :items="categories"
                   item-value="id"
                   item-text="title"
+                  @input="handleCategoriesSelection"
                   label="Укажите категории">
                   <template v-slot:item="data">
                     <v-list-tile-content>
@@ -115,6 +138,8 @@ import geolocationsService from '@frontend/core/services/geolocationsService';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { offersService } from '@frontend/modules/offer/services/offersService';
 
+const ALL_CATEGORIES_OPTION = {id: -1, parent_id: null, title: 'Все категории',};
+
 export default {
   components: {
     AutocompleteInput
@@ -148,11 +173,13 @@ export default {
     ]),
 
     categories() {
-      return this.mainCategories.reduce((acc, cur) => {
-        if (acc.length !== 0) acc.push({ divider: true });
-        acc.push(cur);
-        return acc.concat(this.childCategories(cur.id).map(category => category));
-      }, []);
+      return [ALL_CATEGORIES_OPTION].concat(
+        this.mainCategories.reduce((acc, cur) => {
+          if (acc.length !== 0) acc.push({ divider: true });
+          acc.push(cur);
+          return acc.concat(this.childCategories(cur.id).map(category => category));
+        }, [])
+      );
     },
   },
 
@@ -164,6 +191,14 @@ export default {
     ...mapActions([
       'showAlert',
     ]),
+
+    handleCategoriesSelection(value) {
+      // Checking if user chosed 'All category' option, then removing all already chosen categories and put 'All categories' 
+      if (value.includes(ALL_CATEGORIES_OPTION.id)) this.selectedCategories = [ALL_CATEGORIES_OPTION.id];
+
+      // Check if user selected certain category after selecting 'All categories', removing it and put selected category
+      if (value[0] === ALL_CATEGORIES_OPTION.id && value.length > 1) this.selectedCategories = value.splice(1);
+    },
 
     onCitiesChange(cities) {
       this.selectedCities = cities;
@@ -191,21 +226,42 @@ export default {
       this.settingsDialog = false;
     },
 
+    closeMainDialog() {
+      this.mainDialog = false;
+
+      this.notifyByGeo = false;
+      this.notifyByCategories = true;
+      this.selectedCategories = [];
+      this.suggestedCities = [];
+      this.selectedCities = [];
+    },
+
     showSettingDialog() {
       this.mainDialog = false;
       this.settingsDialog = true;
     },
 
+    backToMainDialog() {
+      this.settingsDialog = false;
+      this.mainDialog = true;
+    },
+
     notify() {
+      const cities = this.notifyByGeo ? this.selectedCities : [];
+
+      let categories = [];
+      if (this.notifyByCategories) 
+        if (!this.selectedCategories.includes(ALL_CATEGORIES_OPTION.id))
+          categories = this.selectedCategories;
+
       offersService.notify(this.offerId, {
-          categories: this.selectedCategories,
-          cities: this.selectedCities,
+          categories: categories,
+          cities: cities,
         })
         .then(resp => {
           this.setOffer(resp);
-          this.mainDialog = false;
+          this.closeMainDialog();
           this.settingsDialog = false;
-          this.selectedCategories = [];
           this.showAlert({
             type: 'success',
             text: 'Успешно отправлено',

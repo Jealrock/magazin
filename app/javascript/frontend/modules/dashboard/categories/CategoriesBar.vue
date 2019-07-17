@@ -11,6 +11,9 @@
     <router-link :to="offerTypeLink('ServiceOffer')"
       class="link link_blue body-1 py-2 pr-3"
     >Услуги</router-link>
+    <router-link :to="offerTypeLink('ShopOffer')"
+      class="link link_blue body-1 py-2 pr-3"
+    >Магазины</router-link>
     <router-link :to="offerTypeLink('FreeOffer')"
       class="link link_blue body-1 py-2 pr-3"
     >Подарю БисмилЛах1</router-link>
