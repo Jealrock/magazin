@@ -57,7 +57,7 @@
           </v-btn>
           <v-spacer />
           <v-btn icon
-            @click="closeSettingsDialog">
+            @click="settingsDialog = false">
             <v-icon>close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -138,6 +138,8 @@ import geolocationsService from '@frontend/core/services/geolocationsService';
 import { mapGetters, mapMutations, mapActions } from 'vuex';
 import { offersService } from '@frontend/modules/offer/services/offersService';
 
+const ALL_CATEGORIES_OPTION = {id: -1, parent_id: null, title: 'Все категории',};
+
 export default {
   components: {
     AutocompleteInput
@@ -171,7 +173,7 @@ export default {
     ]),
 
     categories() {
-      return [{id: -1, parent_id: null, title: 'Все категории',}].concat(
+      return [ALL_CATEGORIES_OPTION].concat(
         this.mainCategories.reduce((acc, cur) => {
           if (acc.length !== 0) acc.push({ divider: true });
           acc.push(cur);
@@ -190,22 +192,11 @@ export default {
       'showAlert',
     ]),
 
-    closeMainDialog() {
-      this.mainDialog = false;
-    },
-
-    closeSettingsDialog() {
-      this.settingsDialog = false;
-    },
-
-    backToMainDialog() {
-      this.settingsDialog = false;
-      this.mainDialog = true;
-    },
-
     handleCategoriesSelection(value) {
-      console.log(this.selectedCategories);
+      // Checking if user chosed 'All category' option, then removing all already chosen categories and put 'All categories' 
       if (value.includes(-1)) this.selectedCategories = [-1];
+
+      // Check if user selected certain category after selecting 'All categories', removing it and put selected category
       if (value[0] === -1 && value.length > 1) this.selectedCategories = value.splice(1);
     },
 
@@ -235,29 +226,42 @@ export default {
       this.settingsDialog = false;
     },
 
+    closeMainDialog() {
+      this.mainDialog = false;
+
+      this.notifyByGeo = false;
+      this.notifyByCategories = true;
+      this.selectedCategories = [];
+      this.suggestedCities = [];
+      this.selectedCities = [];
+    },
+
     showSettingDialog() {
       this.mainDialog = false;
       this.settingsDialog = true;
     },
 
+    backToMainDialog() {
+      this.settingsDialog = false;
+      this.mainDialog = true;
+    },
+
     notify() {
-      const categories = this.selectedCategories.includes(-1) ? [] : this.selectedCategories;
+      const cities = this.notifyByGeo ? this.selectedCities : [];
+
+      let categories = [];
+      if (this.notifyByCategories) 
+        if (!this.selectedCategories.includes(-1))
+          categories = this.selectedCategories;
 
       offersService.notify(this.offerId, {
           categories: categories,
-          cities: this.selectedCities,
+          cities: cities,
         })
         .then(resp => {
           this.setOffer(resp);
-          this.mainDialog = false;
+          this.closeMainDialog();
           this.settingsDialog = false;
-
-          this.notifyByGeo = false;
-          this.notifyByCategories = true;
-          this.selectedCategories = [];
-          this.suggestedCities = [];
-          this.selectedCities = [];
-
           this.showAlert({
             type: 'success',
             text: 'Успешно отправлено',
