@@ -8,7 +8,9 @@ import {
   PROFILE_ROUTER, PROFILE_SETTINGS_ROUTER, PROFILE_FAVORITES_ROUTER,
   PROFILE_SUBSCRIPTIONS_ROUTER, PROFILE_MESSAGES_ROUTER,
 } from '@frontend/modules/users/router';
-import { OFFER_SHOW_ROUTER, OFFER_NEW_ROUTER } from '@frontend/modules/offer/router';
+import {
+  OFFER_SHOW_ROUTER, OFFER_EDIT_ROUTER, OFFER_NEW_ROUTER,
+} from '@frontend/modules/offer/router';
 import { SEARCH_ROUTER } from '@frontend/modules/search/router';
 
 Vue.use(Router);
@@ -27,6 +29,7 @@ export default new Router({
     EDIT_PASSWORD_ROUTER,
     OFFER_NEW_ROUTER,
     OFFER_SHOW_ROUTER,
+    OFFER_EDIT_ROUTER,
     PROFILE_ROUTER,
     PROFILE_SETTINGS_ROUTER,
     PROFILE_MESSAGES_ROUTER,

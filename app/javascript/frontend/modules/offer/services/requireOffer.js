@@ -7,11 +7,11 @@ const requireOffer = async function(to, from, next) {
   offersService.get(offer_id)
     .then((response) => {
       store.commit('setOffer', response.data.data.attributes)
+      return next();
     })
     .catch((error) => {
       return next('/');
     });
-  return next();
 }
 
 export default requireOffer;

@@ -27,8 +27,7 @@ export default {
     orderId: {type: Number, required: true},
     signature: {type: String, required: true},
 
-    categories: {type: Array}, 
-    cities: {type: Array}
+    params: {type: Object}
   },
 
   data: () => ({
@@ -37,8 +36,10 @@ export default {
 
   methods: {
     updatePayment() {
+      this.$emit('submitted', true);
+
       paymentsService
-        .update(this.orderId, { params: { cities: this.cities, categories: this.categories } })
+        .update(this.orderId, { params: this.params })
         .then(() => { console.log('success') });
     }
   }

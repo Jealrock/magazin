@@ -35,6 +35,11 @@ module Api::V1
       result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
     end
 
+    def update
+      run Offer::Update
+      result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)
+    end
+
     def close
       run Offer::Close
       result_show_create(result, serializer: ::Api::V1::Offers::FormItemSerializer)

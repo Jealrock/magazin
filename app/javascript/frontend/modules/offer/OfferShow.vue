@@ -66,7 +66,10 @@
                 </v-btn>
               </div>
               <p class="body-1 mb-0"> <span class="error--text" v-if="offer.closed">Объявление было закрыто владельцем</span>
-                <span v-else>Размещено {{ offer.created_at | moment('calendar').toLowerCase() }}</span>
+                <span v-else>
+                  Размещено {{ offer.created_at | moment('calendar').toLowerCase() }} —
+                  <span class="error--text">объявление удалится через 30 дней после публикаций</span>
+                </span>
               </p>
             </v-layout>
           </v-flex>
@@ -111,6 +114,14 @@
                   <span class="title font-weight-regular">{{ phoneVisible ? 'Скрыть телефон' : 'Показать телефон' }}</span><br>
                   <span class="body-1">{{ phoneNumber }}</span>
                 </p>
+            </v-btn>
+            <v-btn
+              v-if="user.id && user.id === offer.user_id"
+              block flat depressed
+              color="info"
+              class="ma-0 mt-3"
+              @click="edit">
+              Изменить объявление
             </v-btn>
             <v-btn v-if="closable"
               block flat depressed
@@ -200,12 +211,12 @@ export default {
     },
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer') return `${this.offer.price} руб.`;
+      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer' || this.offer.type === 'ShopOffer') return `${this.offer.price} руб.`;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
-      if (this.offer.type === 'FreeOffer') return 'Отдам БисмилЛах1';
+      if (this.offer.type === 'FreeOffer') return 'Подарю БисмилЛах1';
       return 'Уточнить';
     },
 
@@ -242,6 +253,10 @@ export default {
   methods: {
     ...mapMutations(['setOffer']),
     ...mapActions(['toggleFavorite', 'showAlert']),
+
+    edit() {
+      this.$router.push(`/offer/${this.offer.id}/edit`);
+    },
 
     close() {
       offersService.close(this.offer.id)

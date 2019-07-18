@@ -5,7 +5,15 @@ module Api::V1
                  :phone_number, :category_id, :created_at, :updated_at
 
       attribute :photos do |object|
-        object.photos.map(&:file)
+        object.photos.map do |photo|
+          {
+            url: photo.file.url,
+            thumb: {
+              url: photo.file.thumb.url
+            },
+            name: photo.file&.file&.filename
+          }
+        end
       end
 
       attribute :user do |object|

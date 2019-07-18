@@ -22,7 +22,7 @@ Rails.application.routes.draw do
       resources :geolocations, only: %i[index]
       resources :subscriptions, only: %i[create]
       resources :categories, only: %i[index]
-      resources :offers, only: %i[index show create] do
+      resources :offers, only: %i[index show create update] do
         member do
           post :close
         end

@@ -2,7 +2,7 @@ class NotifyUsers
   include Callable
 
   def initialize(offer, params = {})
-    @params = params
+    @params = params || {}
     @message = build_message(offer)
   end
 
@@ -19,11 +19,11 @@ class NotifyUsers
 
     @subscriptions = Subscription.all
 
-    unless params[:categories].blank?
-      @subscriptions = @subscriptions.by_user_category_subscriptions(params[:categories]).distinct
+    unless params['categories'].blank?
+      @subscriptions = @subscriptions.by_user_category_subscriptions(params['categories']).distinct
     end
 
-    @subscriptions = @subscriptions.by_user_cities(params[:cities]).distinct unless params[:cities].blank?
+    @subscriptions = @subscriptions.by_user_cities(params['cities']).distinct unless params['cities'].blank?
 
     @subscriptions
   end

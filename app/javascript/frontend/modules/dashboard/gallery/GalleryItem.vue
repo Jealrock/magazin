@@ -53,12 +53,12 @@ export default {
     ]),
 
     price() {
-      if (this.item.type === 'CashOffer' || this.item.type === 'ServiceOffer') return `${this.item.price} руб.`;
+      if (this.item.type === 'CashOffer' || this.item.type === 'ServiceOffer' || this.item.type === 'ShopOffer') return `${this.item.price} руб.`;
       if (this.item.type === 'ExchangeOffer') {
         if (this.item.exchange_item) return `Обмен на ${this.item.exchange_item.toLowerCase()}`;
         return 'Обмен';
       }
-      if (this.item.type === 'FreeOffer') return 'Отдам БисмилЛах1';
+      if (this.item.type === 'FreeOffer') return 'Подарю БисмилЛах1';
       return 'Уточнить';
     },
   },
