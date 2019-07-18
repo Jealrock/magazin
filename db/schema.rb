@@ -73,13 +73,10 @@ ActiveRecord::Schema.define(version: 2019_07_02_203206) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.string "name"
-    t.integer "amount"
-    t.integer "megakassa_id"
-    t.integer "megakassa_order_id"
+    t.string "megakassa_uid"
     t.float "price"
     t.string "type", null: false
-    t.string "status", default: "pending", null: false
+    t.integer "status", default: 0, null: false
     t.jsonb "params"
     t.string "payable_entity_type"
     t.bigint "payable_entity_id"

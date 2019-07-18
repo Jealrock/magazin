@@ -28,10 +28,11 @@ Rails.application.routes.draw do
         end
       end
       
-      resource :payments, only: %i[create update] do
-        member do
+      resources :payments, only: %i[create update] do
+        collection do
           get :success
           get :failure
+          post :handle
         end
       end
     end

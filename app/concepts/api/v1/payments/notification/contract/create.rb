@@ -8,5 +8,12 @@ module Payments::Notification::Contract
 
     property :payable_entity_id
     property :payable_entity_type
+    property :price
+
+    validation do
+      required(:payable_entity_id).filled
+      required(:payable_entity_type).filled
+      required(:price).filled
+    end
   end
 end

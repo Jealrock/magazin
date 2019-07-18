@@ -1,5 +1,5 @@
 class Payment < ApplicationRecord
-  STATUSES = [:pending, :failed, :successful].freeze
+  STATUSES = { pending: 0, successful: 1, failed: 2 }.freeze
   STI_CLASSES = ['Payments::Notification'].freeze
 
   enum status: STATUSES
@@ -11,7 +11,15 @@ class Payment < ApplicationRecord
     raise NotImplementedError
   end
 
-  def redirect_path
+  def successfull_redirect_path
+    raise NotImplementedError
+  end
+
+  def failed_redirect_path
+    raise NotImplementedError
+  end
+
+  def megakassa_params
     raise NotImplementedError
   end
 

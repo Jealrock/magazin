@@ -30,7 +30,7 @@ class Offer < ApplicationRecord
   scope :only_with_photos, -> { joins(:photos) }
 
   def notify(params)
-    NotificationSender.call(self, params)
+    NotifyUsers.call(self, params)
   end
 
   def close

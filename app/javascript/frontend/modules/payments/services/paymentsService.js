@@ -11,7 +11,7 @@ class PaymentsService {
   async update(paymentId, params) {
     return axiosInstance
       .patch(`/payments/${paymentId}`, params)
-      .then(resp => resp.data.data.attributes)
+      .then(resp => resp.data)
       .catch(error => { throw this.buildErrorMessage(error) });
   }
 

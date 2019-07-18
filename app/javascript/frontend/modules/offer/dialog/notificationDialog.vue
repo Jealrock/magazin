@@ -11,15 +11,15 @@
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
                 <MegakassaForm 
-                  v-if="paymentData"
-                  :shopId="paymentData.all_payment_data.shop_id"
-                  :price="paymentData.all_payment_data.price"
-                  :description="paymentData.all_payment_data.desrciption"
-                  :orderId="paymentData.all_payment_data.order_id"
-                  :signature="paymentData.all_payment_data.signature"
+                  v-if="allPayment"
+                  :shopId="allPayment.shop_id"
+                  :price="allPayment.price"
+                  :description="allPayment.description"
+                  :orderId="allPayment.order_id"
+                  :signature="allPayment.signature"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn block depressed color="info">Всем пользователям</v-btn>
+                    <v-btn type="submit" block depressed color="info">Всем пользователям</v-btn>
                   </template>
                 </MegakassaForm>
               </v-flex>
@@ -97,15 +97,17 @@
               </v-flex>
               <v-flex xs12 sm6 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
                 <MegakassaForm 
-                  v-if="paymentData"
-                  :shopId="paymentData.target_payment_data.shop_id"
-                  :price="paymentData.target_payment_data.price"
-                  :description="paymentData.target_payment_data.desrciption"
-                  :orderId="paymentData.target_payment_data.order_id"
-                  :signature="paymentData.target_payment_data.signature"
+                  v-if="targetPayment"
+                  :shopId="targetPayment.shop_id"
+                  :price="targetPayment.price"
+                  :description="targetPayment.description"
+                  :orderId="targetPayment.order_id"
+                  :signature="targetPayment.signature"
+                  :categories="selectedCategories"
+                  :cities="selectedCities"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn block depressed color="success">Отправить</v-btn>
+                    <v-btn type="submit" block depressed color="success">Отправить</v-btn>
                   </template>
                 </MegakassaForm>
               </v-flex>
@@ -151,7 +153,8 @@ export default {
 
     selectedCategories: [],
 
-    paymentData: null
+    allPayment: null,
+    targetPayment: null
   }),
 
   computed: {
@@ -172,10 +175,6 @@ export default {
   methods: {
     ...mapMutations([
       'setOffer',
-    ]),
-
-    ...mapActions([
-      'showAlert',
     ]),
 
     onCitiesChange(cities) {
@@ -199,8 +198,9 @@ export default {
         .finally(() => this.suggestedCitiesLoaded = true)
     },
 
-    showMainDialog(paymentData) {
-      this.paymentData = paymentData;
+    showMainDialog(allPayment, targetPayment) {
+      this.allPayment = allPayment;
+      this.targetPayment = targetPayment;
       this.mainDialog = true;
       this.settingsDialog = false;
     },
