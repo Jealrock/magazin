@@ -9,11 +9,11 @@ class Payments::Notification < Payment
   end
 
   def successfull_redirect_path
-    "/orders/#{payable_entity.id}?notified=true"
+    "/offer/#{payable_entity.id}?notified=true"
   end
 
   def failed_redirect_path
-    "/orders/#{payable_entity.id}?notified=false"
+    "/offer/#{payable_entity.id}?notified=false"
   end
 
   def megakassa_params
