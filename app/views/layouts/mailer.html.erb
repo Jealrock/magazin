@@ -4,10 +4,38 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
       /* Email styles need to be inline */
+
+      .email-container {
+        width: 100% !important;
+        max-width: 600px !important;
+        font-family: Roboto, sans-serif !important;
+      }
+
+      .email-container_center {
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+
+      .link {
+        color: #0091d9 !important;
+      }
+
+      .link:hover {
+        color: #ff6163 !important;
+      }
+
+      .cover-image {
+        width: 100% !important;
+        height: 400px !important;
+        background-position: center !important;
+        background-size: cover !important;
+      }
     </style>
   </head>
 
   <body>
-    <%= yield %>
+    <div class="email-container email-container_center">
+      <%= yield %>
+    </div>
   </body>
 </html>

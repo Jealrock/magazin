@@ -30,6 +30,8 @@ module Api::V1::Offer
         else
           SendNotificationJob.perform_later(sub, build_message(model))
         end
+
+        OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
       end
 
       true
