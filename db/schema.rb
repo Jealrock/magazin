@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_21_140900) do
+ActiveRecord::Schema.define(version: 2019_07_02_203206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +70,19 @@ ActiveRecord::Schema.define(version: 2019_06_21_140900) do
     t.index ["category_id"], name: "index_offers_on_category_id"
     t.index ["type"], name: "index_offers_on_type"
     t.index ["user_id"], name: "index_offers_on_user_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.string "megakassa_uid"
+    t.float "price"
+    t.string "type", null: false
+    t.integer "status", default: 0, null: false
+    t.jsonb "params"
+    t.string "payable_entity_type"
+    t.bigint "payable_entity_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["payable_entity_id"], name: "index_payments_on_payable_entity_id"
   end
 
   create_table "photos", force: :cascade do |t|

@@ -18,13 +18,19 @@
             <v-layout row wrap justify-center class="mt-4">
               <v-flex xs12 sm6
                 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <v-btn
-                  block
-                  depressed
-                  color="info"
-                  @click="notify">
-                  Всем пользователям
-                </v-btn>
+                <MegakassaForm 
+                  v-if="allPayment"
+                  :shopId="allPayment.shop_id"
+                  :price="allPayment.price"
+                  :description="allPayment.description"
+                  :orderId="allPayment.order_id"
+                  :signature="allPayment.signature"
+                  @submitted="closeMainDialog"
+                >
+                  <template v-slot:submitBtn>
+                    <v-btn type="submit" block depressed color="info">Всем пользователям</v-btn>
+                  </template>
+                </MegakassaForm>
               </v-flex>
               <v-flex xs12 sm6 
                 :class="{ 
@@ -113,15 +119,21 @@
                   </template>
                 </v-autocomplete>
               </v-flex>
-              <v-flex xs12 sm6
-                :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <v-btn
-                  block
-                  depressed
-                  color="success"
-                  @click="notify">
-                  Отправить
-                </v-btn>
+              <v-flex xs12 sm6 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
+                <MegakassaForm 
+                  v-if="targetPayment"
+                  :shopId="targetPayment.shop_id"
+                  :price="targetPayment.price"
+                  :description="targetPayment.description"
+                  :orderId="targetPayment.order_id"
+                  :signature="targetPayment.signature"
+                  :params="notificationParams"
+                  @submitted="closeMainDialog"
+                >
+                  <template v-slot:submitBtn>
+                    <v-btn type="submit" block depressed color="success">Отправить</v-btn>
+                  </template>
+                </MegakassaForm>
               </v-flex>
             </v-layout>
           </v-container>
@@ -133,6 +145,7 @@
 
 <script>
 import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
+import MegakassaForm from '@frontend/modules/payments/MegakassaForm';
 import geolocationsService from '@frontend/core/services/geolocationsService';
 
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -142,7 +155,8 @@ const ALL_CATEGORIES_OPTION = {id: -1, parent_id: null, title: 'Все кате�
 
 export default {
   components: {
-    AutocompleteInput
+    AutocompleteInput,
+    MegakassaForm
   },
 
   props: {
@@ -164,6 +178,9 @@ export default {
     selectedCities: [],
 
     selectedCategories: [],
+
+    allPayment: null,
+    targetPayment: null
   }),
 
   computed: {
@@ -171,6 +188,17 @@ export default {
       'mainCategories',
       'childCategories',
     ]),
+    
+    notificationParams() {
+      const cities = this.notifyByGeo ? this.selectedCities : [];
+
+      let categories = [];
+      if (this.notifyByCategories) 
+        if (!this.selectedCategories.includes(ALL_CATEGORIES_OPTION.id))
+          categories = this.selectedCategories;
+
+      return { cities, categories };
+    },
 
     categories() {
       return [ALL_CATEGORIES_OPTION].concat(
@@ -188,14 +216,9 @@ export default {
       'setOffer',
     ]),
 
-    ...mapActions([
-      'showAlert',
-    ]),
-
     handleCategoriesSelection(value) {
       // Checking if user chosed 'All category' option, then removing all already chosen categories and put 'All categories' 
       if (value.includes(ALL_CATEGORIES_OPTION.id)) this.selectedCategories = [ALL_CATEGORIES_OPTION.id];
-
       // Check if user selected certain category after selecting 'All categories', removing it and put selected category
       if (value[0] === ALL_CATEGORIES_OPTION.id && value.length > 1) this.selectedCategories = value.splice(1);
     },
@@ -221,13 +244,16 @@ export default {
         .finally(() => this.suggestedCitiesLoaded = true)
     },
 
-    showMainDialog() {
+    showMainDialog(allPayment, targetPayment) {
+      this.allPayment = allPayment;
+      this.targetPayment = targetPayment;
       this.mainDialog = true;
       this.settingsDialog = false;
     },
 
     closeMainDialog() {
       this.mainDialog = false;
+      this.settingsDialog = false;
 
       this.notifyByGeo = false;
       this.notifyByCategories = true;
@@ -244,29 +270,6 @@ export default {
     backToMainDialog() {
       this.settingsDialog = false;
       this.mainDialog = true;
-    },
-
-    notify() {
-      const cities = this.notifyByGeo ? this.selectedCities : [];
-
-      let categories = [];
-      if (this.notifyByCategories) 
-        if (!this.selectedCategories.includes(ALL_CATEGORIES_OPTION.id))
-          categories = this.selectedCategories;
-
-      offersService.notify(this.offerId, {
-          categories: categories,
-          cities: cities,
-        })
-        .then(resp => {
-          this.setOffer(resp);
-          this.closeMainDialog();
-          this.settingsDialog = false;
-          this.showAlert({
-            type: 'success',
-            text: 'Успешно отправлено',
-          });
-        });
     },
   },
 };
