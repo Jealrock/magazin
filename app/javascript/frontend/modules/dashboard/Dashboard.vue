@@ -97,6 +97,34 @@ export default {
     this.loadOffers();
   },
 
+  channels: {
+    PageNotificationsChannel: {
+      connected() {
+        console.log('Connected!');
+      },
+
+      rejected() {
+        console.log('Rejected!');
+      },
+
+      received(data) {
+        debugger;
+        const message = data;
+        console.log(message);
+      },
+
+      disconnected() {
+        console.log('Disconnected!');
+      },
+    }
+  },
+
+  mounted() {
+    this.$cable.subscribe({
+      channel: 'PageNotificationsChannel',
+    });
+  },
+
   watch: {
     '$route': 'loadOffers'
   },

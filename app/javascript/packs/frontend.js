@@ -24,7 +24,7 @@ Vue.component('app-layout', AppLayout);
 
 Vue.use(ActionCableVue, {
   debug: !configs.isProduction,
-  debugLevel: 'error',
+  debugLevel: 'all',
   connectionUrl: configs.webSocketUrl,
 });
 
