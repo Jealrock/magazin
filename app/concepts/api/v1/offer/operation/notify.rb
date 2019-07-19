@@ -31,7 +31,11 @@ module Api::V1::Offer
           SendNotificationJob.perform_later(sub, build_message(model))
         end
 
-        OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
+        if ENV['SYNC_JOBS']
+          OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
+        else
+          OfferMailer.with(user: sub.user, offer: model).notify.deliver_later
+        end
       end
 
       true
