@@ -31,8 +31,10 @@ class NotifyUsers
   def send_notification(subscription)
     if ENV['SYNC_JOBS']
       SendNotificationJob.perform_now(subscription, message)
+      OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
     else
       SendNotificationJob.perform_later(subscription, message)
+      OfferMailer.with(user: sub.user, offer: model).notify.deliver_later
     end
   end
 

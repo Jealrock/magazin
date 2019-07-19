@@ -1,0 +1,17 @@
+<h3><%= "#{@offer.title} - #{@offer.price}" %> руб</h3>
+
+<p>
+<%= link_to "Просмотреть объявление",
+  "#{root_url}offer/#{@offer.id}",
+  target: "_blank",
+  class: "link" %>
+</p>
+
+<% if attachments.any? %>
+  <%= content_tag :div, nil,
+    class: "cover-image",
+    style: "background-image: url('#{attachments[@photo_file.file.filename].url}')" %>
+<% end %>
+
+<p><b>Описание:</b> <%= @offer.description %></p>
+<p><b>Адрес:</b> <%= @offer.address %></p>
