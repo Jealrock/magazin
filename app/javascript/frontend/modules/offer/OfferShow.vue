@@ -9,20 +9,8 @@
           <SearchBar />
         </v-flex>
       </v-layout>
-      <v-layout
-        v-if="!loaded"
-        row
-        wrap
-        justify-center
-        align-content-center
-        class="offer-view__loader"
-      >
-        <v-progress-circular
-          indeterminate
-          color="info"
-          :size="100"
-          :width="10"
-        />
+      <v-layout v-if="!loaded" row wrap justify-center align-content-center class="offer-view__loader">
+        <v-progress-circular indeterminate color="info" :size="100" :width="10"/>
       </v-layout>
       <div v-else>
         <NotificationDialog :offer-id="offer.id" ref="notificationDialog" />
@@ -186,6 +174,9 @@ import CategoriesBar from '@frontend/modules/dashboard/categories/CategoriesBar'
 import NotificationDialog from './dialog/notificationDialog';
 
 import { offersService } from './services/offersService';
+import { paymentsService } from '@frontend/modules/payments/services/paymentsService';
+
+import configs from '@/packs/configs';
 
 export default {
   components: {
@@ -220,7 +211,7 @@ export default {
     },
 
     offerPrice() {
-      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer') return `${this.offer.price} руб.`;
+      if (this.offer.type === 'CashOffer' || this.offer.type === 'ServiceOffer' || this.offer.type === 'ShopOffer') return `${this.offer.price} руб.`;
       if (this.offer.type === 'ExchangeOffer') {
         if (this.offer.exchange_item) return `Обмен на ${this.offer.exchange_item.toLowerCase()}`;
         return 'Обмен';
@@ -243,14 +234,25 @@ export default {
     },
   },
 
-  methods: {
-    ...mapMutations([
-      'setOffer',
-    ]),
+  created() {
+    if (this.$route.query.notified === undefined) return;
+    
+    if (this.$route.query.notified === 'true') {
+      this.showAlert({
+        type: 'success',
+        text: 'Уведомление успешно отправлено',
+      })
+    } else {
+      this.showAlert({
+        type: 'error',
+        text: 'Уведомление не отправлено. Попробуйте еще раз',
+      })
+    }
+  },
 
-    ...mapActions([
-      'toggleFavorite',
-    ]),
+  methods: {
+    ...mapMutations(['setOffer']),
+    ...mapActions(['toggleFavorite', 'showAlert']),
 
     edit() {
       this.$router.push(`/offer/${this.offer.id}/edit`);
@@ -268,7 +270,18 @@ export default {
     },
 
     showNotificationDialog() {
-      this.$refs.notificationDialog.showMainDialog();
+      const paymentParams = {
+        'payable_entity_id': this.offer.id,
+        'payable_entity_type': 'Offer',
+        'type': 'Notification'
+      }
+
+      Promise.all([
+        paymentsService.create({ ...paymentParams, price: configs.notificationAllPrice }),
+        paymentsService.create({ ...paymentParams, price: configs.notificationTargetPrice }),
+      ]).then(([allPayment, targetPayment]) => {
+        this.$refs.notificationDialog.showMainDialog(allPayment, targetPayment);
+      });
     },
 
     sendMessage() {

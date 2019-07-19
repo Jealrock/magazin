@@ -25,7 +25,14 @@ Rails.application.routes.draw do
       resources :offers, only: %i[index show create update] do
         member do
           post :close
-          post :notify
+        end
+      end
+      
+      resources :payments, only: %i[create update] do
+        collection do
+          get :success
+          get :failure
+          post :handle
         end
       end
     end

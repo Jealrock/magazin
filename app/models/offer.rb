@@ -29,6 +29,10 @@ class Offer < ApplicationRecord
   scope :max_date, ->(value) { where('cast(offers.created_at as date) <= ?', value) }
   scope :only_with_photos, -> { joins(:photos) }
 
+  def notify(params)
+    NotifyUsers.call(self, params)
+  end
+
   def close
     self.closed = true
   end

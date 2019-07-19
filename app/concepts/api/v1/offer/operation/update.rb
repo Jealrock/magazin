@@ -17,7 +17,8 @@ module Api::V1::Offer
         'CashOffer' => CashOffer::Contract::Create.new(model),
         'ExchangeOffer' => ExchangeOffer::Contract::Create.new(model),
         'FreeOffer' => FreeOffer::Contract::Create.new(model),
-        'ServiceOffer' => ServiceOffer::Contract::Create.new(model)
+        'ServiceOffer' => ServiceOffer::Contract::Create.new(model),
+        'ShopOffer' => ShopOffer::Contract::Create.new(model)
       }[model.type]
     end
 

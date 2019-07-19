@@ -9,7 +9,7 @@ import {
   PROFILE_SUBSCRIPTIONS_ROUTER, PROFILE_MESSAGES_ROUTER,
 } from '@frontend/modules/users/router';
 import {
-  OFFER_SHOW_ROUTER, OFFER_EDIT_ROUTER, OFFER_NEW_ROUTER
+  OFFER_SHOW_ROUTER, OFFER_EDIT_ROUTER, OFFER_NEW_ROUTER,
 } from '@frontend/modules/offer/router';
 import { SEARCH_ROUTER } from '@frontend/modules/search/router';
 
