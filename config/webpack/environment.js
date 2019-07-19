@@ -4,6 +4,9 @@ const { VueLoaderPlugin } = require('vue-loader');
 const vue = require('./loaders/vue');
 const css = require('./loaders/css');
 const file = require('./loaders/file');
+const cssLoader = environment.loaders.get('css')
+
+cssLoader.use=[{'loader':'vue-style-loader'}, {'loader': 'css-loader'}];
 
 environment.plugins.append('VueLoaderPlugin', new VueLoaderPlugin());
 environment.loaders.append('vue', vue);
