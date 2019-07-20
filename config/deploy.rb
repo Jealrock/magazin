@@ -11,12 +11,19 @@ set :use_sudo, true
 set :pty, true
 
 ## Linked Files & Directories (Default None):
-set :linked_files, %w{config/master.key .env.development config/database.yml config/credentials.yml.enc config/puma.rb}
-set :linked_dirs,  %w{public/uploads tmp/cache}
+# set :linked_files, %w{config/database.yml config/credentials.yml.enc config/puma.rb}
+set :linked_files, %w{config/credentials.yml.enc config/master.key .env.production}
+set :linked_dirs,  %w{public/uploads tmp/cache node_modules}
 
 set :yarn_flags, '--production --silent --no-progress'
 
 namespace :deploy do
+  task :setup_environment do
+    on roles(:app, :web, :db) do
+      execute '. ~/.profile'
+    end
+  end
+
   desc "Make sure local git is in sync with remote."
   task :check_revision do
     on roles(:app) do
@@ -42,7 +49,8 @@ namespace :deploy do
     end
   end
 
-  before :starting,  :check_revision
+  # before :starting,  :check_revision
+  before :starting,  :setup_environment
   after  :finishing, :cleanup
   after  :finishing, :restart_puma
   after  :finishing, :restart_sidekiq
