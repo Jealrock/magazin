@@ -3,6 +3,7 @@
     <AppAlert />
     <AppSidebar />
     <AppHeader />
+    <AppNotifications />
     <AppLocaleSwitcher />
     <router-view 
       class="full_height" />
@@ -14,20 +15,39 @@
 import AppHeader from './AppHeader';
 import AppFooter from './AppFooter';
 import AppSidebar from './AppSidebar';
+import AppNotifications from './AppNotifications/AppNotifications';
 import AppLocaleSwitcher from './AppLocaleSwitcher';
 import AppAlert from './AppAlert';
 import subscriptionsManager from  "@frontend/core/services/subscriptionsManager";
 import permissionsManager from  "@frontend/core/services/permissionsManager";
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
-    AppHeader, AppFooter, AppSidebar, AppAlert, AppLocaleSwitcher,
+    AppHeader, AppFooter, AppSidebar, AppNotifications, AppAlert, AppLocaleSwitcher,
   },
 
   computed: {
-    ...mapGetters(['currentUser'])
+    ...mapGetters([
+      'currentUser',
+    ])
+  },
+
+  channels: {
+    PageNotificationsChannel: {
+      received(data) {
+        const notification = JSON.parse(data);
+
+        this.addNotification(notification);
+      },
+    },
+  },
+
+  methods: {
+    ...mapMutations([
+      'addNotification',
+    ])
   },
 
   created() {
@@ -36,7 +56,16 @@ export default {
     permissionsManager.requestNotifications().then(isGranted => {
       if (isGranted) subscriptionsManager.createSubscription();
     });
-  }
+  },
+
+  mounted() {
+    if(!this.currentUser.id) return;
+
+    this.$cable.subscribe({
+      channel: 'PageNotificationsChannel',
+      user_id: this.currentUser.id,
+    });
+  },
 };
 </script>
 

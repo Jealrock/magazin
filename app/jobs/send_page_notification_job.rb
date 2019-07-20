@@ -1,5 +1,9 @@
 class SendPageNotificationJob < ApplicationJob
-  def perform
-    ActionCable.server.broadcast "page_notifications_channel", message: "kek"
+  def perform(subscription, message)
+    user_id = subscription.user.id
+    ActionCable.server.broadcast(
+      "user_#{user_id}_page_notifications_channel",
+      message
+    )
   end
 end
