@@ -28,9 +28,6 @@ gem 'dry-validation', '0.11.1'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.1.0', require: false
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -79,6 +76,13 @@ group :development do
   gem 'overcommit'
   # Mailer
   gem 'letter_opener'
+
+  # Capistrano deployment scripts 
+  gem 'capistrano',           require: false
+  gem 'rvm1-capistrano3',     require: false
+  gem 'capistrano-rails',     require: false
+  gem 'capistrano-bundler',   require: false
+  gem 'capistrano-yarn',      require: false
 end
 
 group :test do

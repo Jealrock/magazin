@@ -1,6 +1,6 @@
 class PhotoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
-  if Rails.env.development? || Rails.env.test?
+  if ENV['STORAGE_TYPE'].blank? || ENV['STORAGE_TYPE'] == 'local'
     storage :file
   else
     storage :fog

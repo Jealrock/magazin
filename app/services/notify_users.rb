@@ -3,7 +3,13 @@ class NotifyUsers
 
   def initialize(offer, params = {})
     @params = params || {}
-    @message = build_message(offer)
+    @offer = offer
+    @message = JSON.generate(
+      title: 'Новое объявление',
+      body: offer.title,
+      icon: offer.photos.first&.file&.url(:thumb),
+      offer_id: offer.id
+    )
   end
 
   def call
@@ -13,7 +19,7 @@ class NotifyUsers
 
   private
 
-  attr_reader :params, :message
+  attr_reader :params, :offer, :message
 
   def users
     return @users if @users
@@ -46,19 +52,10 @@ class NotifyUsers
   def send_notification(subscription)
     if ENV['SYNC_JOBS']
       SendNotificationJob.perform_now(subscription, message)
-      OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
+      OfferMailer.with(user: subscription.user, offer: offer).notify.deliver_now
     else
       SendNotificationJob.perform_later(subscription, message)
-      OfferMailer.with(user: sub.user, offer: model).notify.deliver_later
+      OfferMailer.with(user: subscription.user, offer: offer).notify.deliver_later
     end
-  end
-
-  def build_message(offer)
-    JSON.generate(
-      title: 'Новое объявление',
-      body: offer.title,
-      icon: offer.photos.first&.file&.url(:thumb),
-      offer_id: offer.id
-    )
   end
 end

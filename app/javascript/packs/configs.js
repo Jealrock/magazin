@@ -5,5 +5,5 @@ export default {
   webSocketUrl: process.env.VUE_APP_WEB_SOCKET_URL,
   notificationAllPrice: parseFloat(process.env.VUE_APP_NOTIFICATION_ALL_PRICE),
   notificationTargetPrice: parseFloat(process.env.VUE_APP_NOTIFICATION_TARGET_PRICE),
-  megakassaDebug: parseInt(process.env.VUE_APP_MEGAKASSA_DEBUG, 10),
+  megakassaDebug: process.env.VUE_APP_MEGAKASSA_DEBUG,
 };
