@@ -13,8 +13,8 @@ class NotifyUsers
   end
 
   def call
-    users.map { |user| send_page_notification(user) }
     subscriptions.map { |sub| send_notification(sub) }
+    users.map { |user| send_page_notification(user) }
   end
 
   private
@@ -26,13 +26,9 @@ class NotifyUsers
 
     @users = User.all
 
-    unless params['categories'].blank?
-      @users = @users.by_category_subscriptions(params['categories']).distinct
-    end
+    @users = @users.by_category_subscriptions(params['categories']).distinct unless params['categories'].blank?
 
-    unless params['cities'].blank?
-      @users = @users.by_cities(params['cities']).distinct
-    end
+    @users = @users.by_cities(params['cities']).distinct unless params['cities'].blank?
 
     @users
   end
