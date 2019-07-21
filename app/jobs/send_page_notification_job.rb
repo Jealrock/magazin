@@ -1,8 +1,9 @@
 class SendPageNotificationJob < ApplicationJob
-  def perform(subscription, message)
-    user_id = subscription.user.id
+  queue_as :default
+
+  def perform(user, message)
     ActionCable.server.broadcast(
-      "user_#{user_id}_page_notifications_channel",
+      "user_#{user.id}_page_notifications_channel",
       message
     )
   end

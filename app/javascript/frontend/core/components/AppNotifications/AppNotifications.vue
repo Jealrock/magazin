@@ -11,8 +11,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import AppNotification from './AppNotification';
-import { mapGetters, mapMutations } from 'vuex';
 
 export default {
   components: {
@@ -22,12 +22,6 @@ export default {
   computed: {
     ...mapGetters([
       'allNotifications',
-    ]),
-  },
-
-  methods: {
-    ...mapMutations([
-      'addNotification',
     ]),
   },
 };

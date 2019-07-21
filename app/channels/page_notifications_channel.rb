@@ -1,6 +1,7 @@
 class PageNotificationsChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "user_#{params[:user_id]}_page_notifications_channel"
+    authorize!
+    stream_from "user_#{current_user.id}_page_notifications_channel"
   end
 
   def unsubscribed

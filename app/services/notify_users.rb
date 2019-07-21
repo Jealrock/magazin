@@ -7,6 +7,7 @@ class NotifyUsers
   end
 
   def call
+    users.map { |user| send_page_notification(user) }
     subscriptions.map { |sub| send_notification(sub) }
   end
 
@@ -14,28 +15,40 @@ class NotifyUsers
 
   attr_reader :params, :message
 
-  def subscriptions
-    return @subscriptions if @subscriptions
+  def users
+    return @users if @users
 
-    @subscriptions = Subscription.all
+    @users = User.all
 
     unless params['categories'].blank?
-      @subscriptions = @subscriptions.by_user_category_subscriptions(params['categories']).distinct
+      @users = @users.by_category_subscriptions(params['categories']).distinct
     end
 
-    @subscriptions = @subscriptions.by_user_cities(params['cities']).distinct unless params['cities'].blank?
+    unless params['cities'].blank?
+      @users = @users.by_cities(params['cities']).distinct
+    end
 
-    @subscriptions
+    @users
+  end
+
+  def subscriptions
+    Subscription.where(user_id: users.pluck(:id))
+  end
+
+  def send_page_notification(user)
+    if ENV['SYNC_JOBS']
+      SendPageNotificationJob.perform_now(user, message)
+    else
+      SendPageNotificationJob.perform_later(user, message)
+    end
   end
 
   def send_notification(subscription)
     if ENV['SYNC_JOBS']
       SendNotificationJob.perform_now(subscription, message)
-      SendPageNotificationJob.perform_now(subscription, message)
       OfferMailer.with(user: sub.user, offer: model).notify.deliver_now
     else
       SendNotificationJob.perform_later(subscription, message)
-      SendPageNotificationJob.perform_later(subscription, message)
       OfferMailer.with(user: sub.user, offer: model).notify.deliver_later
     end
   end

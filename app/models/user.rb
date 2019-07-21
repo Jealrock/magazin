@@ -14,6 +14,15 @@ class User < ApplicationRecord
     end
   end
 
+  scope :by_category_subscriptions, lambda { |category_ids|
+    joins(:category_subscriptions)
+      .where(category_subscriptions: { category_id: category_ids })
+  }
+
+  scope :by_cities, lambda { |cities|
+    where(city: cities)
+  }
+
   has_many :offers
 
   has_many :favorites

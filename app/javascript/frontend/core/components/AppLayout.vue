@@ -31,6 +31,7 @@ export default {
   computed: {
     ...mapGetters([
       'currentUser',
+      'authData',
     ])
   },
 
@@ -63,7 +64,7 @@ export default {
 
     this.$cable.subscribe({
       channel: 'PageNotificationsChannel',
-      user_id: this.currentUser.id,
+      auth: { ...this.authData, 'access-token': this.authData.accessToken },
     });
   },
 };
