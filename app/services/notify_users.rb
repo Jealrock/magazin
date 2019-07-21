@@ -44,18 +44,18 @@ class NotifyUsers
   def send_page_notification(user)
     if ENV['SYNC_JOBS']
       SendPageNotificationJob.perform_now(user, message)
+      OfferMailer.with(user: user, offer: offer).notify.deliver_now
     else
       SendPageNotificationJob.perform_later(user, message)
+      OfferMailer.with(user: user, offer: offer).notify.deliver_later
     end
   end
 
   def send_notification(subscription)
     if ENV['SYNC_JOBS']
       SendNotificationJob.perform_now(subscription, message)
-      OfferMailer.with(user: subscription.user, offer: offer).notify.deliver_now
     else
       SendNotificationJob.perform_later(subscription, message)
-      OfferMailer.with(user: subscription.user, offer: offer).notify.deliver_later
     end
   end
 end
