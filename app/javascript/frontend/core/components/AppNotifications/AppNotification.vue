@@ -2,29 +2,28 @@
   <div class="notification">
     <v-slide-x-reverse-transition>
       <v-card v-show="visible"
-        class="mt-3 cursor_pointer"
+        class="mt-4 blue lighten-1 cursor_pointer elevation-15"
         @click="openOfferPage">
         <v-btn icon
           absolute
           class="ma-0 notification__close-button"
           @click="closeNotification(notificationIndex, $event)">
-          <v-icon
-            class="grey--text text--lighten-1">
+          <v-icon>
             cancel
           </v-icon>
         </v-btn>
         <v-layout row>
           <v-img :src="notificationItem.icon"
-            class="grey lighten-3"
-            aspect-ration="1"
+            class="blue"
+            :aspect-ration="1"
             :min-width="'80px'" 
             :max-width="'110px'" />
           <v-card-title primary-title>
             <div>
-              <p class="ma-0 mb-2 font-weight-bold">
+              <p class="ma-0 mb-3 title font-weight-bold">
                 {{ notificationItem.title }}
               </p>
-              <p class="ma-0 body-1">
+              <p class="ma-0 subheading">
                 {{ notificationItem.body }}
               </p>
             </div>
@@ -66,8 +65,6 @@ export default {
 
     closeNotification(index, event) {
       event.stopPropagation();
-      this.visible = false;
-
       this.deleteNotification(index);
     },
 

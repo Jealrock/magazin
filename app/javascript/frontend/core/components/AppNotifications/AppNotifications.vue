@@ -1,12 +1,14 @@
 <template>
-  <div class="notifications"
-    :class="{
-      'pa-3' : $vuetify.breakpoint.smAndUp,
-    }">
-    <AppNotification v-for="(item, index) in allNotifications"
-      :key="index"
-      :notification-item="item"
-      :notification-index="index" />
+  <div class="notifications">
+    <div v-if="allNotifications.length"
+      :class="{
+        'pa-3' : $vuetify.breakpoint.smAndUp,
+      }">
+      <AppNotification v-for="(item, index) in allNotifications"
+        :key="index"
+        :notification-item="item"
+        :notification-index="index" />
+    </div>
   </div>
 </template>
 
@@ -33,7 +35,7 @@ export default {
   position: fixed;
   right: 0px;
   bottom: 0px;
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
   z-index: 100
 }
