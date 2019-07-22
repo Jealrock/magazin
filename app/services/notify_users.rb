@@ -15,6 +15,11 @@ class NotifyUsers
   def call
     subscriptions.map { |sub| send_notification(sub) }
     users.map { |user| send_page_notification(user) }
+  rescue StandardError => e
+    #  to prevent job retrying
+    p "Notification Error: #{e}"
+    e.backtrace.each { |line| p line }
+    nil
   end
 
   private
