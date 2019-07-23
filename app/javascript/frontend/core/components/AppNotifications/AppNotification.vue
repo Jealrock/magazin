@@ -65,7 +65,7 @@ export default {
 
     closeNotification(index, event) {
       event.stopPropagation();
-      this.deleteNotification(index);
+      this.visible = false;
     },
 
     openOfferPage(event) {
