@@ -10,8 +10,8 @@
         </v-flex>
 
         <v-flex xs3>
-          <a href="https://megakassa.ru/" title="Платежный агрегатор Мегакасса" style="float: right;" target="_blank">
-            <img src="https://megakassa.ru/pr/light_ru.jpg" alt="Megakassa" />
+          <a href="//www.free-kassa.ru/" style="float: right;" target="_blank">
+            <img src="//www.free-kassa.ru/img/fk_btn/9.png" alt="Прием платежей на сайте" />
           </a>
         </v-flex>
       </v-layout>
