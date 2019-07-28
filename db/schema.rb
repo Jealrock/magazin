@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_02_203206) do
+ActiveRecord::Schema.define(version: 2019_07_28_192513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2019_07_02_203206) do
     t.bigint "payable_entity_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "freekassa_uid"
     t.index ["payable_entity_id"], name: "index_payments_on_payable_entity_id"
   end
 

@@ -24,10 +24,10 @@ module Api::V1
     end
 
     def handle
-      render(plain: 'error') && return unless ::Megakassa.valid?(params)
+      render(plain: 'error') && return unless ::Freekassa.valid?(params)
 
       run Payments::Handle
-      render(plain: 'ok') && return
+      render(plain: 'yes') && return
     end
   end
 end

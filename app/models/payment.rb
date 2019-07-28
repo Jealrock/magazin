@@ -22,13 +22,4 @@ class Payment < ApplicationRecord
   def megakassa_params
     raise NotImplementedError
   end
-
-  private
-
-  def generate_signature(arr, with_signature)
-    data = arr.join(':')
-    return Digest::MD5.hexdigest(arr.last + Digest::MD5.hexdigest(data)) if with_signature
-
-    Digest::MD5.hexdigest(data)
-  end
 end

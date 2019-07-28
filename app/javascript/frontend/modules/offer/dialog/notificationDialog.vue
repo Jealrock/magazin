@@ -16,21 +16,20 @@
           <h4 class="mb-0 mx-auto font-weight-bold text-uppercase">Отправить уведомление</h4>
           <v-container class="pa-0">
             <v-layout row wrap justify-center class="mt-4">
-              <v-flex xs12 sm6
-                :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <MegakassaForm 
+              <v-flex xs12 sm6 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
+                <FreekassaForm 
                   v-if="allPayment"
                   :shopId="allPayment.shop_id"
                   :price="allPayment.price"
-                  :description="allPayment.description"
+                  :email="currentUser.email"
                   :orderId="allPayment.order_id"
                   :signature="allPayment.signature"
                   @submitted="closeMainDialog"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn type="submit" block depressed color="info">Всем пользователям</v-btn>
+                    <v-btn block depressed color="info">Всем пользователям</v-btn>
                   </template>
-                </MegakassaForm>
+                </FreekassaForm>
               </v-flex>
               <v-flex xs12 sm6 
                 :class="{ 
@@ -120,20 +119,20 @@
                 </v-autocomplete>
               </v-flex>
               <v-flex xs12 sm6 :class="{ 'pr-2' : $vuetify.breakpoint.smAndUp }">
-                <MegakassaForm 
+                <FreekassaForm 
                   v-if="targetPayment"
                   :shopId="targetPayment.shop_id"
                   :price="targetPayment.price"
-                  :description="targetPayment.description"
                   :orderId="targetPayment.order_id"
+                  :email="currentUser.email"
                   :signature="targetPayment.signature"
                   :params="notificationParams"
                   @submitted="closeMainDialog"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn type="submit" block depressed color="success">Отправить</v-btn>
+                    <v-btn block depressed color="success">Отправить</v-btn>
                   </template>
-                </MegakassaForm>
+                </FreekassaForm>
               </v-flex>
             </v-layout>
           </v-container>
@@ -145,7 +144,7 @@
 
 <script>
 import AutocompleteInput from '@frontend/core/components/form/AutocompleteInput';
-import MegakassaForm from '@frontend/modules/payments/MegakassaForm';
+import FreekassaForm from '@frontend/modules/payments/FreekassaForm';
 import geolocationsService from '@frontend/core/services/geolocationsService';
 
 import { mapGetters, mapMutations, mapActions } from 'vuex';
@@ -156,7 +155,7 @@ const ALL_CATEGORIES_OPTION = {id: -1, parent_id: null, title: 'Все кате�
 export default {
   components: {
     AutocompleteInput,
-    MegakassaForm
+    FreekassaForm
   },
 
   props: {
@@ -184,10 +183,7 @@ export default {
   }),
 
   computed: {
-    ...mapGetters([
-      'mainCategories',
-      'childCategories',
-    ]),
+    ...mapGetters(['mainCategories', 'childCategories', 'currentUser']),
     
     notificationParams() {
       const cities = this.notifyByGeo ? this.selectedCities : [];
