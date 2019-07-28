@@ -11,14 +11,10 @@ module Api::V1::Payments
     end
 
     def process_payment!(_options, params:, model:, **)
-      model.megakassa_uid = params['uid']
+      model.freekassa_uid = params['intid']
 
-      if params['status'] == 'success'
-        model.process
-        model.successful!
-      else
-        model.failed!
-      end
+      model.process
+      model.successful!
     end
   end
 end

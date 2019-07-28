@@ -10,8 +10,8 @@
         </v-flex>
 
         <v-flex xs3>
-          <a href="//www.free-kassa.ru/" style="float: right;" target="_blank">
-            <img src="//www.free-kassa.ru/img/fk_btn/9.png" alt="Прием платежей на сайте" />
+          <a href="https://www.free-kassa.ru/" style="float: right;" target="_blank">
+            <img src="https://www.free-kassa.ru/img/fk_btn/9.png" alt="Прием платежей на сайте" />
           </a>
         </v-flex>
       </v-layout>

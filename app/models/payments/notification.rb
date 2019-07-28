@@ -18,14 +18,12 @@ class Payments::Notification < Payment
 
   def megakassa_params
     {
-      shop_id: ENV['MEGAKASSA_SHOP_ID'],
+      shop_id: ENV['FREEKASSA_SHOP_ID'],
       price: price,
       description: DEFAULT_DESCRIPTION,
       order_id: id,
-      signature: generate_signature(
-        [ENV['MEGAKASSA_SHOP_ID'], price, ENV['MEGAKASSA_DEFAULT_CURRENCY'],
-         DEFAULT_DESCRIPTION, id, '', '', ENV['MEGAKASSA_DEBUG'], ENV['MEGAKASSA_SIGNATURE']],
-        true
+      signature: Freekassa.generate_signature(
+        [ENV['FREEKASSA_SHOP_ID'], ENV['FREEKASSA_SIGNATURE']], true
       )
     }
   end

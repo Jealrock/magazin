@@ -17,7 +17,15 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   strict: true,
   modules: {
-    offers, users, favorites, routes, sidebar, categories, alert, categorySubscription, notifications,
+    offers,
+    users,
+    favorites,
+    routes,
+    sidebar,
+    categories,
+    alert,
+    categorySubscription,
+    notifications,
   },
   plugins: [createPersistedState({ paths: ['users'] })],
 });
