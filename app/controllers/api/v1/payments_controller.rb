@@ -14,12 +14,12 @@ module Api::V1
     end
 
     def success
-      payment = Payment.find_by(id: params['order_id'])
+      payment = Payment.find_by(id: params['MERCHANT_ORDER_ID'])
       redirect_to payment ? payment.successfull_redirect_path : '/'
     end
 
     def failure
-      payment = Payment.find_by(id: params['order_id'])
+      payment = Payment.find_by(id: params['MERCHANT_ORDER_ID'])
       redirect_to payment ? payment.failed_redirect_path : '/'
     end
 
