@@ -10,6 +10,11 @@ class OfferMailer < ApplicationMailer
     end
 
     mail(to: @user.email, subject: @offer.title)
+  rescue StandardError => e
+    #  to prevent job retrying
+    p "OfferMailer Error: #{e}"
+    e.backtrace.each { |line| p line }
+    nil
   end
   # rubocop:enable Metrics/AbcSize
 end
