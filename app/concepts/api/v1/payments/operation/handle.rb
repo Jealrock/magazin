@@ -7,7 +7,7 @@ module Api::V1::Payments
     private
 
     def model!(options, params:, **)
-      options['model'] = Payment.find_by(id: params['order_id'].to_i)
+      options['model'] = Payment.find_by(id: params['MERCHANT_ORDER_ID'].to_i)
     end
 
     def process_payment!(_options, params:, model:, **)
