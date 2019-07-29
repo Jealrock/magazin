@@ -39,16 +39,16 @@ class NotifyUsers
   end
 
   def subscriptions
-    Subscription.where(user_id: users.pluck(:id))
+    @subscriptions ||= Subscription.where(user_id: users.pluck(:id))
   end
 
   def send_page_notification(user)
     if ENV['SYNC_JOBS']
       SendPageNotificationJob.perform_now(user, message)
-      # OfferMailer.with(user: user, offer: offer).notify.deliver_now
+      OfferMailer.with(user: user, offer: offer).notify.deliver_now
     else
       SendPageNotificationJob.perform_later(user, message)
-      # OfferMailer.with(user: user, offer: offer).notify.deliver_later
+      OfferMailer.with(user: user, offer: offer).notify.deliver_later
     end
   end
 
