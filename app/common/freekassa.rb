@@ -1,5 +1,9 @@
 class Freekassa
   class << self
+    def format_price(value)
+      value.to_i == value.to_f ? value.to_i : value.to_f
+    end
+
     def generate_signature(arr)
       Digest::MD5.hexdigest(arr.join(':'))
     end
