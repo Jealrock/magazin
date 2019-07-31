@@ -27,7 +27,7 @@
                   @submitted="closeMainDialog"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn block depressed color="info">Всем пользователям</v-btn>
+                    <v-btn type="submit" block depressed color="info">Всем пользователям</v-btn>
                   </template>
                 </FreekassaForm>
               </v-flex>
@@ -130,7 +130,7 @@
                   @submitted="closeMainDialog"
                 >
                   <template v-slot:submitBtn>
-                    <v-btn block depressed color="success">Отправить</v-btn>
+                    <v-btn type="submit" block depressed color="success">Отправить</v-btn>
                   </template>
                 </FreekassaForm>
               </v-flex>

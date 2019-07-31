@@ -23,7 +23,7 @@ class Payments::Notification < Payment
       description: DEFAULT_DESCRIPTION,
       order_id: id,
       signature: Freekassa.generate_signature(
-        [ENV['FREEKASSA_SHOP_ID'], ENV['FREEKASSA_SIGNATURE']], true
+        [ENV['FREEKASSA_SHOP_ID'], price, ENV['FREEKASSA_SIGNATURE'], id]
       )
     }
   end

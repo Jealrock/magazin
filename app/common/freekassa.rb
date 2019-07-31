@@ -1,14 +1,12 @@
 class Freekassa
   class << self
-    def generate_signature(arr, with_signature)
-      return Digest::MD5.hexdigest(arr.join('')) if with_signature
-
+    def generate_signature(arr)
       Digest::MD5.hexdigest(arr.join(':'))
     end
 
     def valid?(params)
       signature = Freekassa.generate_signature(
-        [ENV['FREEKASSA_SHOP_ID'], params['AMOUNT'], ENV['FREEKASSA_SIGNATURE'], params['MERCHANT_ORDER_ID']], false
+        [ENV['FREEKASSA_SHOP_ID'], params['AMOUNT'], ENV['FREEKASSA_SIGNATURE'], params['MERCHANT_ORDER_ID']]
       )
 
       return false unless signature == params['SIGN']
