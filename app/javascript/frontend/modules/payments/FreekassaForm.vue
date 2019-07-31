@@ -1,9 +1,12 @@
 <template>
   <form method="get" action="https://free-kassa.ru/merchant/cash.php" v-on:submit="updatePayment" accept-charset="UTF-8">
     <input type="hidden" name="m" :value="shopId" />
-    <input type="hidden" name="oa" :value="price" />
+    <input type="hidden" name="oa" :value="payment_price" />
     <input type="hidden" name="o" :value="orderId" />
     <input type="hidden" name="s" :value="signature" />
+
+    <input type="hidden" name="em" :value="email" />
+    <input type="hidden" name="phone" :value="phone" />
     <slot name="submitBtn"></slot>
   </form>
 </template>
@@ -18,8 +21,17 @@ export default  {
     orderId: {type: Number, required: true},
     signature: {type: String, required: true},
     email: {type: String, required: true},
+    phone: {type: String, required: true},
 
     params: {type: Object}
+  },
+
+  computed: {
+    payment_price() {
+      if (Number.isInteger(this.price)) return this.price.toFixed(1);
+
+      return this.price;
+    },
   },
 
   methods: {
