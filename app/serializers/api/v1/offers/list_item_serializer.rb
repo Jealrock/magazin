@@ -4,7 +4,7 @@ module Api::V1
       attributes :id, :type, :price, :title, :created_at
 
       attribute :photos do |object|
-        object.photos.map(&:file)
+        object.photos.map { |photo| photo.file.thumb }
       end
     end
   end
