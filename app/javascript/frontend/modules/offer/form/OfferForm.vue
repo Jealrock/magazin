@@ -9,7 +9,7 @@
       </h4>
 
       <v-select
-        v-model="offer.category_id" 
+        v-model="offer.category_id"
         v-validate="'required'"
         :items="categories"
         item-value="id"
@@ -32,7 +32,7 @@
         </template>
       </v-select>
       <v-select
-        v-model="offer.type" 
+        v-model="offer.type"
         v-validate="'required'"
         :disabled="this.method === 'patch'"
         :items="types"
@@ -96,7 +96,7 @@
         Контактная информация
       </h4>
 
-      <AutocompleteInput 
+      <AutocompleteInput
         :items="suggestedAddresses"
         :label="'Адрес'"
         :value="this.offer.address"
@@ -271,7 +271,7 @@ export default {
       });
 
       this.offer.photos = photoFiles;
-      this.$refs.photoUpload.photos = photoFiles;
+      this.$refs.photoUpload.setPhotos(photoFiles);
     },
 
     async onAddressUpdate(inputAddress) {

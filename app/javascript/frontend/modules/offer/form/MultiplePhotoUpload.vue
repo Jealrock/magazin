@@ -16,14 +16,10 @@
           v-for="(photo, index) in photos"
           :key="index">
           <v-hover>
-            <v-responsive :aspect-ratio="1"
-            slot-scope="{ hover }"
-            class="grey lighten-3">
-              <v-img :src="urlFor(photo)"
-                :aspect-ratio="1"
-                alt="photo" />
+            <v-responsive :aspect-ratio="1" slot-scope="{ hover }" class="grey lighten-3">
+              <v-img :src="photo.url" :aspect-ratio="1" alt="photo" />
               <v-fade-transition>
-                <v-responsive 
+                <v-responsive
                   v-if="hover"
                   :aspect-ratio="1"
                   class="photo-upload__remove-photo-button cursor_pointer"
@@ -72,12 +68,10 @@ export default {
       this.$refs.photos.click();
     },
 
-    urlFor(photo) {
-      return URL.createObjectURL(photo);
-    },
-
     handlePhotoUpload() {
-      this.photos = this.photos.concat(Array.from(this.$refs.photos.files));
+      this.photos = this.photos.concat(
+        Array.from(this.$refs.photos.files).map(file => this.buildPhotoWithUrl(file))
+      );
       this.update();
       // rerender native element to clear file
       this.uploadReady = false;
@@ -87,7 +81,7 @@ export default {
     },
 
     setPhotos(photoFiles) {
-      this.photos = photoFiles;
+      this.photos = photoFiles.map(file => this.buildPhotoWithUrl(file));
     },
 
     removePhoto(index) {
@@ -95,8 +89,15 @@ export default {
       this.update();
     },
 
+    buildPhotoWithUrl(blob) {
+      return {
+        blob: blob,
+        url: URL.createObjectURL(blob)
+      }
+    },
+
     update() {
-      this.$emit('update', this.photos);
+      this.$emit('update', this.photos.map(photo => photo.blob));
     },
   },
 };

@@ -13,7 +13,7 @@
       :to="`/offer/${item.id}`">
       <v-card class="elevation-0">
         <v-img
-          :src="item.photos[0] && item.photos[0].url"
+          :src="photoUrl"
           alt="photo"
           class="grey lighten-3"
           aspect-ratio="1.5"
@@ -61,6 +61,12 @@ export default {
       if (this.item.type === 'FreeOffer') return 'Подарю БисмилЛах1';
       return 'Уточнить';
     },
+
+    photoUrl() {
+     if (!this.item.photos[0]) return;
+
+     return this.item.photos[0].url;
+    }
   },
 
   methods: {
