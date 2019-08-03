@@ -49,7 +49,6 @@
           regex: /^(([\d ]+)(\.\d{1,2})?)$/
         }"
         label="Цена"
-        type="text"
         data-vv-name="price"
         :error-messages="errors.collect('price')"
         @keyup.enter="submit"
@@ -60,7 +59,6 @@
         v-model="offer.exchange_item"
         v-validate="'required'"
         label="На что меняете?"
-        type="text"
         data-vv-name="exchange item"
         :error-messages="errors.collect('exchange item')"
         @keyup.enter="submit"
@@ -72,7 +70,6 @@
         v-model="offer.title"
         v-validate="'required'"
         :label="`Название ${offer.type === 'ServiceOffer' ? 'услуги' : 'объявления'}`"
-        type="text"
         data-vv-name="title"
         :error-messages="errors.collect('title')"
         @keyup.enter="submit"
@@ -83,7 +80,6 @@
       <v-textarea
         v-model="offer.description"
         :label="`Описание ${offer.type === 'ServiceOffer' ? 'услуги' : 'объявления'}`"
-        @keyup.enter="submit"
         hint="Не указывайте в описании телефон и e-mail — для этого есть отдельные поля"
         persistent-hint
       />
@@ -125,14 +121,19 @@
         <div v-html="error" />
       </v-alert>
 
-      <v-btn
-        depressed
-        color="info"
-        class="ma-0 mt-4"
-        @click="submit"
-      >
-        {{ submitBtnLabel }}
-      </v-btn>
+      <v-flex xs12 sm5 md4>
+        <v-btn
+          depressed
+          block
+          :disabled="isSubmitting"
+          :loading="isSubmitting"
+          color="info"
+          class="ma-0 mt-4"
+          @click="submit"
+        >
+          {{ submitBtnLabel }}
+        </v-btn>
+      </v-flex>
     </v-form>
   </div>
 </template>
@@ -166,6 +167,7 @@ export default {
 
   data: () => ({
     valid: true,
+    isSubmitting: false, 
     suggestedAddresses: [],
     suggestedAddressesLoaded: true,
     types: [{
@@ -285,8 +287,14 @@ export default {
     },
 
     async submit() {
+      if (this.isSubmitting) return;
+
+      this.$refs.form.resetValidation();
+
       await this.$validator.validateAll();
       if (!this.valid) return;
+
+      this.isSubmitting = true;
 
       if (this.method && this.method === 'post') {
         offersService.create(this.offer)
@@ -296,7 +304,8 @@ export default {
           })
           .catch((error) => {
             this.error = error;
-          });
+          })
+          .finally(() => this.isSubmitting = false );
       } else if (this.method && this.method === 'patch') {
         offersService.update({
           id: this.offerItem.id,
@@ -308,7 +317,8 @@ export default {
           })
           .catch((error) => {
             this.error = error;
-          });
+          })
+          .finally(() => this.isSubmitting = false);
       }
     },
   },

@@ -4,7 +4,7 @@
       Фотографии
     </h4>
 
-    <input v-if="uploadReady" type="file" id="photo" ref="photos" v-on:change="handlePhotoUpload()" accept=".jpeg,.jpg,.png" multiple />
+    <input v-if="uploadReady" type="file" id="photo" ref="photos" style="display: none;" tabindex="-1" v-on:change="handlePhotoUpload()" accept=".jpeg,.jpg,.png" multiple />
 
     <v-layout row wrap>
       <p class="caption grey--text text--darken-1 mb-1">Не более {{ max }}</p>
