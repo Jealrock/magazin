@@ -72,9 +72,9 @@ export default {
       Array.from(this.$refs.photos.files).forEach((file, index) => {
         setTimeout(function(){
           this.photos = [...this.photos, this.buildPhotoWithUrl(file)];
+          this.update();
         }.bind(this), index * 500); // prevent page reloading on safari
       });
-      this.update();
       // rerender native element to clear file
       this.uploadReady = false;
       this.$nextTick(() => {
