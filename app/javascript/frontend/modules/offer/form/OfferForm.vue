@@ -132,7 +132,8 @@
         @click="submit"
       >
         {{ submitBtnLabel }}
-      </v-btn> </v-form>
+      </v-btn>
+    </v-form>
   </div>
 </template>
 
