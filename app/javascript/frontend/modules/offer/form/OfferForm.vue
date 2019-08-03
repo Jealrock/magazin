@@ -85,7 +85,7 @@
       />
 
       <MultiplePhotoUpload @update="onPhotosUpdated"
-        :max="10"
+        :max="5"
         ref="photoUpload" />
 
       <h4 class="title font-weight-bold black--text mt-4 mb-4">
