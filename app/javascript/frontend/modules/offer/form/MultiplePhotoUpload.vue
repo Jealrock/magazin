@@ -7,7 +7,7 @@
     <input v-if="uploadReady" type="file" id="photo" ref="photos" style="display: none;" tabindex="-1" v-on:change="handlePhotoUpload()" accept=".jpeg,.jpg,.png" multiple />
 
     <v-layout row wrap>
-      <p class="caption grey--text text--darken-1 mb-1">Не более {{ MAX_PHOTOS_PER_UPLOAD }} за загрузку и {{ max }} всего.</p>
+      <p class="caption grey--text text--darken-1 mb-1">Не более {{ maxPhotosPerUpload }} за загрузку и {{ max }} всего.</p>
     </v-layout>
 
     <v-container grid-list-md class="pa-0">
@@ -62,6 +62,7 @@ export default {
 
   data: () => ({
     photos: [],
+    maxPhotosPerUpload: MAX_PHOTOS_PER_UPLOAD,
     uploadReady: true,
   }),
 
