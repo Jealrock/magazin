@@ -7,7 +7,7 @@
     <input v-if="uploadReady" type="file" id="photo" ref="photos" style="display: none;" tabindex="-1" v-on:change="handlePhotoUpload()" accept=".jpeg,.jpg,.png" multiple />
 
     <v-layout row wrap>
-      <p class="caption grey--text text--darken-1 mb-1">Не более {{ max }}</p>
+      <p class="caption grey--text text--darken-1 mb-1">Не более {{ MAX_PHOTOS_PER_UPLOAD }} за загрузку и {{ max }} всего.</p>
     </v-layout>
 
     <v-container grid-list-md class="pa-0">
@@ -50,7 +50,7 @@
 </template>
 
 <script>
-const MAX_PHOTOS_PER_UPLOAD=5
+const MAX_PHOTOS_PER_UPLOAD=4
 
 export default {
   props: {
@@ -74,7 +74,7 @@ export default {
       Array.from(this.$refs.photos.files).some((file, idx) => {
         if (idx >= this.max - this.photos.length || idx >= MAX_PHOTOS_PER_UPLOAD) return true;
 
-        setTimeout(function(){
+        setTimeout(function() {
           this.photos = [...this.photos, this.buildPhotoWithUrl(file)];
           this.update();
         }.bind(this), (idx + 1) * 500); // prevent page reloading on safari
