@@ -50,6 +50,8 @@
 </template>
 
 <script>
+const MAX_PHOTOS_PER_UPLOAD=5
+
 export default {
   props: {
     max: {
@@ -69,12 +71,17 @@ export default {
     },
 
     handlePhotoUpload() {
-      Array.from(this.$refs.photos.files).forEach((file, index) => {
+      Array.from(this.$refs.photos.files).some((file, idx) => {
+        if (idx >= this.max - this.photos.length || idx >= MAX_PHOTOS_PER_UPLOAD) return true;
+
         setTimeout(function(){
           this.photos = [...this.photos, this.buildPhotoWithUrl(file)];
           this.update();
-        }.bind(this), index * 500); // prevent page reloading on safari
+        }.bind(this), (idx + 1) * 500); // prevent page reloading on safari
+
+        return false;
       });
+
       // rerender native element to clear file
       this.uploadReady = false;
       this.$nextTick(() => {
